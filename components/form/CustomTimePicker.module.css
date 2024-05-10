@@ -1,0 +1,20 @@
+/* CustomTimePicker.module.css */
+/* Change the "OK" button color in the TimePicker */
+.ant-picker-time-panel .ant-picker-footer .ant-btn-primary {
+  background-color: blue; /* Change to the desired color */
+  border-color: blue; /* Change to the desired color */
+  color: blue; /* Change to the desired text color */
+}
+
+/* Change the "OK" button hover color (optional) */
+.ant-picker-time-panel .ant-picker-footer .ant-btn-primary:hover {
+  background-color: blue; /* Change to the desired hover color */
+  border-color: blue; /* Change to the desired hover color */
+  color: blue; /* Change to the desired text color */
+}
+:where(.css-dev-only-do-not-override-xu9wm8).ant-picker-dropdown
+  .ant-picker-ranges {
+  background-color: blue; /* Change to the desired hover color */
+  border-color: blue; /* Change to the desired hover color */
+  color: blue; /* Change to the desired text color */
+}
