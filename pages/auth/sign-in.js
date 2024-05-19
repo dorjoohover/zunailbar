@@ -41,8 +41,7 @@ const render = ({ data, events, tr }) => {
           okButtonProps={{ style: { display: "none" } }}
           onCancel={events.handleCancelConfirm}
         >
-          <ConfirmForm data={data} events={events} tr={tr} />
-          {/* modal test */}
+          <ConfirmForm data={data} events={events} />
         </Modal>
         <h1
           className="mb-2 p-4"
@@ -53,19 +52,15 @@ const render = ({ data, events, tr }) => {
         >
           Нэвтрэх хэсэг
         </h1>
-        <SignIn events={events} />
-        <div className="">
-          {/* <Form.Item className=""> */}
-          {/* <Link href=""> */}
+        <SignIn events={events} data={data} />
+        {/* <div className="">
           <Button
             onClick={events.showModal}
             className="font-semibold text-[#0F285F]  underline-offset-1 "
           >
             Бүртгэлээ баталгаажуулах
           </Button>
-          {/* </Link> */}
-          {/* </Form.Item> */}
-        </div>
+        </div> */}
       </div>
     </div>
   );

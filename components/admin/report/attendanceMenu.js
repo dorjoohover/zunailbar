@@ -81,20 +81,22 @@ export default function Agenda({ data, events }) {
         <OrlogoForm data={data} events={events} />
       </div>
       <div className="mt-2 p-1 bg-blue-200">
-        {data?.orlogo.map((item, index) => (
-          <div className="" key={index}>
-            <p>Орлого: {item.orlogo}</p>
-          </div>
-        ))}
+        {data?.orlogo !== null &&
+          data?.orlogo.map((item, index) => (
+            <div className="" key={index}>
+              <p>Орлого: {item.orlogo}</p>
+            </div>
+          ))}
       </div>
       <div className="my-12">
         <h3>Income by Service</h3>
         <ServiceIncomeForm data={data} events={events} />
-        {data?.reportList?.list3.map((item, index) => (
-          <div className="bg-blue-200" key={index}>
-            <p>Орлого: {item.orlogo}</p>
-          </div>
-        ))}
+        {data?.reportList?.list3 !== null &&
+          data?.reportList?.list3.map((item, index) => (
+            <div className="bg-blue-200" key={index}>
+              <p>Орлого: {item.orlogo}</p>
+            </div>
+          ))}
       </div>
       <div>
         <h3>Income by Employee</h3>
@@ -105,7 +107,7 @@ export default function Agenda({ data, events }) {
           </div>
         ))}
       </div>
-      <h3 className="text-center mt-4 text-2xl font-bold">ИРЦ</h3>
+      <h3 className="text-center mt-4 text-2xl font-bold">Тайлан</h3>
       <Table
         bordered
         pagination={{ pageSize: 30 }}

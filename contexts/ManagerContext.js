@@ -6,7 +6,7 @@ import { message } from "antd";
 
 import { Alert, Button, Space } from "antd";
 
-const AuthContext = createContext();
+const ManagerContext = createContext();
 
 var initialData = {
   status: "",
@@ -16,7 +16,6 @@ var initialData = {
   detail: {},
   profileDetail: {},
   list: [],
-  bookingsListByCustomerId: [],
   isInitialized: false,
   isAuthenticated: false,
 };
@@ -29,7 +28,7 @@ message.config({
   style: "fontSize:20px",
 });
 
-const AuthProvider = (props) => {
+const ManagerProvider = (props) => {
   //   const { t } = useTranslation();
   const router = useRouter();
   const [state, setState] = useState(initialData);
@@ -118,7 +117,7 @@ const AuthProvider = (props) => {
     });
 
     var config = {
-      url: `${route}/login`,
+      url: `/managers/login`,
       method: "post",
       data: {
         email: email,
@@ -149,13 +148,7 @@ const AuthProvider = (props) => {
       message.success(
         <div className="text-[20px]">Та амжилттай нэвтэрлээ</div>
       );
-      if (data?.user?.status == 0) {
-        router.push("/admin");
-      } else if (route == "/employee") {
-        router.push("/employee");
-      } else {
-        router.push("/services");
-      }
+      router.push("/admin");
       //   DeleteMess();
     } catch (err) {
       console.log("err", err);
@@ -269,49 +262,9 @@ const AuthProvider = (props) => {
       // }
     } catch (err) {
       console.log("err", err);
-      // if (err?.statusCode === 409) {
-      //   router.push("/");
-      // }
-
-      setState({
-        ...state,
-        status: "error",
-        message: err.message || "Something went wrong!",
-      });
-    }
-  };
-
-  const loadBookingsByCustomerId = async (customerId) => {
-    // console.log("worked");
-    setState({
-      ...state,
-      status: "loading",
-      message: "",
-    });
-
-    var config = {
-      url: `/customers/${customerId}/booking`,
-      method: "get",
-      data: {},
-    };
-
-    try {
-      var response = await axios(config);
-      //   console.log("response", response);
-      const { data } = response.data;
-      // console.log("data", data);
-      setState({
-        ...state,
-        status: "success",
-        bookingsListByCustomerId: data,
-        message: "",
-      });
-      // }
-    } catch (err) {
-      console.log("err", err);
-      // if (err?.statusCode === 409) {
-      //   router.push("/");
-      // }
+      if (err?.statusCode === 409) {
+        router.push("/");
+      }
 
       setState({
         ...state,
@@ -332,7 +285,7 @@ const AuthProvider = (props) => {
     // console.log(body)
 
     var config = {
-      url: "/customers/register",
+      url: "/users",
       method: "post",
       data: {
         ...value,
@@ -384,7 +337,7 @@ const AuthProvider = (props) => {
     // console.log(body)
 
     var config = {
-      url: `/customers/${id}`,
+      url: `/users/${id}`,
       method: "put",
       data: {
         ...body,
@@ -425,7 +378,7 @@ const AuthProvider = (props) => {
     });
 
     var config = {
-      url: `/customers/${value}`,
+      url: `/users/${value}`,
       method: "delete",
       // data: {
       //   ...body,
@@ -654,7 +607,7 @@ const AuthProvider = (props) => {
     }
   };
   return (
-    <AuthContext.Provider
+    <ManagerContext.Provider
       value={{
         state,
         contextHolder,
@@ -671,12 +624,11 @@ const AuthProvider = (props) => {
         handleGetConfirm,
         handleGetConfirm,
         confirm,
-        loadBookingsByCustomerId,
       }}
     >
       {props.children}
-    </AuthContext.Provider>
+    </ManagerContext.Provider>
   );
 };
 
-export { AuthContext, AuthProvider };
+export { ManagerContext, ManagerProvider };

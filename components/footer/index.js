@@ -23,13 +23,17 @@ export default function Footer() {
         ></img>
         <div className="text-3xl flex w-[110px] justify-evenly">
           <div className=" hover:text-cyan-600">
-            <a href="https://www.facebook.com/GDeluxeHotelandResort/ ">
+            <a
+              href="https://www.facebook.com/profile.php?id=100090649232252"
+              target="blank"
+            >
               <FaFacebookSquare />
             </a>
           </div>
           <a
             className=" hover:text-cyan-600"
-            href="https://www.instagram.com/gdeluxe_resort/"
+            href="https://www.instagram.com/zu_nailbar/"
+            target="blank"
           >
             <FaInstagramSquare />
           </a>
@@ -59,42 +63,21 @@ export default function Footer() {
             Захиалга хийх
           </a>
         </div>
-        <div>Хаяг: UFE, Ulaanbaatar, Mongolia</div>
-        <div>Утас: 95802438</div>
-        {/* <ul>
-          <li>Explore</li>
-          <li>Home</li>
-          <li>About Us</li>
-          <li>Services</li>
-          <li>Articles</li>
-          <li>Contact Us</li>
-        </ul>
-        <ul>
-          <li>Utility Pages</li>
-          <li>Style Guide</li>
-          <li>About Us</li>
-          <li>Services</li>
-          <li>Articles</li>
-          <li>Contact Us</li>
-        </ul>
-        <ul>
-          <li>Explore</li>
-          <li>Home</li>
-          <li>About Us</li>
-          <li>Services</li>
-          <li>Articles</li>
-          <li>Contact Us</li>
-        </ul> */}
-        {/* <ul>
-          <li>Explore</li>
-          <li>Home</li>
-          <li>About Us</li>
-          <li>Services</li>
-          <li>Articles</li>
-          <li>Contact Us</li>
-        </ul> */}
+        <div className=".text-center .mt-6">
+          <div>
+            Хаяг: СЭЗИС-н замын урд Орчлон комплекс 3 давхарт, Ulaanbaatar,
+            Mongolia
+          </div>
+          <div className="pt-2">Утас: +976 8608 0708</div>
+        </div>
       </div>
-      <div></div>
+      {/* <div className="text-center mt-6">
+        <div>
+          Хаяг: СЭЗИС-н замын урд Орчлон комплекс 3 давхарт, Ulaanbaatar,
+          Mongolia
+        </div>
+        <div>Утас: +976 8608 0708</div>
+      </div> */}
     </div>
   );
 }

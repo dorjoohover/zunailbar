@@ -3,12 +3,12 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 
 // global state
-import useAuth from "../../../hooks/useAuth";
+import useManager from "../../../hooks/useManager";
 
 // design components
 import MainLayout from "../../../layouts/main";
 import DataDisplayer from "../../../components/displayer";
-import EmployeeSignIn from "../../../components/auth/EmployeeSignIn";
+import AdminSignIn from "../../../components/auth/AdminSignIn";
 
 const render = ({ data, events, tr }) => {
   //   console.log("data", data);
@@ -23,9 +23,9 @@ const render = ({ data, events, tr }) => {
             fontWeight: "500",
           }}
         >
-          Ажилтан нэвтрэх хэсэг
+          Админ нэвтрэх хэсэг
         </h1>
-        <EmployeeSignIn events={events} />
+        <AdminSignIn events={events} />
       </div>
     </div>
   );
@@ -33,7 +33,7 @@ const render = ({ data, events, tr }) => {
 
 function Presentation() {
   const router = useRouter();
-  const auth = useAuth();
+  const manager = useManager();
 
   useEffect(() => {
     // company.loadListAPI();
@@ -41,7 +41,7 @@ function Presentation() {
 
   const handleOnClick = (value) => {
     // console.log("clicked");
-    auth.signIn(value);
+    manager.signIn(value);
     // company.SetLogo(value.logo);
     // auth?.eventFun();
     // router.push("/auth/login");

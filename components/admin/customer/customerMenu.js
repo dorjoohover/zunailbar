@@ -154,7 +154,7 @@ export default function Agenda({ data, events }) {
             })
           }
         >
-          Шинээр хэрэглэгч нэмэх
+          Шинээр үйлчлүүлэгч нэмэх
         </Button>
       </div>
       <Table

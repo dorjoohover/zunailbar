@@ -12,7 +12,6 @@ const SignUp = ({ data, events, tr }) => {
     form.setFieldsValue({
       email: null,
       password: null,
-      route: "/employee",
     });
   }, []);
   const handleFinish = (values) => {
@@ -23,7 +22,6 @@ const SignUp = ({ data, events, tr }) => {
   const defaultValues = {
     email: null,
     password: null,
-    route: "/employee",
   };
   return (
     <Form
@@ -50,9 +48,6 @@ const SignUp = ({ data, events, tr }) => {
         label={<div>Нууц үг</div>}
       >
         <Input.Password type="password" placeholder="Нууц үгээ оруулна уу." />
-      </Form.Item>
-      <Form.Item name="route" className="hidden">
-        <Input />
       </Form.Item>
       <div className="flex">
         <div className="relative right-4 flex mx-6">

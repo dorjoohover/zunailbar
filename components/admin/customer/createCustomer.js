@@ -51,36 +51,36 @@ const App = ({ data, events }) => {
       onFinish={onFinish}
       autoComplete="off"
     >
-      <Form.Item label="status" name="status">
+      {/* <Form.Item label="status" name="status">
         <Select
           // style={{ width: 120 }}
           // onChange={handleChange}
           options={status}
         />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item
         label="firstName"
         name="firstName"
-        rules={[
-          {
-            required: true,
-            message: "Та firstName аа оруулна уу.",
-          },
-        ]}
+        // rules={[
+        //   {
+        //     required: true,
+        //     message: "Та firstName аа оруулна уу.",
+        //   },
+        // ]}
       >
-        <TextArea />
+        <Input />
       </Form.Item>
       <Form.Item
         label="lastName"
         name="lastName"
-        rules={[
-          {
-            required: true,
-            message: "Та lastName аа оруулна уу.",
-          },
-        ]}
+        // rules={[
+        //   {
+        //     required: true,
+        //     message: "Та lastName аа оруулна уу.",
+        //   },
+        // ]}
       >
-        <TextArea rows={""} />
+        <Input rows={""} />
       </Form.Item>
       <Form.Item
         label="email"
@@ -104,7 +104,7 @@ const App = ({ data, events }) => {
           },
         ]}
       >
-        <TextArea rows={""} />
+        <Input rows={""} />
       </Form.Item>
       <Form.Item
         label="password"
@@ -116,7 +116,7 @@ const App = ({ data, events }) => {
           },
         ]}
       >
-        <TextArea rows={""} />
+        <Input rows={""} />
       </Form.Item>
       <Form.Item
         wrapperCol={{

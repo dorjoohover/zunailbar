@@ -26,6 +26,7 @@ const App = ({ data, events }) => {
   const defaultValues = {
     status: "active",
     serviceName: "",
+    image1: "",
     price: "",
   };
   useEffect(() => {
@@ -47,13 +48,13 @@ const App = ({ data, events }) => {
       onFinish={onFinish}
       autoComplete="off"
     >
-      <Form.Item label="status" name="status">
+      {/* <Form.Item label="status" name="status">
         <Select
           // style={{ width: 120 }}
           // onChange={handleChange}
           options={status}
         />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item
         label="serviceName"
         name="serviceName"
@@ -77,6 +78,18 @@ const App = ({ data, events }) => {
         ]}
       >
         <InputNumber rows={""} />
+      </Form.Item>
+      <Form.Item
+        label="image1"
+        name="image1"
+        rules={[
+          {
+            required: true,
+            message: "Та image1 оруулна уу !",
+          },
+        ]}
+      >
+        <Input rows={""} />
       </Form.Item>
       <Form.Item
         wrapperCol={{

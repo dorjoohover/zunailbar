@@ -10,7 +10,7 @@ import useService from "../../hooks/useService";
 import useBooking from "../../hooks/useBooking";
 import useArtist from "../../hooks/useArtist";
 import useTimetable from "../../hooks/useTimetable";
-// import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 // design components
 import MainLayout from "../../layouts/main";
@@ -19,101 +19,99 @@ import Cards from "../../components/card/Card";
 import ServiceForm from "../../components/form/serviceForm";
 
 const render = ({ data, events }) => {
-  // console.log("data services", data);
+  //   console.log("data services", data);
   // console.log("render");
-  const dataDetails = [...data?.service_list];
+  const checkArtistId = (ArtistId) => {
+    var one = "";
+    data?.artist_list.forEach((element) => {
+      if (element?.id === ArtistId) {
+        // userSet.push(userId);
+        one = element?.firstName;
+      }
+    });
+    return one;
+  };
+  const checkServiceId = (ServiceId) => {
+    var one = "";
+    data?.just_service_list.forEach((element) => {
+      if (element?.id === ServiceId) {
+        // userSet.push(userId);
+        one = element?.serviceName;
+      }
+    });
+    return one;
+  };
+
+  const dataDetails = [...data?.bookingList];
   return (
     <div className="min-h-screen min-[350px]:px-12">
       <Head>
-        <title>Үйлчилгээнүүд</title>
+        <title>Захиалгын түүх</title>
       </Head>
       <div className="my-5 .font-bold"></div>
       <div className="grid grid-cols-1 gap-4 min-[1200px]:mx-12">
-        {dataDetails.length > 0 &&
-          dataDetails.map((item, index) => {
-            return (
-              <div key={item.id}>
-                <div className="font-black text-3xl text-center mb-4">
-                  {item.serviceGroupName !== "defaultServices" &&
-                    item.serviceGroupName}
-                </div>
-                <div className="grid place-items-center gap-3 font-Montserrat sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                  {/* <div className="grid grid-flow-col auto-cols-max gap-2"> */}
-                  {item.services.map((service) => (
-                    <div className="w-full">
-                      <Cards
-                        key={index}
-                        data={{
-                          id: service?.id,
-                          // key: index,
-                          image1: service?.image1,
-                          status: service?.status,
-                          serviceName: service?.serviceName,
-                          price: service?.price,
-                        }}
-                        events={events}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        {/* {dataDetails.length > 0 &&
-          dataDetails.map((item, index) => {
-            return (
-              // <a href={`/rooms/${item?.id}`} target="_blank">
-              <Cards
-                key={index}
-                data={{
-                  id: item?.id,
-                  key: index,
-                  status: item?.status,
-                  serviceName: item?.serviceName,
-                  price: item?.price,
-                }}
-                events={{
-                  onClick: events.handleClick,
-                }}
-              />
-              // </a>
-            );
-          })} */}
+        <table
+          className="border-2 text-center w-full text-sm"
+          //   style={{ width: "100%", borderCollapse: "collapse" }}
+        >
+          <thead className="border-2">
+            <tr>
+              <th className="border-2">№</th>
+              <th className="border-2">Артист нэр</th>
+              <th className="border-2">Үйлчилгээний нэр</th>
+              <th className="border-2">Огноо</th>
+              <th className="border-2">Эхлэх цаг</th>
+              <th className="border-2">Дуусах цаг</th>
+              {/* <th>Address</th> */}
+            </tr>
+          </thead>
+          <tbody>
+            {dataDetails.length > 0 &&
+              dataDetails.map((item, index) => {
+                return (
+                  <tr
+                    // className="grid grid-flow-col auto-cols-max gap-4 border-2 p-4"
+                    key={index}
+                  >
+                    <td className="border-2">{index + 1}.</td>
+                    {/* <div>{item.id}</div> */}
+                    <td className="border-2">{checkArtistId(item.artistId)}</td>
+                    <td className="border-2">
+                      {checkServiceId(item.serviceId)}
+                    </td>
+                    <td className="border-2">{item.date}</td>
+                    <td className="border-2">{item.startTime}</td>
+                    <td className="border-2">{item.endTime}</td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
       </div>
-      <Modal
-        title={"Үйлчилгээ авах форм"}
-        centered
-        open={data?.modal?.modalState}
-        onCancel={() => events.handleCloseModal()}
-        width={1000}
-        okButtonProps={{ style: { display: "none" } }}
-        cancelButtonProps={{ style: { display: "none" } }}
-      >
-        <ServiceForm
-          data={data?.modal?.modalData}
-          artist_list={data?.artist_list}
-          timetable_list={data?.timetable_list}
-          artistsByService={data?.artistsByService}
-          events={events}
-        />
-      </Modal>
     </div>
   );
 };
 
 function Presentation() {
   const router = useRouter();
+  const auth = useAuth();
   const service = useService();
   const timetable = useTimetable();
   const booking = useBooking();
   const artist = useArtist();
   const [modal, setModal] = useState({ modalState: false, modalData: "" });
   useEffect(() => {
-    // service.loadAllServices();
     service.loadAllServicesByGroups();
+    service.loadAllServices();
     artist.loadAllArtist();
+    auth.loadBookingsByCustomerId(initialData?.customer?.id);
     // console.log("presentation");
   }, []);
+  if (typeof window !== "undefined") {
+    const detail = localStorage.getItem("beauty_detail");
+    const initialData1 = detail === "undefined" ? null : detail;
+    var initialData = initialData1 === null ? {} : JSON.parse(initialData1);
+  }
 
   const handleOnClick = (serviceId, serviceName, price) => {
     console.log("handleOnClick", serviceId, serviceName, price);
@@ -165,17 +163,19 @@ function Presentation() {
           fontWeight: "500",
         }}
       >
-        Үйлчилгээнүүд
+        Захиалгын түүх
       </h1>
       <DataDisplayer
-        error={service?.state?.message}
-        status={service?.state?.status}
+        error={auth?.state?.message}
+        status={auth?.state?.status}
         data={{
           service_list: service?.state?.list,
+          just_service_list: service?.state?.just_service_list,
           modal: modal,
           artist_list: artist?.state?.list,
           artistsByService: artist?.state?.artistsByService,
           timetable_list: timetable?.state?.list,
+          bookingList: auth.state.bookingsListByCustomerId,
         }}
         render={render}
         // tr={t}

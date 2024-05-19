@@ -8,14 +8,13 @@ export default function Features() {
         {/* 1*/}
         <div className="w-full">
           <img
-            className="w-full"
-            src="https://uploads-ssl.webflow.com/6135e5f06048e4e83fb2c8ab/618f41ba892f5bd8b50b7eaa_feature-image-one.jpg"
+            className="w-full max-h-[290px]"
+            src="./img/manicure-1.jpg"
           ></img>
-          <h2 className="mt-[17px] text-[26px] leading-6">Спа &amp; Бариа</h2>
-          <div className="feature-content">
-            Your wellness goals and the areas of preference, then unwind with a
-            customized massage experience.
-          </div>
+          <h2 className="mt-[17px] text-[26px] leading-6">
+            Маникюр &amp; Педикюр
+          </h2>
+          <div className="feature-content">Мэргэжлийн чадварлаг артистууд</div>
           <a href="#" className="">
             <Button className="bg-transparent w-[150px] h-[57px] text-black text-lg border-2 rounded-none border-gray-500">
               Илүү мэдээлэл
@@ -24,17 +23,13 @@ export default function Features() {
         </div>
         {/* 2 */}
         <div className="w-full">
-          <img
-            className="w-full"
-            src="https://uploads-ssl.webflow.com/6135e5f06048e4e83fb2c8ab/618f41ba7ca5fbc636637c4a_feature-image-three.jpg"
-          ></img>
+          <img className="w-full max-h-[290px]" src="./img/lash-3.jpg"></img>
           <h2 className="mt-[17px] text-[26px] leading-6">
-            Үс &amp; Гоо сайхан
+            {/* Үс &amp; Гоо сайхан
+             */}
+            Хөмсөг засалт
           </h2>
-          <div className="feature-content">
-            Combining skin-type-specific cleansing & toning, exfoliation,
-            deep-pore cleansing extractions customized treatment.
-          </div>
+          <div className="feature-content">Мэргэжлийн чадварлаг артистууд</div>
           <a href="#" className="">
             <Button className="bg-transparent w-[150px] h-[57px] text-black text-lg border-2 rounded-none border-gray-500">
               Илүү мэдээлэл
@@ -43,15 +38,9 @@ export default function Features() {
         </div>
         {/* 3 */}
         <div className="w-full">
-          <img
-            className="w-full"
-            src="https://uploads-ssl.webflow.com/6135e5f06048e4e83fb2c8ab/618f41bad6736d6be7bd40e3_feature-image-two.jpg"
-          ></img>
-          <h2 className="mt-[17px] text-[26px] leading-6">Биеийн эмчилгээ</h2>
-          <div className="feature-content">
-            Offers therapeutic benefits such as relief of muscle tension and
-            increased circulation to the areas worked.
-          </div>
+          <img className="w-full max-h-[290px]" src="./img/wax-1.jpg"></img>
+          <h2 className="mt-[17px] text-[26px] leading-6">Вакс</h2>
+          <div className="feature-content">Мэргэжлийн чадварлаг артистууд</div>
           <a href="#" className="">
             <Button className="bg-transparent w-[150px] h-[57px] text-black text-lg border-2 rounded-none border-gray-500">
               Илүү мэдээлэл

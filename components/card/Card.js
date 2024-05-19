@@ -2,65 +2,50 @@ import React, { useEffect, useState } from "react";
 // import moment from "moment";
 import { Card } from "antd";
 
-const Cards = (props) => {
-  const { data, events } = props;
+const Cards = ({ data, events }) => {
+  // const { data, events } = props;
 
   useEffect(() => {}, []);
   const service_clicked = () => {
     // console.log("service_clicked", data.id);
-    events.onClick(data?.id, data?.serviceName, data?.price);
+    events.handleClick(data?.id, data?.serviceName, data?.price);
+    events.loadArtistByService(data?.id);
   };
   return (
     <Card
-      // onClick={() => events.onClick({ id: data.id, logo: data.logo })}
-      key={data.index}
       onClick={service_clicked}
+      key={data.index}
       hoverable
-      className="w-full .min-h-[150px]  border border-[#0F285F] border-opacity-30 "
+      className="w-full border border-[#0F285F] border-opacity-30 "
       size="small"
       cover={
         <div
-          // className="h-40 overflow-hidden rounded-xl"
-          style={{}}
+          className="min-h-[230px] overflow-hidden rounded-xl"
+          style={{
+            backgroundImage: "url(" + data.image1 + ")",
+            backgroundPosition: "center",
+            objectFit: "cover",
+            // objectFit: "none",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "320px",
+          }}
         />
       }
     >
-      <div className=".min-h-[120px] w-full grid grid-flow-row auto-rows-max">
-        <div>
-          <img
-            className=".max-w-[300px]"
-            src="https://assets-global.website-files.com/6135e5f06048e4e83fb2c8ab/618f792992067f1d8c893d24_service-image-three.jpg"
-          />
+      <div>
+        <div className="mb-5 h-[50px] text-left text-[18px] font-bold">
+          {data?.serviceName}
         </div>
-        <div className="mb-5 h-auto .h-[50px] text-left text-[18px] .font-bold">
-          <div className=".font-bold">
-            Үйлчилгээний төлөв:{" "}
-            <span className="font-bold">{data?.status}</span>
-          </div>
-          <div className=".font-bold">
-            Үйлчилгээний нэр:{" "}
-            <span className="font-bold">{data?.serviceName}</span>
-          </div>
-          <div className=".text-[12px] mt-1">
-            Үнэ: <span className="font-bold">{data?.price}</span>
-          </div>
+        <div className="m-1 flex justify-between text-[12px] xl:text-[16px] ">
+          Үнэ: {data?.price}₮
         </div>
+        {/* <div className="m-1 flex justify-between text-[12px] xl:text-[16px]">
+          {tr("main_date_meeting")}
+          <div className="] font-bold">
+            {data?.date2 && moment(data.date2).format("YYYY-MM-DD")}
+          </div>
+        </div> */}
       </div>
-      {/* <div className="min-h-[120px]">
-        <div className="mb-5 h-auto .h-[50px] text-left text-[18px] .font-bold">
-          <div className=".font-bold">
-            Үйлчэлгээний нэр:{" "}
-            <span className="font-bold">{data?.serviceName}</span>
-          </div>
-          <div className=".font-bold">
-            Үйлчилгээний статус:{" "}
-            <span className="font-bold">{data?.status}</span>
-          </div>
-          <div className=".text-[12px] mt-1">
-            Үнэ: <span className="font-bold">{data?.price}</span>
-          </div>
-        </div>
-      </div> */}
     </Card>
   );
 };

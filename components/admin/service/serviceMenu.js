@@ -5,25 +5,25 @@ import { Table, Button } from "antd";
 export default function Agenda({ data, events }) {
   // console.log(data?.vote)
   // console.log(data?.confirm)
-  // console.log(data)
+  console.log("just_service_list", data);
   const columns = [
     {
       title: "№",
-      width: 10,
+      width: 5,
       dataIndex: "list",
       key: "list",
       // fixed: "left",
     },
-    {
-      title: "status",
-      width: 50,
-      dataIndex: "status",
-      key: "status",
-      // fixed: "left",
-    },
+    // {
+    //   title: "status",
+    //   width: 50,
+    //   dataIndex: "status",
+    //   key: "status",
+    //   // fixed: "left",
+    // },
     {
       title: "serviceName",
-      width: 60,
+      width: 30,
       dataIndex: "serviceName",
       key: "serviceName",
       // fixed: "left",
@@ -32,25 +32,25 @@ export default function Agenda({ data, events }) {
       title: "price",
       dataIndex: "price",
       key: "price",
-      width: 60,
+      width: 10,
     },
     {
-      title: "updatedAt",
-      dataIndex: "updatedAt",
-      key: "updatedAt",
-      width: 60,
+      title: "image",
+      dataIndex: "image",
+      key: "image",
+      width: 30,
     },
     {
       title: "update",
       dataIndex: "update",
       key: "update",
-      width: 60,
+      width: 30,
     },
     {
       title: "delete",
       dataIndex: "delete",
       key: "delete",
-      width: 60,
+      width: 30,
     },
   ];
   // console.log(Maindata)
@@ -68,7 +68,7 @@ export default function Agenda({ data, events }) {
     // router.push("/auth/login");
   };
   let number = 0;
-  data?.serviceList.map((item, index) => {
+  data?.just_service_list.map((item, index) => {
     // menu_titleIds.push({ menu_titleId: item });
     number = number + 1;
     // console.log("index", index);
@@ -78,7 +78,7 @@ export default function Agenda({ data, events }) {
       status: item?.status,
       serviceName: item?.serviceName,
       price: item?.price,
-      updatedAt: item?.updatedAt,
+      image: <img className="max-h-12" src={item?.image1} />,
       delete: (
         <Button
           onClick={() =>
@@ -110,6 +110,7 @@ export default function Agenda({ data, events }) {
                 serviceName: item?.serviceName,
                 price: item?.price,
                 id: item?.id,
+                image1: item?.image1,
               },
             })
           }
@@ -151,7 +152,7 @@ export default function Agenda({ data, events }) {
         pagination={{ pageSize: 30 }}
         columns={columns}
         dataSource={data1}
-        scroll={{ x: 1500, y: 700 }}
+        scroll={{ x: 1000, y: 700 }}
       />
     </div>
   );

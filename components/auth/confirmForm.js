@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { Alert, Button, Form, Input, Select, Modal } from "antd";
 import Link from "next/link";
 
-const SignUp = ({ data, events, tr }) => {
+const SignUp = ({ data, events }) => {
   // const [form] = Form.useForm();
 
   const router = useRouter();

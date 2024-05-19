@@ -12,7 +12,7 @@ export default function Main() {
       <Banner />
       <Features />
       <Aboutus />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Services />
       <Artist />
     </div>

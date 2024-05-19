@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <main className={`min-h-screen`}>
       <Head>
-        <title>Beauty Salon</title>
+        <title>Zu Nailbar Salon</title>
       </Head>
       <Main />
     </main>

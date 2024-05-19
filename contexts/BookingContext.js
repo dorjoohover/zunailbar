@@ -3,7 +3,7 @@ import axios from "../utils/axios";
 import { useRouter } from "next/router";
 import { message } from "antd";
 
-const ServiceContext = createContext();
+const BookingContext = createContext();
 
 const initialState = {
   status: "",
@@ -11,7 +11,6 @@ const initialState = {
   modal: false,
   detail: {},
   list: [],
-  just_service_list: [],
 };
 message.config({
   top: 100,
@@ -21,13 +20,14 @@ message.config({
   prefixCls: "my-message",
   style: "fontSize:20px",
 });
-const ServiceProvider = (props) => {
+const BookingProvider = (props) => {
   const [state, setState] = useState(initialState);
-  const [state1, setState1] = useState(initialState);
   const router = useRouter();
 
   const [messageApi, contextHolder] = message.useMessage();
-
+  const DeleteMess = () => {
+    messageApi.destroy();
+  };
   const LoadingFun = () => {
     var config20 = {
       className: "text-[16px]   ",
@@ -36,16 +36,14 @@ const ServiceProvider = (props) => {
     };
     message.loading(<div className="text-[20px]">message_loading</div>);
   };
-  //
-  //
-  //
-  const DeleteMess = () => {
-    messageApi.destroy();
-  };
-  //
-  //
-  //
-  const loadAllServices = async () => {
+  const createBooking = async (
+    customerId,
+    serviceId,
+    artistId,
+    date,
+    startTime,
+    endTime
+  ) => {
     setState({
       ...state,
       status: "loading",
@@ -53,54 +51,19 @@ const ServiceProvider = (props) => {
     });
 
     var config = {
-      url: "/services",
-      method: "get",
-      data: {},
+      url: "/bookings",
+      method: "post",
+      data: {
+        customerId: customerId,
+        serviceId: serviceId,
+        artistId: artistId,
+        date: date,
+        startTime: startTime,
+        endTime: endTime,
+      },
     };
-
     try {
-      // console.log("config", config);
-      var response = await axios(config);
-      // console.log("response", response);
-      const { data } = response.data;
-      console.log("data", data);
-      setState1({
-        ...state1,
-        status: "success",
-        just_service_list: data,
-        message: "",
-      });
-    } catch (err) {
-      console.log("err", err);
-      if (err?.statusCode === 409) {
-        // router.push("/");
-      }
-
-      setState1({
-        ...state1,
-        status: "error",
-        message: err.message || "Something went wrong!",
-      });
-    }
-  };
-  //
-  //
-  //
-  const loadAllServicesByGroups = async () => {
-    setState({
-      ...state,
-      status: "loading",
-      message: "",
-    });
-
-    var config = {
-      url: "/services/servicesByGroups",
-      method: "get",
-      data: {},
-    };
-
-    try {
-      // console.log("config", config);
+      console.log("config", config);
       var response = await axios(config);
       // console.log("response", response);
       const { data } = response.data;
@@ -108,9 +71,12 @@ const ServiceProvider = (props) => {
       setState({
         ...state,
         status: "success",
-        list: data,
+        // list: data,
         message: "",
       });
+      message.success(
+        <div className="text-[20px]">Та амжилттай захиалга хийлээ.</div>
+      );
     } catch (err) {
       console.log("err", err);
       if (err?.statusCode === 409) {
@@ -122,75 +88,110 @@ const ServiceProvider = (props) => {
         status: "error",
         message: err.message || "Something went wrong!",
       });
+      DeleteMess();
+      message.error(<div className="text-[20px]">{err?.message}</div>);
     }
   };
-  //
-  //
-  //
-  const CreateService = async (value) => {
-    // let body = { value };
-    // console.log("body", body);
+
+  const getAllOrders = async () => {
+    // console.log("worked");
     setState({
       ...state,
       status: "loading",
       message: "",
     });
-    // console.log(body)
 
     var config = {
-      url: "/services",
-      method: "post",
-      data: {
-        ...value,
-      },
+      url: "/bookings",
+      method: "get",
+      data: {},
     };
-    LoadingFun();
+
     try {
       var response = await axios(config);
+      //   console.log("response", response);
       const { data } = response.data;
+      // console.log("data orders", data);
       setState({
         ...state,
         status: "success",
+        list: data,
+        message: "",
       });
-      message.success("Ажилчин амжилттай үүслээ.");
-      // CompanyBydetails(companyId)
-      // console.log('2222')
+      // }
     } catch (err) {
-      console.log(err);
+      console.log("err", err);
+      if (err?.statusCode === 409) {
+        router.push("/");
+      }
+
       setState({
         ...state,
         status: "error",
         message: err.message || "Something went wrong!",
       });
-      if (
-        err?.message == "Your [1] permission has been denied to do this action"
-      ) {
-        message.error("Энэ үйлдлийг хийхэд таны эрх хүрэхгүй байна.", 2);
-      } else message.error(err?.message);
-      DeleteMess();
     }
   };
-  //
-  //
-  //
-  const UpdateService = async ({ serviceName, price, status, id, image1 }) => {
-    // let body = { value };
-    let body = { serviceName, price, status, image1 };
+
+  const getEmployeeOrders = async (employeeId) => {
+    // console.log("worked");
+    setState({
+      ...state,
+      status: "loading",
+      message: "",
+    });
+
+    var config = {
+      url: `/orders/getOrdersByEmployeeId/${employeeId}`,
+      method: "get",
+      data: {},
+    };
+
+    try {
+      var response = await axios(config);
+      //   console.log("response", response);
+      const { data } = response;
+      // console.log("data orders", data);
+      setState({
+        ...state,
+        status: "success",
+        list: data,
+        message: "",
+      });
+      // }
+    } catch (err) {
+      console.log("err", err);
+      if (err?.statusCode === 409) {
+        router.push("/");
+      }
+
+      setState({
+        ...state,
+        status: "error",
+        message: err.message || "Something went wrong!",
+      });
+    }
+  };
+
+  const UpdateOrder = async (value) => {
+    let body = { value };
+    // let body = { ognoo, time };
     // console.log("body", body);
     setState({
       ...state,
       status: "loading",
       message: "",
     });
-    // console.log(body)
+    // console.log(body);
 
     var config = {
-      url: `/services/${id}`,
-      method: "put",
+      url: `/bookings/${value.id}`,
+      method: "post",
       data: {
         ...body,
       },
     };
+    // console.log(config);
     LoadingFun();
     try {
       var response = await axios(config);
@@ -199,7 +200,7 @@ const ServiceProvider = (props) => {
         ...state,
         status: "success",
       });
-      message.success("Ажилчин амжилттай шинэчлэлээ");
+      message.success("Захиалга амжилттай шинэчлэлээ");
       // CompanyBydetails(companyId)
       // console.log('2222')
     } catch (err) {
@@ -217,10 +218,8 @@ const ServiceProvider = (props) => {
       DeleteMess();
     }
   };
-  //
-  //
-  //
-  const DeleteService = async (value) => {
+
+  const DeleteOrder = async (value) => {
     setState({
       ...state,
       status: "loading",
@@ -228,7 +227,7 @@ const ServiceProvider = (props) => {
     });
 
     var config = {
-      url: `/services/${value}`,
+      url: `/orders/${value}`,
       method: "delete",
       // data: {
       //   ...body,
@@ -242,7 +241,7 @@ const ServiceProvider = (props) => {
         ...state,
         status: "success",
       });
-      message.success("Ажилчин амжилттай устлаа");
+      message.success("Захиалга амжилттай устлаа");
       // success();
     } catch (err) {
       console.log(err);
@@ -259,25 +258,21 @@ const ServiceProvider = (props) => {
       DeleteMess();
     }
   };
-  //
-  //
-  //
   return (
-    <ServiceContext.Provider
+    <BookingContext.Provider
       value={{
         state,
-        state1,
         contextHolder,
-        loadAllServices,
-        loadAllServicesByGroups,
-        CreateService,
-        UpdateService,
-        DeleteService,
+        createBooking,
+        getAllOrders,
+        getEmployeeOrders,
+        UpdateOrder,
+        DeleteOrder,
       }}
     >
       {props.children}
-    </ServiceContext.Provider>
+    </BookingContext.Provider>
   );
 };
 
-export { ServiceContext, ServiceProvider };
+export { BookingContext, BookingProvider };

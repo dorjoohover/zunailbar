@@ -25,6 +25,7 @@ const App = ({ data, events }) => {
     status: data?.form?.data?.status,
     serviceName: data?.form?.data?.serviceName,
     price: data?.form?.data?.price,
+    image1: data?.form?.data?.image1,
   };
 
   useEffect(() => {
@@ -50,13 +51,13 @@ const App = ({ data, events }) => {
       <Form.Item hidden name="id">
         <InputNumber />
       </Form.Item>
-      <Form.Item label="status" name="status">
+      {/* <Form.Item label="status" name="status">
         <Select
           // style={{ width: 120 }}
           // onChange={handleChange}
           options={status}
         />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item
         label="serviceName"
         name="serviceName"
@@ -80,6 +81,18 @@ const App = ({ data, events }) => {
         ]}
       >
         <InputNumber rows={""} />
+      </Form.Item>
+      <Form.Item
+        label="image1"
+        name="image1"
+        rules={[
+          {
+            required: true,
+            message: "Та price оруулна уу !",
+          },
+        ]}
+      >
+        <Input rows={""} />
       </Form.Item>
       <Form.Item
         wrapperCol={{

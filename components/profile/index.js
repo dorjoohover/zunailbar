@@ -9,13 +9,13 @@ const ProfileForm = ({ data, handleOnClick }) => {
 
   useEffect(() => {
     form.setFieldsValue({
-      id: data?.user?.id,
-      status: data.user?.status,
-      firstName: data?.user?.firstName,
-      lastName: data?.user?.lastName,
-      email: data?.user?.email,
-      phone: data?.user?.phone,
-      password: data?.user?.password,
+      id: data?.customer?.id,
+      status: data.customer?.status,
+      firstName: data?.customer?.firstName,
+      lastName: data?.customer?.lastName,
+      email: data?.customer?.email,
+      phone: data?.customer?.phone,
+      password: data?.customer?.password,
     });
   }, []);
   const handleFinish = (values) => {
@@ -24,13 +24,13 @@ const ProfileForm = ({ data, handleOnClick }) => {
   };
 
   const defaultValues = {
-    id: data?.user?.id,
-    status: data?.user?.status,
-    firstName: data?.user?.firstName,
-    lastName: data?.user?.lastName,
-    email: data?.user?.email,
-    phone: data?.user?.phone,
-    password: data?.user?.password,
+    id: data?.customer?.id,
+    status: data?.customer?.status,
+    firstName: data?.customer?.firstName,
+    lastName: data?.customer?.lastName,
+    email: data?.customer?.email,
+    phone: data?.customer?.phone,
+    password: data?.customer?.password,
   };
   return (
     <Form

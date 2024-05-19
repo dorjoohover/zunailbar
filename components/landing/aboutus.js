@@ -5,13 +5,11 @@ export default function Aboutus() {
   return (
     <div className="grid sm:grid-cols-2 gap-6 px-5 sm:px-[40px] py-12 bg-[#ebf3f5]">
       <div className="grid grid-flow-row auto-rows-auto">
-        <h1 className="text-[15px] text-gray-500">TAKE YOUR CARE</h1>
+        <h1 className="text-[15px] text-gray-500">Тав тухтай орчин</h1>
         <h1 className="text-[45px]">Гоо сайхан таны тав тухаас эхэлдэг!</h1>
         <div>
-          Designed to allow you to unwind and feel confident that you’re in
-          good, caring hands. Our first priority is cleanliness. We have a
-          full-time staff whose job is to ensure that the environment at
-          Beautyness remains.
+          Zu Nailbar Салон 🌸Маникюр 🌸Педикюр 🌸Вакс 🌸Хөмсөг ⏰ 10:00-21:00 ☎
+          86080708
         </div>
         <div className="grid grid-cols-3 gap-4 mt-6">
           <div
@@ -59,8 +57,8 @@ export default function Aboutus() {
       <div className="">
         <div>
           <img
-            className=".z-[10]"
-            src="https://assets-global.website-files.com/6135e5f06048e4e83fb2c8ab/618f48751328985dc398bddc_about-girl-image.jpg"
+            className=".z-[10] w-full max-h-[500px]"
+            src="./img/manicure-5.jpg"
           />
           {/* <img
             className="z-[30]"

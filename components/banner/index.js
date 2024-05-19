@@ -12,7 +12,7 @@ export default function Banner() {
               className="px-2"
               src="https://uploads-ssl.webflow.com/6135e5f06048e4e83fb2c8ab/618e5bf1761484360c0f6e7e_hero-new-update.svg"
             ></img>
-            <div className="">Welcome to ZuNailbar Salon!!!</div>
+            <div className="">ZuNailbar Salon</div>
           </div>
           <h1 className="my-[5px] text-[53px] text-[#141414]">
             Гоо сайхан бол хүч чадвар юм.
@@ -34,10 +34,12 @@ export default function Banner() {
           className="hero-image-wrap"
         >
           <img
-            src="https://uploads-ssl.webflow.com/6135e5f06048e4e83fb2c8ab/618e5d79639af90a181f0c4c_hero-area-women.jpg"
+            // src="https://uploads-ssl.webflow.com/6135e5f06048e4e83fb2c8ab/618e5d79639af90a181f0c4c_hero-area-women.jpg"
+            src="./img/manicure-4.jpg"
             loading="lazy"
-            sizes="(max-width: 479px) 100vw, (max-width: 767px) 71vw, 550px"
-            srcSet="https://uploads-ssl.webflow.com/6135e5f06048e4e83fb2c8ab/618e5d79639af90a181f0c4c_hero-area-women-p-500.jpeg 500w, https://uploads-ssl.webflow.com/6135e5f06048e4e83fb2c8ab/618e5d79639af90a181f0c4c_hero-area-women.jpg 550w"
+            sizes="(max-width: 479px) 100vw, (max-width: 767px) 71vw, 500px"
+            // srcSet="https://uploads-ssl.webflow.com/6135e5f06048e4e83fb2c8ab/618e5d79639af90a181f0c4c_hero-area-women-p-500.jpeg 500w, https://uploads-ssl.webflow.com/6135e5f06048e4e83fb2c8ab/618e5d79639af90a181f0c4c_hero-area-women.jpg 550w"
+            srcSet="./img/manicure-4.jpg 450w, ./img/manicure-4.jpg 500w"
             alt="Hero Girl Image"
             className="hero-image"
           ></img>

@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   FaFacebookSquare,
   FaInstagramSquare,
@@ -5,7 +6,7 @@ import {
   GiHamburgerMenu,
   FaTwitterSquare,
 } from "react-icons/fa";
-import React, { useState, useEffect } from "react";
+import { Icon } from "@iconify/react";
 import { Button } from "antd";
 import axios from "../../utils/axios";
 
@@ -37,16 +38,22 @@ const TopBar = () => {
   const checkAuth = () => {
     if (state) {
       return (
-        <div className="ml-2 mt-2">
+        <div className="grid grid-flow-col auto-cols-max gap-4">
+          <a
+            className="mt-2 ml-6 font-extrabold hover:text-cyan-600"
+            href="/customer-bookings"
+          >
+            Захиалгын түүх
+          </a>
           <a className="hover:text-cyan-600" href="/profile">
-            PROFILE
+            <Icon icon="iconoir:profile-circle" width="40px" height="40px" />
           </a>
           <a
             href="/auth/sign-in"
             className="text-red-400 ml-2 bg-red-100 rounded-3xl p-2  hover:text-red-600"
             onClick={logout}
           >
-            LOG OUT
+            Гарах
           </a>
         </div>
       );
@@ -65,13 +72,17 @@ const TopBar = () => {
         </a>
         <div className="text-3xl flex w-[110px] justify-evenly">
           <div className=" hover:text-cyan-600">
-            <a href="https://www.facebook.com/GDeluxeHotelandResort/ ">
+            <a
+              href="https://www.facebook.com/profile.php?id=100090649232252"
+              target="blank"
+            >
               <FaFacebookSquare />
             </a>
           </div>
           <a
             className=" hover:text-cyan-600"
-            href="https://www.instagram.com/gdeluxe_resort/"
+            href="https://www.instagram.com/zu_nailbar/"
+            target="blank"
           >
             <FaInstagramSquare />
           </a>
@@ -89,18 +100,25 @@ const TopBar = () => {
         </a>
         <a href="/about" className="mr-3 hover:text-cyan-600  mt-2">
           Бидний тухай{" "}
+        </a>{" "}
+        <a href="#footer" className="mr-3 hover:text-cyan-600 mt-2">
+          Холбоо барих{" "}
         </a>
         <a href="/services" className="mr-3 hover:text-cyan-600  mt-2">
           Үйлчилгээ{" "}
         </a>
-        <a href="#footer" className="mr-3 hover:text-cyan-600 mt-2">
-          Холбоо барих{" "}
-        </a>
-        <a href="/auth/sign-in" className="">
+        {state === null ? (
+          <a href="/auth/sign-in" className="">
+            <Button className="bg-[#5c8692] w-[230px] min-h-[40px] text-white text-[16px] font-semibold border-2 rounded-none border-[#5c8692]">
+              Нэвтрэх
+            </Button>
+          </a>
+        ) : null}
+        {/* <a href="/auth/sign-in" className="">
           <Button className="bg-[#5c8692] .w-[230px] min-h-[40px] text-white text-[16px] font-semibold border-2 rounded-none border-[#5c8692]">
-            Захиалга хийх
+            Нэвтрэх
           </Button>
-        </a>
+        </a> */}
         {checkAuth()}
       </div>
       <button

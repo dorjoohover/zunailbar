@@ -15,11 +15,11 @@ import MainLayout from "../../layouts/main";
 import DataDisplayer from "../../components/displayer";
 import { Table, Button, Row, Col, Modal, Tabs, message } from "antd";
 // USER
-import CustomerMenu from "../../components/admin/customer/customerMenu";
+import UserMenu from "../../components/admin/customer/customerMenu";
 import CreateUser from "../../components/admin/customer/createCustomer";
 import UpdateUser from "../../components/admin/customer/updateCustomer";
 // EMPLOYEE
-import ArtistMenu from "../../components/admin/artist/artistMenu";
+import EmployeeMenu from "../../components/admin/artist/artistMenu";
 import CreateEmployee from "../../components/admin/artist/createArtist";
 import UpdateEmployee from "../../components/admin/artist/updateArtist";
 // SERVICE
@@ -41,12 +41,12 @@ const render = ({ data, events, tr }) => {
     {
       id: 1,
       title: "Үйлчлүүлэгч",
-      children: <CustomerMenu data={data} events={events} />,
+      children: <UserMenu data={data} events={events} />,
     },
     {
       id: 2,
       title: "Ажилчин",
-      children: <ArtistMenu data={data} events={events} />,
+      children: <EmployeeMenu data={data} events={events} />,
     },
     {
       id: 3,
@@ -123,16 +123,15 @@ function Presentation() {
       await user.getAllUsers();
       await employee.loadAllArtist();
       await service.loadAllServices();
-      await service.loadAllServicesByGroups();
       await order.getAllOrders();
-      // const dateRange = {
-      //   startDate: "2023/01/01",
-      //   endDate: "2023/12/31",
-      // };
-      // await report.getTotalIncome(dateRange);
+      const dateRange = {
+        startDate: "2023/01/01",
+        endDate: "2023/12/31",
+      };
+      await report.getTotalIncome(dateRange);
       // await report.getEmployeeIncome();
       // await report.getServiceIncome();
-      // await report.getAttendance();
+      await report.getAttendance();
     };
     // if (!localStorage.getItem("accessToken")) {
     //   router.push("/");
@@ -144,8 +143,8 @@ function Presentation() {
     var userDetail = initialData1 === null ? {} : JSON.parse(initialData1);
     // console.log("beauty_detail", userDetail);
     if (
-      userDetail?.manager?.status !== "0" &&
-      userDetail?.manager?.status !== "1"
+      userDetail?.artist?.status !== "0" &&
+      userDetail?.artist?.status !== "1"
     ) {
       router.push("/");
       message.error("Та админ эрхээр нэвтэрч орно уу!");
@@ -179,7 +178,7 @@ function Presentation() {
     // console.log("data", data?.form?.data);
     // console.log(data?.form?.data?.type)
     switch (type) {
-      // CUSTOMER
+      // USER
       case "createUserForm":
         return <CreateUser data={data} events={events} />;
       case "updateUserForm":
@@ -201,7 +200,7 @@ function Presentation() {
             </div>
           </div>
         );
-      // ARTIST
+      // EMPLOYEE
       case "createEmployeeForm":
         return <CreateEmployee data={data} events={events} />;
       case "updateEmployeeForm":
@@ -288,7 +287,6 @@ function Presentation() {
     });
     user.getAllUsers();
   };
-
   const handleUpdateUser = async (value) => {
     await user.UpdateUser(value);
     setMainForm({
@@ -296,7 +294,6 @@ function Presentation() {
     });
     user.getAllUsers();
   };
-
   const handleDeleteUser = async (value) => {
     await user.DeleteUser(value);
     setMainForm({
@@ -345,7 +342,11 @@ function Presentation() {
     order.getAllOrders();
   };
   const handleUpdateOrder = async (value) => {
-    await order.UpdateOrder(value);
+    await order.UpdateOrder(
+      value?.id,
+      value?.ognoo.format("YYYY/MM/DD"),
+      value?.time.format("HH:00")
+    );
     setMainForm({
       visible: false,
     });
@@ -391,10 +392,6 @@ function Presentation() {
   const getServiceIncome = async (value) => {
     await report.getServiceIncome(value);
   };
-  // console.log(
-  //   "service?.state?.just_service_list",
-  //   service?.state?.just_service_list
-  // );
   return (
     <React.Fragment>
       <h1
@@ -413,14 +410,13 @@ function Presentation() {
       {report?.contextHolder}
       <DataDisplayer
         // error={user?.state?.message}
-        status={service?.state?.status}
+        status={"success"}
         // status={user?.state?.status}
         data={{
           userList: user?.state?.list,
           orderList: order?.state?.list,
           employeeList: employee?.state?.list,
           serviceList: service?.state?.list,
-          just_service_list: service?.state1?.just_service_list,
           reportList: report?.state,
           orlogo: report?.state2,
           form: mainForm,

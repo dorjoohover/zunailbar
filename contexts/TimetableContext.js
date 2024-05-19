@@ -3,7 +3,7 @@ import axios from "../utils/axios";
 import { useRouter } from "next/router";
 import { message } from "antd";
 
-const OrderContext = createContext();
+const TimetableContext = createContext();
 
 const initialState = {
   status: "",
@@ -20,14 +20,12 @@ message.config({
   prefixCls: "my-message",
   style: "fontSize:20px",
 });
-const OrderProvider = (props) => {
+const TimetableProvider = (props) => {
   const [state, setState] = useState(initialState);
   const router = useRouter();
 
   const [messageApi, contextHolder] = message.useMessage();
-  const DeleteMess = () => {
-    messageApi.destroy();
-  };
+
   const LoadingFun = () => {
     var config20 = {
       className: "text-[16px]   ",
@@ -36,7 +34,24 @@ const OrderProvider = (props) => {
     };
     message.loading(<div className="text-[20px]">message_loading</div>);
   };
-  const createOrder = async (userId, serviceId, employeeId, ognoo, time) => {
+  //
+  //
+  //
+  const DeleteMess = () => {
+    messageApi.destroy();
+  };
+  const clearTimetable = () => {
+    setState({
+      ...state,
+      status: "success",
+      list: null,
+      message: "",
+    });
+  };
+  //
+  //
+  //
+  const getArtistTimetableById = async (value) => {
     setState({
       ...state,
       status: "loading",
@@ -44,31 +59,60 @@ const OrderProvider = (props) => {
     });
 
     var config = {
-      url: "/orders",
-      method: "post",
-      data: {
-        userId: userId,
-        serviceId: serviceId,
-        employeeId: employeeId,
-        ognoo: ognoo,
-        time: time,
-      },
+      url: `/artist_timetables/${value}`,
+      method: "get",
+      data: {},
     };
+
     try {
-      console.log("config", config);
+      // console.log("config", config);
       var response = await axios(config);
       // console.log("response", response);
       const { data } = response.data;
-      // console.log("data", data);
+      console.log("data", data);
       setState({
         ...state,
         status: "success",
-        // list: data,
+        list: data,
         message: "",
       });
-      message.success(
-        <div className="text-[20px]">Та амжилттай захиалга хийлээ.</div>
-      );
+    } catch (err) {
+      console.log("err", err);
+      setState({
+        ...state,
+        status: "error",
+        message: err.message || "Something went wrong!",
+      });
+    }
+  };
+  //
+  //
+  //
+  const loadAllServicesByGroups = async () => {
+    setState({
+      ...state,
+      status: "loading",
+      message: "",
+    });
+
+    var config = {
+      url: "/services/servicesByGroups",
+      method: "get",
+      data: {},
+    };
+
+    try {
+      // console.log("config", config);
+      var response = await axios(config);
+      // console.log("response", response);
+      const { data } = response.data;
+      console.log("data", data);
+      setState({
+        ...state,
+        status: "success",
+        list: data,
+        message: "",
+      });
     } catch (err) {
       console.log("err", err);
       if (err?.statusCode === 409) {
@@ -80,110 +124,28 @@ const OrderProvider = (props) => {
         status: "error",
         message: err.message || "Something went wrong!",
       });
-      DeleteMess();
-      message.error(<div className="text-[20px]">{err?.message}</div>);
     }
   };
-
-  const getAllOrders = async () => {
-    // console.log("worked");
-    setState({
-      ...state,
-      status: "loading",
-      message: "",
-    });
-
-    var config = {
-      url: "/orders",
-      method: "get",
-      data: {},
-    };
-
-    try {
-      var response = await axios(config);
-      //   console.log("response", response);
-      const { data } = response;
-      // console.log("data orders", data);
-      setState({
-        ...state,
-        status: "success",
-        list: data,
-        message: "",
-      });
-      // }
-    } catch (err) {
-      console.log("err", err);
-      if (err?.statusCode === 409) {
-        router.push("/");
-      }
-
-      setState({
-        ...state,
-        status: "error",
-        message: err.message || "Something went wrong!",
-      });
-    }
-  };
-
-  const getEmployeeOrders = async (employeeId) => {
-    // console.log("worked");
-    setState({
-      ...state,
-      status: "loading",
-      message: "",
-    });
-
-    var config = {
-      url: `/orders/getOrdersByEmployeeId/${employeeId}`,
-      method: "get",
-      data: {},
-    };
-
-    try {
-      var response = await axios(config);
-      //   console.log("response", response);
-      const { data } = response;
-      // console.log("data orders", data);
-      setState({
-        ...state,
-        status: "success",
-        list: data,
-        message: "",
-      });
-      // }
-    } catch (err) {
-      console.log("err", err);
-      if (err?.statusCode === 409) {
-        router.push("/");
-      }
-
-      setState({
-        ...state,
-        status: "error",
-        message: err.message || "Something went wrong!",
-      });
-    }
-  };
-
-  const UpdateOrder = async (id, ognoo, time) => {
+  //
+  //
+  //
+  const CreateService = async (value) => {
     // let body = { value };
-    let body = { ognoo, time };
     // console.log("body", body);
     setState({
       ...state,
       status: "loading",
       message: "",
     });
-    // console.log(body);
+    // console.log(body)
 
     var config = {
-      url: `/orders/${id}`,
-      method: "put",
+      url: "/services",
+      method: "post",
       data: {
-        ...body,
+        ...value,
       },
     };
-    // console.log(config);
     LoadingFun();
     try {
       var response = await axios(config);
@@ -192,7 +154,7 @@ const OrderProvider = (props) => {
         ...state,
         status: "success",
       });
-      message.success("Захиалга амжилттай шинэчлэлээ");
+      message.success("Ажилчин амжилттай үүслээ.");
       // CompanyBydetails(companyId)
       // console.log('2222')
     } catch (err) {
@@ -210,8 +172,57 @@ const OrderProvider = (props) => {
       DeleteMess();
     }
   };
+  //
+  //
+  //
+  const UpdateService = async ({ serviceName, price, status, id }) => {
+    // let body = { value };
+    let body = { serviceName, price, status };
+    // console.log("body", body);
+    setState({
+      ...state,
+      status: "loading",
+      message: "",
+    });
+    // console.log(body)
 
-  const DeleteOrder = async (value) => {
+    var config = {
+      url: `/services/${id}`,
+      method: "put",
+      data: {
+        ...body,
+      },
+    };
+    LoadingFun();
+    try {
+      var response = await axios(config);
+      const { data } = response.data;
+      setState({
+        ...state,
+        status: "success",
+      });
+      message.success("Ажилчин амжилттай шинэчлэлээ");
+      // CompanyBydetails(companyId)
+      // console.log('2222')
+    } catch (err) {
+      console.log(err);
+      setState({
+        ...state,
+        status: "error",
+        message: err.message || "Something went wrong!",
+      });
+      if (
+        err?.message == "Your [1] permission has been denied to do this action"
+      ) {
+        message.error("Энэ үйлдлийг хийхэд таны эрх хүрэхгүй байна.", 2);
+      } else message.error(err?.message);
+      DeleteMess();
+    }
+  };
+  //
+  //
+  //
+  const DeleteService = async (value) => {
     setState({
       ...state,
       status: "loading",
@@ -219,7 +230,7 @@ const OrderProvider = (props) => {
     });
 
     var config = {
-      url: `/orders/${value}`,
+      url: `/services/${value}`,
       method: "delete",
       // data: {
       //   ...body,
@@ -233,7 +244,7 @@ const OrderProvider = (props) => {
         ...state,
         status: "success",
       });
-      message.success("Захиалга амжилттай устлаа");
+      message.success("Ажилчин амжилттай устлаа");
       // success();
     } catch (err) {
       console.log(err);
@@ -250,21 +261,25 @@ const OrderProvider = (props) => {
       DeleteMess();
     }
   };
+  //
+  //
+  //
   return (
-    <OrderContext.Provider
+    <TimetableContext.Provider
       value={{
         state,
         contextHolder,
-        createOrder,
-        getAllOrders,
-        getEmployeeOrders,
-        UpdateOrder,
-        DeleteOrder,
+        getArtistTimetableById,
+        loadAllServicesByGroups,
+        CreateService,
+        UpdateService,
+        DeleteService,
+        clearTimetable,
       }}
     >
       {props.children}
-    </OrderContext.Provider>
+    </TimetableContext.Provider>
   );
 };
 
-export { OrderContext, OrderProvider };
+export { TimetableContext, TimetableProvider };

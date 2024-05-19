@@ -2,8 +2,9 @@ import React, { createContext, useState } from "react";
 import axios from "../utils/axios";
 import { useRouter } from "next/router";
 import { message } from "antd";
+import { isValidToken, setSession } from "../utils/jwt.js";
 
-const EmployeeContext = createContext();
+const ArtistContext = createContext();
 
 const initialState = {
   status: "",
@@ -11,6 +12,7 @@ const initialState = {
   modal: false,
   detail: {},
   list: [],
+  artistsByService: [],
 };
 
 message.config({
@@ -22,7 +24,7 @@ message.config({
   style: "fontSize:20px",
 });
 
-const EmployeeProvider = (props) => {
+const ArtistProvider = (props) => {
   const [state, setState] = useState(initialState);
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
@@ -39,7 +41,74 @@ const EmployeeProvider = (props) => {
   const DeleteMess = () => {
     messageApi.destroy();
   };
-  const loadAllEmployees = async () => {
+  //
+  //
+  //
+  const signIn = async ({ email, password, route }) => {
+    // console.log(email, password);
+    setState({
+      ...state,
+      status: "loading",
+      message: "loading",
+    });
+
+    var config = {
+      url: `/artists/login`,
+      method: "post",
+      data: {
+        email: email,
+        password: password,
+      },
+    };
+    LoadingFun();
+    try {
+      const response = await axios(config);
+      const { data, accessToken } = response?.data;
+      var detail = JSON.stringify(data);
+      // console.log(first)
+      var auth_detail = {
+        detail: data,
+        token: accessToken,
+        isAuthenticated: isValidToken(accessToken),
+      };
+      // console.log(auth_detail)
+      localStorage.setItem("beauty_detail", detail);
+
+      setSession(accessToken);
+      setState({
+        ...state,
+        status: "success",
+        ...auth_detail,
+      });
+      message.success(
+        <div className="text-[20px]">Та амжилттай нэвтэрлээ</div>
+      );
+      router.push("/artist");
+      //   DeleteMess();
+    } catch (err) {
+      console.log("err", err);
+      if (err?.message === "customer_confirm_error") {
+        setState({
+          ...state,
+          status: "error",
+        });
+        DeleteMess();
+      } else {
+        console.log("else");
+        setState({
+          ...state,
+          status: "error",
+          message: err?.message,
+        });
+        DeleteMess();
+        message.error(<div className="text-[20px]">{err?.message}</div>);
+      }
+    }
+  };
+  //
+  //
+  //
+  const loadAllArtist = async () => {
     setState({
       ...state,
       status: "loading",
@@ -78,7 +147,46 @@ const EmployeeProvider = (props) => {
     }
   };
 
-  const CreateEmployees = async (value) => {
+  const loadArtistByService = async (serviceId) => {
+    setState({
+      ...state,
+      status: "loading",
+      message: "",
+    });
+
+    var config = {
+      url: `/artist_services/${serviceId}`,
+      method: "get",
+      data: {},
+    };
+
+    try {
+      // console.log("config", config);
+      var response = await axios(config);
+      // console.log("response", response);
+      const { data } = response.data;
+      console.log("data", data);
+      setState({
+        ...state,
+        status: "success",
+        artistsByService: data,
+        message: "",
+      });
+    } catch (err) {
+      console.log("err", err);
+      if (err?.statusCode === 409) {
+        // router.push("/");
+      }
+
+      setState({
+        ...state,
+        status: "error",
+        message: err.message || "Something went wrong!",
+      });
+    }
+  };
+
+  const CreateArtist = async (value) => {
     // let body = { value };
     // console.log("body", body);
     setState({
@@ -121,7 +229,7 @@ const EmployeeProvider = (props) => {
       DeleteMess();
     }
   };
-  const UpdateEmployees = async ({
+  const UpdateArtist = async ({
     email,
     firstName,
     lastName,
@@ -174,7 +282,7 @@ const EmployeeProvider = (props) => {
     }
   };
 
-  const DeleteEmployees = async (value) => {
+  const DeleteArtist = async (value) => {
     setState({
       ...state,
       status: "loading",
@@ -214,19 +322,21 @@ const EmployeeProvider = (props) => {
     }
   };
   return (
-    <EmployeeContext.Provider
+    <ArtistContext.Provider
       value={{
         state,
         contextHolder,
-        loadAllEmployees,
-        CreateEmployees,
-        UpdateEmployees,
-        DeleteEmployees,
+        signIn,
+        loadAllArtist,
+        loadArtistByService,
+        CreateArtist,
+        UpdateArtist,
+        DeleteArtist,
       }}
     >
       {props.children}
-    </EmployeeContext.Provider>
+    </ArtistContext.Provider>
   );
 };
 
-export { EmployeeContext, EmployeeProvider };
+export { ArtistContext, ArtistProvider };

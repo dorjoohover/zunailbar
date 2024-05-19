@@ -12,7 +12,7 @@ export default function Document() {
         <link
           rel="icon"
           // href=""
-          href="./img/zunailbar_logo.jpg"
+          href="http://localhost:3000/img/zunailbar_logo.jpg"
         />
       </Head>
       <body>

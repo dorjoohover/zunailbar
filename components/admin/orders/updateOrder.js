@@ -6,53 +6,88 @@ import {
   TimePicker,
   Select,
   InputNumber,
+  Input,
+  Checkbox,
 } from "antd";
 import moment from "moment";
-const serviceForm = ({ data, events }) => {
+
+const UpdateServiceForm = ({ data, events }) => {
+  // console.log("data?.serviceList", data?.serviceList);
+  let additional_services_list = [];
+  let additional_services_list1 = [];
+  // var additional_services_list = new Map();
+  data?.serviceList.forEach(async (serviceGroup, index) => {
+    serviceGroup?.services.forEach(async (service, index) => {
+      if (
+        service?.additional_services !== null &&
+        service?.additional_services.length > 0
+      ) {
+        service.additional_services.forEach(
+          async (additional_service, index) => {
+            additional_services_list.push(additional_service);
+            additional_services_list1.push({
+              value: additional_service.id,
+              label: additional_service.additional_serviceName,
+            });
+            // additional_services_list.add({
+            //   serviceId: data?.form?.data?.item?.serviceId,
+            //   additional_service: additional_service,
+            // });
+          }
+        );
+      }
+    });
+  });
+  // console.log("additional_services123", additional_services_list);
   const [form] = Form.useForm();
+
   const onFinish = (values) => {
-    // console.log("values update", values);
+    console.log("onFinish", values);
+    // Ensure the date and time values are in the correct format
+    values.date = values.date.format("YYYY-MM-DD");
+    values.startTime = values.startTime.format("HH:00:00");
+    values.endTime = values.endTime.format("HH:00:00");
+
     events.handleUpdateOrder(values);
     events.handleCancel();
   };
+
   useEffect(() => {
+    var formData = data?.form?.data?.item;
+    console.log(data.serviceList);
     form.setFieldsValue({
-      id: data?.form?.data?.id,
-      ognoo: "",
-      time: "",
+      id: formData?.id,
+      artistId: formData?.artistId,
+      customerId: formData?.customerId,
+      serviceId: formData?.serviceId,
+      date: formData?.date ? moment(formData?.date, "YYYY-MM-DD") : null,
+      startTime: formData?.startTime
+        ? moment(formData?.startTime, "HH:mm")
+        : null,
+      endTime: formData?.endTime ? moment(formData?.endTime, "HH:mm") : null,
     });
-  }, []);
+  }, [data]);
 
-  const dateFormat = "YYYY/MM/DD";
-  const defaultTime = moment().hour(0).minute(0);
-
-  // const employeeList = [];
-  // data?.employeeList.map((item, index) => {
-  //   employeeList.push({ value: item?.id, label: item?.firstName });
-  // });
-  // const serviceList = [];
-  // data?.serviceList.map((item, index) => {
-  //   serviceList.push({ value: item?.id, label: item?.serviceName });
-  // });
-  // const userList = [];
-  // data?.userList.map((item, index) => {
-  //   userList.push({ value: item?.id, label: item?.email });
-  // });
+  const [checkedList, setCheckedList] = useState([]);
+  // const [checkAll, setCheckAll] = useState(false);
+  const onChange = (list) => {
+    setCheckedList(list);
+    // setCheckAll(list.length === additional_services_list1.length);
+  };
   return (
     <div>
       <Form
         layout="vertical"
         form={form}
         initialValues={{}}
-        // onValuesChange={events.onHandleChange}
         onFinish={onFinish}
       >
-        <Form.Item hidden name="id">
+        <Form.Item label="bookingId" name="id">
           <InputNumber />
         </Form.Item>
         <Form.Item
           label="Огноо нэр сонгох"
-          name="ognoo"
+          name="date"
           rules={[
             {
               required: true,
@@ -60,34 +95,74 @@ const serviceForm = ({ data, events }) => {
             },
           ]}
         >
-          <DatePicker
-            format={dateFormat}
-            // defaultValue={moment(data?.form?.data?.date)}
-          />
+          <DatePicker format="YYYY-MM-DD" />
         </Form.Item>
         <Form.Item
-          label="Цаг сонгох"
-          name="time"
+          label="Эхлэх цаг сонгох"
+          name="startTime"
           rules={[
             {
               required: true,
-              message: "Please select a time!",
+              message: "Please select a start time!",
             },
           ]}
         >
-          <TimePicker
-            className="timepicker-background"
-            format="HH"
-            // defaultValue={moment(data?.form?.data?.time)}
+          <TimePicker format="HH" />
+        </Form.Item>
+        <Form.Item
+          label="Дуусах цаг сонгох"
+          name="endTime"
+          rules={[
+            {
+              required: true,
+              message: "Please select an end time!",
+            },
+          ]}
+        >
+          <TimePicker format="HH" />
+        </Form.Item>
+        <Form.Item name="artistId" label="artistId">
+          <InputNumber />
+        </Form.Item>
+        <Form.Item name="customerId" label="customerId">
+          <InputNumber />
+        </Form.Item>
+        <Form.Item name="serviceId" label="serviceId">
+          <InputNumber />
+        </Form.Item>
+        <span className=".mb-6 font-bold text-lg">Нэмэлт үйлчилгээнүүд:</span>
+        <Form.Item name="additional_services">
+          <Checkbox.Group
+            options={additional_services_list1}
+            value={checkedList}
+            onChange={onChange}
           />
         </Form.Item>
+        {/* <span className=".mb-6 font-bold text-lg">Нэмэлт үйлчилгээнүүд:</span>
+        <div className="mt-4 grid grid-flow-col">
+          {additional_services_list.map((item, index) => {
+            return (
+              <div
+                className="grid grid-flow-col auto-cols-max border"
+                key={index}
+              >
+                <Form.Item
+                  name={`additional_serviceId-${item.id}`}
+                >
+                  <Checkbox>{item.additional_serviceName}</Checkbox>
+                </Form.Item>
+              </div>
+            );
+          })}
+        </div> */}
         <Form.Item>
           <Button className="bg-[#0F285F]" type="primary" htmlType="submit">
-            submit
+            Submit
           </Button>
         </Form.Item>
       </Form>
     </div>
   );
 };
-export default serviceForm;
+
+export default UpdateServiceForm;

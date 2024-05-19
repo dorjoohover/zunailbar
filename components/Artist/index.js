@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button, Card } from "antd";
-import useEmployee from "../../hooks/useEmployee";
+import useArtist from "../../hooks/useArtist";
 
 export default function Artist() {
-  const employee = useEmployee();
+  const artist = useArtist();
   useEffect(() => {
-    employee.loadAllEmployees();
+    artist.loadAllArtist();
   }, []);
   const cardStyle = {
     padding: 0, // Set padding to 0 to remove the default padding
@@ -19,8 +19,8 @@ export default function Artist() {
       </div>
       <div>
         <div className="grid .place-items-center gap-3 font-Montserrat sm:grid-cols-2 md:grid-cols-3 .lg:grid-cols-4">
-          {employee?.state?.list.length > 0 &&
-            employee?.state?.list.map((item, index) => {
+          {artist?.state?.list.length > 0 &&
+            artist?.state?.list.map((item, index) => {
               return (
                 <a href="/services" target={"_blank"}>
                   <Card

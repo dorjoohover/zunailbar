@@ -2,9 +2,8 @@ import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Alert, Button, Form, Input, Select, Modal } from "antd";
 import Link from "next/link";
-import ConfirmForm from "../auth/confirmForm";
 
-const SignIn = ({ data, events, tr }) => {
+const SignUp = ({ data, events, tr }) => {
   const [form] = Form.useForm();
 
   const router = useRouter();
@@ -13,7 +12,6 @@ const SignIn = ({ data, events, tr }) => {
     form.setFieldsValue({
       email: null,
       password: null,
-      route: "/customers",
     });
   }, []);
   const handleFinish = (values) => {
@@ -24,7 +22,6 @@ const SignIn = ({ data, events, tr }) => {
   const defaultValues = {
     email: null,
     password: null,
-    route: "/users",
   };
   return (
     <Form
@@ -51,9 +48,6 @@ const SignIn = ({ data, events, tr }) => {
         label={<div>Нууц үг</div>}
       >
         <Input.Password type="password" placeholder="Нууц үгээ оруулна уу." />
-      </Form.Item>
-      <Form.Item name="route" className="hidden">
-        <Input />
       </Form.Item>
       <div className="flex">
         <div className="relative right-4 flex mx-6">
@@ -101,45 +95,8 @@ const SignIn = ({ data, events, tr }) => {
           </Button>
         </Form.Item>
       </div>
-      {/* <div>
-        <Modal
-          // className="bg-gray-300"
-          title="Бүртгэл баталгаажуулалт"
-          open={data.visible}
-          okButtonProps={{ style: { display: "none" } }}
-          onCancel={events.handleCancelConfirm}
-        >
-          <ConfirmForm data={data} events={events} />
-        </Modal>
-      </div> */}
-      <div className="mb-4">
-        <Button
-          onClick={events.showModal}
-          className="font-semibold text-[#0F285F]  underline-offset-1 "
-        >
-          Бүртгэлээ баталгаажуулах
-        </Button>
-      </div>
-      <div className="grid grid-flow-row mb-2">
-        <Link href="/artist/auth/sign-in">
-          <Button
-            type="link"
-            className="font-semibold text-[#0F285F]  underline-offset-1 "
-          >
-            Ажилтанаар нэвтрэх
-          </Button>
-        </Link>
-        <Link href="/admin/auth/sign-in">
-          <Button
-            type="link"
-            className="font-semibold text-[#0F285F]  underline-offset-1 "
-          >
-            Админаар нэвтрэх
-          </Button>
-        </Link>
-      </div>
     </Form>
   );
 };
 
-export default SignIn;
+export default SignUp;

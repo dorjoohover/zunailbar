@@ -1,11 +1,12 @@
 import React from "react";
 import { Table, Button } from "antd";
+import Scheduler from "../../scheduler/scheduler";
 // import moment from "moment";
 
 export default function Agenda({ data, events }) {
   // console.log(data?.vote)
   // console.log(data?.confirm)
-  // console.log(data)
+  console.log(data);
   const columns = [
     {
       title: "№",
@@ -15,16 +16,16 @@ export default function Agenda({ data, events }) {
       // fixed: "left",
     },
     {
-      title: "userId",
+      title: "customerId",
       width: 60,
-      dataIndex: "userId",
-      key: "userId",
+      dataIndex: "customerId",
+      key: "customerId",
       // fixed: "left",
     },
     {
-      title: "employeeId",
-      dataIndex: "employeeId",
-      key: "employeeId",
+      title: "artistId",
+      dataIndex: "artistId",
+      key: "artistId",
       width: 60,
     },
     {
@@ -40,11 +41,17 @@ export default function Agenda({ data, events }) {
       width: 40,
     },
     {
-      title: "time",
-      key: "time",
+      title: "startTime",
+      dataIndex: "startTime",
+      key: "startTime",
+      width: 40,
+    },
+    {
+      title: "endTime",
+      key: "endTime",
       // fixed: "right",
       width: 40,
-      dataIndex: "time",
+      dataIndex: "endTime",
     },
     {
       title: "updatedAt",
@@ -111,11 +118,12 @@ export default function Agenda({ data, events }) {
     data1.push({
       key: number,
       list: number,
-      userId: checkUserId(item?.userId),
+      customerId: checkUserId(item?.customerId),
       serviceId: checkServiceId(item?.serviceId),
-      employeeId: checkEmployeeId(item?.employeeId),
-      time: item?.time,
-      date: item?.ognoo,
+      artistId: checkEmployeeId(item?.artistId),
+      date: item?.date,
+      startTime: item?.startTime,
+      endTime: item?.endTime,
       updatedAt: item?.updatedAt,
       delete: (
         <Button
@@ -148,11 +156,12 @@ export default function Agenda({ data, events }) {
               header: "Захиалга өөрчлөх",
               formType: "updateOrderForm",
               form: "put",
-              data: {
-                id: item?.id,
-                date: item?.ognoo,
-                time: item?.time,
-              },
+              // data: {
+              //   id: item?.id,
+              //   date: item?.ognoo,
+              //   time: item?.time,
+              // },
+              data: { item },
             })
           }
           type="primary"
@@ -195,6 +204,7 @@ export default function Agenda({ data, events }) {
         dataSource={data1}
         scroll={{ x: 1500, y: 700 }}
       />
+      <Scheduler data={data1} />
     </div>
   );
 }
