@@ -5,10 +5,13 @@ const serviceForm = ({ data, events }) => {
   const [form] = Form.useForm();
   const onFinish = (values) => {
     // console.log("values", values);
-    events.getTotalIncome(values);
+    events.getTotalIncome({
+      startDate: values?.startDate.format("YYYY-MM-DD"),
+      endDate: values?.endDate.format("YYYY-MM-DD"),
+    });
   };
 
-  const dateFormat = "YYYY/MM/DD";
+  const dateFormat = "YYYY-MM-DD";
   return (
     <div>
       <Form

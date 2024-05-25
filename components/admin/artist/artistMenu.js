@@ -15,18 +15,19 @@ export default function Agenda({ data, events }) {
       // fixed: "left",
     },
     {
+      title: "lastName",
+      dataIndex: "lastName",
+      key: "lastName",
+      width: 60,
+    },
+    {
       title: "firstName",
       width: 60,
       dataIndex: "firstName",
       key: "firstName",
       // fixed: "left",
     },
-    {
-      title: "lastName",
-      dataIndex: "lastName",
-      key: "lastName",
-      width: 60,
-    },
+
     {
       title: "email",
       dataIndex: "email",
@@ -103,14 +104,7 @@ export default function Agenda({ data, events }) {
               header: "Ажилчин өөрчлөх",
               formType: "updateEmployeeForm",
               form: "put",
-              data: {
-                status: item?.status,
-                firstName: item?.firstName,
-                lastName: item?.lastName,
-                email: item?.email,
-                phone: item?.phone,
-                id: item?.id,
-              },
+              data: { item },
             })
           }
           type="primary"

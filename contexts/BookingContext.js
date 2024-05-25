@@ -227,7 +227,7 @@ const BookingProvider = (props) => {
     });
 
     var config = {
-      url: `/orders/${value}`,
+      url: `/bookings/${value}`,
       method: "delete",
       // data: {
       //   ...body,

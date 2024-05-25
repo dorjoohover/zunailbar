@@ -7,25 +7,31 @@ import React, { useEffect } from "react";
 
 const { TextArea } = Input;
 const App = ({ data, events }) => {
-  const Type = data?.func;
+  console.log("data12345", data);
 
   const onFinish = (values) => {
     // console.log("values", values);
     events.handleCreateService(values);
     events.handleCancel();
   };
-  const status = [
-    { value: "active", label: "active" },
-    { value: "not active", label: "not active" },
+  const duration = [
+    { value: 1, label: "1 цаг" },
+    { value: 2, label: "2 цаг" },
+    { value: 3, label: "3 цаг" },
+    { value: 4, label: "4 цаг" },
   ];
-  // const users = [];
-  // data?.userList.map((item, index) => {
-  //   users.push({ value: item?.id, label: item?.title_name });
-  // });
+  const serviceGroups = [];
+  data?.serviceList.map((item, index) => {
+    serviceGroups.push({ value: item?.id, label: item?.serviceGroupName });
+  });
+  const defaultValueforServiceGroups = serviceGroups[0]?.value;
+
   const [form] = Form.useForm();
   const defaultValues = {
-    status: "active",
+    serviceGroupId: defaultValueforServiceGroups,
     serviceName: "",
+    description: "",
+    duration: 1,
     image1: "",
     price: "",
   };
@@ -48,13 +54,38 @@ const App = ({ data, events }) => {
       onFinish={onFinish}
       autoComplete="off"
     >
-      {/* <Form.Item label="status" name="status">
+      <Form.Item
+        label="serviceGroupId"
+        name="serviceGroupId"
+        rules={[
+          {
+            required: true,
+            message: "Та serviceGroupId аа оруулна уу.",
+          },
+        ]}
+      >
         <Select
           // style={{ width: 120 }}
           // onChange={handleChange}
-          options={status}
+          options={serviceGroups}
         />
-      </Form.Item> */}
+      </Form.Item>
+      <Form.Item
+        label="duration"
+        name="duration"
+        rules={[
+          {
+            required: true,
+            message: "Та duration аа оруулна уу.",
+          },
+        ]}
+      >
+        <Select
+          // style={{ width: 120 }}
+          // onChange={handleChange}
+          options={duration}
+        />
+      </Form.Item>
       <Form.Item
         label="serviceName"
         name="serviceName"
@@ -79,17 +110,11 @@ const App = ({ data, events }) => {
       >
         <InputNumber rows={""} />
       </Form.Item>
-      <Form.Item
-        label="image1"
-        name="image1"
-        rules={[
-          {
-            required: true,
-            message: "Та image1 оруулна уу !",
-          },
-        ]}
-      >
+      <Form.Item label="image1" name="image1">
         <Input rows={""} />
+      </Form.Item>
+      <Form.Item label="description" name="description">
+        <TextArea />
       </Form.Item>
       <Form.Item
         wrapperCol={{

@@ -25,13 +25,12 @@ const serviceForm = ({
     form.setFieldsValue({
       customerId: null,
       serviceId: null,
-      artistId: data?.artistId,
+      artistId: null,
       date: null,
       time: null,
     });
     setSelectedDate(null);
-    // setselectedArtist(null);
-    events.loadTimeTable(data?.artistId);
+    setselectedArtist(null);
   }, []);
 
   const userList = [];
@@ -67,15 +66,15 @@ const serviceForm = ({
       time: null,
     });
     setSelectedDate(null);
-    // setselectedArtist(null);
+    setselectedArtist(null);
   };
 
-  // const handleSelectChange = (value) => {
-  //   setselectedArtist(value);
-  //   events.loadTimeTable(value);
-  // };
+  const handleSelectChange = (value) => {
+    setselectedArtist(value);
+    events.loadTimeTable(value);
+  };
 
-  const [selectedArtist, setselectedArtist] = useState(data?.artistId);
+  const [selectedArtist, setselectedArtist] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
 
@@ -147,10 +146,9 @@ const serviceForm = ({
           ]}
         >
           <Select
-            // onChange={handleSelectChange}
+            onChange={handleSelectChange}
             style={{ width: 300 }}
-            options={artistList2}
-            disabled
+            options={artistList}
             // options={artistList}
           />
         </Form.Item>
@@ -166,7 +164,7 @@ const serviceForm = ({
         >
           <DatePicker
             onChange={handleDateChangeArtist}
-            disabled={!data?.artistId}
+            disabled={!selectedArtist}
             disabledDate={(currentDate) => {
               // Disable dates that are not in the availableData array
               return !data?.timetable_list.some(

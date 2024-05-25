@@ -5,7 +5,12 @@ const serviceForm = ({ data, events }) => {
   const [form] = Form.useForm();
   const onFinish = (values) => {
     // console.log("values", values);
-    events.getEmployeeIncome(values);
+    // events.getEmployeeIncome(values);
+    events.getArtistIncome({
+      startDate: values?.startDate.format("YYYY-MM-DD"),
+      endDate: values?.endDate.format("YYYY-MM-DD"),
+      artistId: values?.artistId,
+    });
   };
   const dateFormat = "YYYY/MM/DD";
   const employeeList = [];
@@ -22,7 +27,7 @@ const serviceForm = ({ data, events }) => {
         onFinish={onFinish}
       >
         <Form.Item
-          name="employeeId"
+          name="artistId"
           label="Ажилчны нэр сонгох"
           rules={[
             {

@@ -50,6 +50,8 @@ const render = ({ data, events }) => {
                           status: service?.status,
                           serviceName: service?.serviceName,
                           price: service?.price,
+                          duration: service?.duration,
+                          userDetail: data?.userDetail,
                         }}
                         events={events}
                       />
@@ -59,26 +61,6 @@ const render = ({ data, events }) => {
               </div>
             );
           })}
-        {/* {dataDetails.length > 0 &&
-          dataDetails.map((item, index) => {
-            return (
-              // <a href={`/rooms/${item?.id}`} target="_blank">
-              <Cards
-                key={index}
-                data={{
-                  id: item?.id,
-                  key: index,
-                  status: item?.status,
-                  serviceName: item?.serviceName,
-                  price: item?.price,
-                }}
-                events={{
-                  onClick: events.handleClick,
-                }}
-              />
-              // </a>
-            );
-          })} */}
       </div>
       <Modal
         title={"Үйлчилгээ авах форм"}
@@ -114,14 +96,27 @@ function Presentation() {
     artist.loadAllArtist();
     // console.log("presentation");
   }, []);
+  if (typeof window !== "undefined") {
+    // Perform localStorage action
+    // var accessToken = localStorage.getItem("accessToken");
+    const detail = localStorage.getItem("beauty_detail");
 
-  const handleOnClick = (serviceId, serviceName, price) => {
-    console.log("handleOnClick", serviceId, serviceName, price);
+    const initialData1 = detail === "undefined" ? null : detail;
+    var userDetail = initialData1 === null ? {} : JSON.parse(initialData1);
+  }
+
+  const handleOnClick = (serviceId, serviceName, price, duration) => {
+    // console.log("handleOnClick", serviceId, serviceName, price, duration);
     setModal(true);
     setModal({
       ...modal,
       modalState: true,
-      modalData: { serviceId: serviceId, name: serviceName, price: price },
+      modalData: {
+        serviceId: serviceId,
+        name: serviceName,
+        price: price,
+        duration: duration,
+      },
     });
   };
   const handleCloseModal = () => {
@@ -135,9 +130,19 @@ function Presentation() {
     handleCloseModal();
     let timeString = values?.time.format("HH:00:00");
     let originalTime = moment(timeString, "HH:mm:ss");
-    let updatedTime = originalTime.add(1, "hours");
+    console.log("values?.duration", values?.duration);
+    let updatedTime = originalTime.add(values?.duration, "hours");
+    // let updatedTime = originalTime.add(1, "hours");
     let formattedUpdatedTime = updatedTime.format("HH:mm:ss");
     // console.log(formattedUpdatedTime);
+    // console.log(
+    //   values?.customerId,
+    //   values?.serviceId,
+    //   values?.artistId,
+    //   values?.date.format("YYYY-MM-DD"),
+    //   values?.time.format("HH:00:00"),
+    //   formattedUpdatedTime
+    // );
     booking.createBooking(
       values?.customerId,
       values?.serviceId,
@@ -176,6 +181,7 @@ function Presentation() {
           artist_list: artist?.state?.list,
           artistsByService: artist?.state?.artistsByService,
           timetable_list: timetable?.state?.list,
+          userDetail: userDetail,
         }}
         render={render}
         // tr={t}

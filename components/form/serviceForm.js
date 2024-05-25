@@ -25,6 +25,7 @@ const serviceForm = ({
     form.setFieldsValue({
       customerId: initialData?.customer?.id,
       serviceId: data?.serviceId,
+      duration: data?.duration,
       artistId: null,
       date: null,
       time: null,
@@ -39,10 +40,10 @@ const serviceForm = ({
   // const dateFormat = "YYYY/MM/DD";
   // const defaultTime = moment().hour(0).minute(0);
 
-  const artistList = [];
-  artist_list.map((item, index) => {
-    artistList.push({ value: item?.id, label: item?.firstName });
-  });
+  // const artistList = [];
+  // artist_list.map((item, index) => {
+  //   artistList.push({ value: item?.id, label: item?.firstName });
+  // });
 
   const artistList2 = [];
   artistsByService.map((item, index) => {
@@ -146,6 +147,9 @@ const serviceForm = ({
       >
         <Form.Item name="serviceId" hidden>
           <InputNumber />
+        </Form.Item>
+        <Form.Item name="duration" label="Үргэлжлэх хугацаа (цагаар):">
+          <InputNumber disabled />
         </Form.Item>
         <Form.Item name="customerId" hidden>
           <InputNumber />

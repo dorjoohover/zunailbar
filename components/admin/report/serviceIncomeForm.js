@@ -5,12 +5,17 @@ const serviceForm = ({ data, events }) => {
   const [form] = Form.useForm();
   const onFinish = (values) => {
     // console.log("values", values);
-    events.getServiceIncome(values);
+    // events.getArtistIncome(values);
+    events.getServiceIncome({
+      startDate: values?.startDate.format("YYYY-MM-DD"),
+      endDate: values?.endDate.format("YYYY-MM-DD"),
+      serviceId: values?.serviceId,
+    });
   };
 
   const dateFormat = "YYYY/MM/DD";
   const serviceList = [];
-  data?.serviceList.map((item, index) => {
+  data?.just_service_list.map((item, index) => {
     serviceList.push({ value: item?.id, label: item?.serviceName });
   });
   return (

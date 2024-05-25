@@ -14,10 +14,11 @@ const App = ({ data, events }) => {
     events.handleCreateUser(values);
     events.handleCancel();
   };
-  const status = [
-    { value: 9, label: "хэрэглэгч" },
-    { value: 1, label: "ажилчин" },
+  const membership = [
+    { value: null, label: "Гишүүнчлэл байхгүй" },
+    { value: "1", label: "Гишүүнчлэл байгаа" },
   ];
+  const defaultMembership = membership[0]?.value;
   // const users = [];
   // data?.userList.map((item, index) => {
   //   users.push({ value: item?.id, label: item?.title_name });
@@ -29,6 +30,7 @@ const App = ({ data, events }) => {
     lastName: "",
     email: "",
     phone: "",
+    membership: defaultMembership,
     password: "",
   };
 
@@ -51,35 +53,13 @@ const App = ({ data, events }) => {
       onFinish={onFinish}
       autoComplete="off"
     >
-      {/* <Form.Item label="status" name="status">
-        <Select
-          // style={{ width: 120 }}
-          // onChange={handleChange}
-          options={status}
-        />
-      </Form.Item> */}
-      <Form.Item
-        label="firstName"
-        name="firstName"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: "Та firstName аа оруулна уу.",
-        //   },
-        // ]}
-      >
+      <Form.Item label="status" name="status" hidden>
         <Input />
       </Form.Item>
-      <Form.Item
-        label="lastName"
-        name="lastName"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: "Та lastName аа оруулна уу.",
-        //   },
-        // ]}
-      >
+      <Form.Item label="firstName" name="firstName">
+        <Input />
+      </Form.Item>
+      <Form.Item label="lastName" name="lastName">
         <Input rows={""} />
       </Form.Item>
       <Form.Item
@@ -105,6 +85,9 @@ const App = ({ data, events }) => {
         ]}
       >
         <Input rows={""} />
+      </Form.Item>
+      <Form.Item label="membership" name="membership">
+        <Select options={membership} />
       </Form.Item>
       <Form.Item
         label="password"

@@ -1,10 +1,12 @@
 import React from "react";
 import { Table, Button } from "antd";
-import Scheduler from "../../scheduler/BookingScheduler";
+import Scheduler from "../../scheduler/TimeTableScheduler";
 // import moment from "moment";
 
 export default function Agenda({ data, events }) {
-  // console.log(data);
+  // console.log(data?.vote)
+  // console.log(data?.confirm)
+  //   console.log(data);
   const columns = [
     {
       title: "№",
@@ -13,25 +15,25 @@ export default function Agenda({ data, events }) {
       key: "list",
       // fixed: "left",
     },
-    {
-      title: "customerId",
-      width: 60,
-      dataIndex: "customerId",
-      key: "customerId",
-      // fixed: "left",
-    },
+    // {
+    //   title: "customerId",
+    //   width: 60,
+    //   dataIndex: "customerId",
+    //   key: "customerId",
+    //   // fixed: "left",
+    // },
     {
       title: "artistName",
       dataIndex: "artistName",
       key: "artistName",
       width: 60,
     },
-    {
-      title: "serviceId",
-      dataIndex: "serviceId",
-      key: "serviceId",
-      width: 80,
-    },
+    // {
+    //   title: "serviceId",
+    //   dataIndex: "serviceId",
+    //   key: "serviceId",
+    //   width: 80,
+    // },
     {
       title: "date",
       dataIndex: "date",
@@ -58,20 +60,20 @@ export default function Agenda({ data, events }) {
       width: 40,
       dataIndex: "updatedAt",
     },
-    {
-      title: "update",
-      key: "update",
-      // fixed: "right",
-      width: 40,
-      dataIndex: "update",
-    },
-    {
-      title: "delete",
-      key: "delete",
-      // fixed: "right",
-      width: 40,
-      dataIndex: "delete",
-    },
+    // {
+    //   title: "update",
+    //   key: "update",
+    //   // fixed: "right",
+    //   width: 40,
+    //   dataIndex: "update",
+    // },
+    // {
+    //   title: "delete",
+    //   key: "delete",
+    //   // fixed: "right",
+    //   width: 40,
+    //   dataIndex: "delete",
+    // },
   ];
   // console.log(Maindata)
   const checkUserIdforPhone = (userId) => {
@@ -85,10 +87,10 @@ export default function Agenda({ data, events }) {
     return one;
   };
 
-  const checkEmployeeId = (employeeId) => {
+  const checkArtistId = (artistId) => {
     var one = "";
     data?.employeeList.forEach((element) => {
-      if (element?.id === employeeId) {
+      if (element?.id === artistId) {
         // userSet.push(userId);
         one = element?.firstName;
       }
@@ -106,71 +108,71 @@ export default function Agenda({ data, events }) {
     });
     return one;
   };
-
+  //   console.log("All_artist_timetables", data?.All_artist_timetables);
   const data1 = [];
   let number = 0;
-  data?.orderList.map((item, index) => {
+  data?.All_artist_timetables.map((item, index) => {
     // menu_titleIds.push({ menu_titleId: item });
     if (item?.artistId === data?.artistId) {
       number = number + 1;
       // console.log("index", index);
       data1.push({
-        key: number,
+        key: index,
         list: number,
-        customerId: checkUserIdforPhone(item?.customerId),
+        //   customerId: checkUserIdforPhone(item?.customerId),
         // customerPhone: checkUserId(item?.customerId),
-        serviceId: checkServiceId(item?.serviceId),
-        artistName: checkEmployeeId(item?.artistId),
+        //   serviceId: checkServiceId(item?.serviceId),
+        artistName: checkArtistId(item?.artistId),
         artistId: item?.artistId,
         date: item?.date,
         startTime: item?.startTime,
         endTime: item?.endTime,
         updatedAt: item?.updatedAt,
-        delete: (
-          <Button
-            onClick={() =>
-              events.handleFormData({
-                header: "Захиалга устгах",
-                formType: "deleteOrderForm",
-                message:
-                  item?.ognoo +
-                  "огноотой " +
-                  item?.time +
-                  " цагтай " +
-                  " >> захиалгыг" +
-                  "-г устгах уу?",
-                data: {
-                  id: item?.id,
-                },
-              })
-            }
-            type="primary"
-            danger
-          >
-            Устгах
-          </Button>
-        ),
-        update: (
-          <Button
-            onClick={() =>
-              events.handleFormData({
-                header: "Захиалга өөрчлөх",
-                formType: "updateOrderForm",
-                form: "put",
-                // data: {
-                //   id: item?.id,
-                //   date: item?.ognoo,
-                //   time: item?.time,
-                // },
-                data: { item },
-              })
-            }
-            type="primary"
-            ghost
-          >
-            Өөрчлөх
-          </Button>
-        ),
+        //   delete: (
+        //     <Button
+        //       onClick={() =>
+        //         events.handleFormData({
+        //           header: "Захиалга устгах",
+        //           formType: "deleteOrderForm",
+        //           message:
+        //             item?.ognoo +
+        //             "огноотой " +
+        //             item?.time +
+        //             " цагтай " +
+        //             " >> захиалгыг" +
+        //             "-г устгах уу?",
+        //           data: {
+        //             id: item?.id,
+        //           },
+        //         })
+        //       }
+        //       type="primary"
+        //       danger
+        //     >
+        //       Устгах
+        //     </Button>
+        //   ),
+        //   update: (
+        //     <Button
+        //       onClick={() =>
+        //         events.handleFormData({
+        //           header: "Захиалга өөрчлөх",
+        //           formType: "updateOrderForm",
+        //           form: "put",
+        //           // data: {
+        //           //   id: item?.id,
+        //           //   date: item?.ognoo,
+        //           //   time: item?.time,
+        //           // },
+        //           data: { item },
+        //         })
+        //       }
+        //       type="primary"
+        //       ghost
+        //     >
+        //       Өөрчлөх
+        //     </Button>
+        //   ),
       });
     }
   });
@@ -184,9 +186,8 @@ export default function Agenda({ data, events }) {
           onClick={() =>
             events.handleFormData({
               header: "Захиалга нэмэх",
-              formType: "createOrderForm",
+              formType: "createTimetableForm",
               form: "post",
-              data: data,
               // data: [
               //   {
               //     label: "projectId",
@@ -197,7 +198,7 @@ export default function Agenda({ data, events }) {
             })
           }
         >
-          Өөртөө шинээр захиалга нэмэх
+          Шинээр хуваарь нэмэх
         </Button>
       </div>
       <Table

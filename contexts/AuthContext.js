@@ -259,7 +259,7 @@ const AuthProvider = (props) => {
       var response = await axios(config);
       //   console.log("response", response);
       const { data } = response.data;
-      console.log("data", data);
+      // console.log("data", data);
       setState({
         ...state,
         status: "success",
@@ -653,6 +653,43 @@ const AuthProvider = (props) => {
       message.error(<div className="text-[20px]">{err?.message}</div>);
     }
   };
+
+  const rateArtist = async (values) => {
+    // console.log("token", token);
+    let body = {
+      values,
+    };
+    setState({
+      ...state,
+      // status: "loading",
+      message: "loading",
+    });
+
+    var config = {
+      url: "/customers/rateArtist",
+      method: "post",
+      data: {
+        ...body,
+      },
+    };
+    LoadingFun();
+    try {
+      const response = await axios(config);
+      const { data } = response;
+      // const { data } = response?.data
+      // console.log(data.shareholder.userId, 'хэрэглэгчийн ID')
+      setState({
+        ...state,
+        status: "success",
+      });
+      DeleteMess();
+      message.success(<div className="text-[20px]">"rated succesfully"</div>);
+      // router.push("/");
+    } catch (err) {
+      DeleteMess();
+      message.error(<div className="text-[20px]">{err?.message}</div>);
+    }
+  };
   return (
     <AuthContext.Provider
       value={{
@@ -672,6 +709,7 @@ const AuthProvider = (props) => {
         handleGetConfirm,
         confirm,
         loadBookingsByCustomerId,
+        rateArtist,
       }}
     >
       {props.children}

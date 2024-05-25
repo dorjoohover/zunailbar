@@ -1,12 +1,10 @@
 import React from "react";
 import { Table, Button } from "antd";
-import Scheduler from "../../scheduler/scheduler";
+import Scheduler from "../../scheduler/BookingScheduler";
 // import moment from "moment";
 
 export default function Agenda({ data, events }) {
-  // console.log(data?.vote)
-  // console.log(data?.confirm)
-  console.log(data);
+  // console.log(data);
   const columns = [
     {
       title: "№",
@@ -23,9 +21,9 @@ export default function Agenda({ data, events }) {
       // fixed: "left",
     },
     {
-      title: "artistId",
-      dataIndex: "artistId",
-      key: "artistId",
+      title: "artistName",
+      dataIndex: "artistName",
+      key: "artistName",
       width: 60,
     },
     {
@@ -76,12 +74,12 @@ export default function Agenda({ data, events }) {
     },
   ];
   // console.log(Maindata)
-  const checkUserId = (userId) => {
+  const checkUserIdforPhone = (userId) => {
     var one = "";
     data?.userList.forEach((element) => {
       if (element?.id === userId) {
         // userSet.push(userId);
-        one = element?.email;
+        one = element?.phone;
       }
     });
     return one;
@@ -100,7 +98,7 @@ export default function Agenda({ data, events }) {
 
   const checkServiceId = (serviceId) => {
     var one = "";
-    data?.serviceList.forEach((element) => {
+    data?.just_service_list.forEach((element) => {
       if (element?.id === serviceId) {
         // userSet.push(userId);
         one = element?.serviceName;
@@ -118,9 +116,11 @@ export default function Agenda({ data, events }) {
     data1.push({
       key: number,
       list: number,
-      customerId: checkUserId(item?.customerId),
+      customerId: checkUserIdforPhone(item?.customerId),
+      // customerPhone: checkUserId(item?.customerId),
       serviceId: checkServiceId(item?.serviceId),
-      artistId: checkEmployeeId(item?.artistId),
+      artistName: checkEmployeeId(item?.artistId),
+      artistId: item?.artistId,
       date: item?.date,
       startTime: item?.startTime,
       endTime: item?.endTime,
@@ -184,6 +184,7 @@ export default function Agenda({ data, events }) {
               header: "Захиалга нэмэх",
               formType: "createOrderForm",
               form: "post",
+              data: data,
               // data: [
               //   {
               //     label: "projectId",

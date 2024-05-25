@@ -16,8 +16,8 @@ export default function Artist() {
       </div>
       <div>
         <div className="grid .place-items-center gap-3 font-Montserrat sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {service?.state?.list.length > 0 &&
-            service?.state?.list.map((item, index) => {
+          {service?.state1?.just_service_list.length > 0 &&
+            service?.state1?.just_service_list.map((item, index) => {
               return (
                 <a href="/services" target={"_blank"}>
                   <Card
@@ -31,8 +31,8 @@ export default function Artist() {
                     <div className=".min-h-[120px] w-full grid grid-flow-row auto-rows-max">
                       <div>
                         <img
-                          className=".max-w-[300px]"
-                          src="https://assets-global.website-files.com/6135e5f06048e4e83fb2c8ab/618f792992067f1d8c893d24_service-image-three.jpg"
+                          className=".max-w-[300px] max-h-[300px]"
+                          src={item?.image1}
                         />
                       </div>
                       <div className="mb-5 h-auto .h-[50px] text-left text-[18px] .font-bold">

@@ -12,6 +12,7 @@ export default function Document() {
         <link
           rel="icon"
           // href=""
+          // className="rounded-full"
           href="http://localhost:3000/img/zunailbar_logo.jpg"
         />
       </Head>

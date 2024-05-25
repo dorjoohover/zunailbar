@@ -11,9 +11,12 @@ const initialState = {
   modal: false,
   detail: {},
   orlogo: "",
-  list: [],
-  list2: [],
-  list3: [],
+  totalIncome: "",
+  artistIncome: "",
+  serviceIncome: "",
+  // totalIncome: [],
+  // artistIncome: [],
+  // serviceIncome: [],
   list4: [],
 };
 message.config({
@@ -52,7 +55,7 @@ const ReportProvider = (props) => {
     });
 
     var config = {
-      url: "/report/getTotalIncome",
+      url: "/reports/getTotalIncome",
       method: "post",
       data: {
         ...body,
@@ -62,15 +65,15 @@ const ReportProvider = (props) => {
     try {
       var response = await axios(config);
       //   console.log("response", response);
-      const { data } = response;
+      const { data } = response.data;
       console.log("orlogo", data);
-      // setState({
-      //   ...state,
-      //   status: "success",
-      //   list: data,
-      //   message: "",
-      // });
-      setState2(data);
+      setState({
+        ...state,
+        status: "success",
+        totalIncome: data,
+        message: "",
+      });
+      // setState2(data);
       // }
     } catch (err) {
       console.log("err", err);
@@ -86,9 +89,9 @@ const ReportProvider = (props) => {
     }
   };
 
-  const getEmployeeIncome = async ({ employeeId, startDate, endDate }) => {
+  const getArtistIncome = async ({ artistId, startDate, endDate }) => {
     // console.log("worked");
-    let body = { startDate, endDate };
+    let body = { artistId, startDate, endDate };
     setState({
       ...state,
       status: "loading",
@@ -96,7 +99,7 @@ const ReportProvider = (props) => {
     });
 
     var config = {
-      url: `/report/getEmployeeIncome/${employeeId}`,
+      url: `/reports/getArtistIncome`,
       method: "post",
       data: {
         ...body,
@@ -106,12 +109,12 @@ const ReportProvider = (props) => {
     try {
       var response = await axios(config);
       //   console.log("response", response);
-      const { data } = response;
+      const { data } = response.data;
       // console.log("data orders", data);
       setState({
         ...state,
         status: "success",
-        list2: data,
+        artistIncome: data,
         message: "",
       });
       // }
@@ -130,7 +133,7 @@ const ReportProvider = (props) => {
   };
   const getServiceIncome = async ({ serviceId, startDate, endDate }) => {
     // console.log("serviceId", serviceId);
-    let body = { startDate, endDate };
+    let body = { serviceId, startDate, endDate };
     setState({
       ...state,
       status: "loading",
@@ -138,7 +141,7 @@ const ReportProvider = (props) => {
     });
 
     var config = {
-      url: `/report/getServiceIncome/${serviceId}`,
+      url: `/reports/getServiceIncome`,
       method: "post",
       data: {
         ...body,
@@ -146,14 +149,15 @@ const ReportProvider = (props) => {
     };
 
     try {
+      // console.log("config", config);
       var response = await axios(config);
       //   console.log("response", response);
-      const { data } = response;
+      const { data } = response.data;
       // console.log("data orders", data);
       setState({
         ...state,
         status: "success",
-        list3: data,
+        serviceIncome: data,
         message: "",
       });
       // }
@@ -180,7 +184,7 @@ const ReportProvider = (props) => {
     });
 
     var config = {
-      url: "/report/getAttendance",
+      url: "/reports/getAttendance",
       method: "get",
       data: {},
     };
@@ -218,7 +222,7 @@ const ReportProvider = (props) => {
         state2,
         contextHolder,
         getTotalIncome,
-        getEmployeeIncome,
+        getArtistIncome,
         getServiceIncome,
         getAttendance,
       }}

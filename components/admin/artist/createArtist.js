@@ -14,10 +14,10 @@ const App = ({ data, events }) => {
     events.handleCreateEmployee(values);
     events.handleCancel();
   };
-  const status = [
-    { value: 9, label: "хэрэглэгч" },
-    { value: 1, label: "ажилчин" },
-  ];
+  // const status = [
+  //   { value: 9, label: "хэрэглэгч" },
+  //   { value: 1, label: "ажилчин" },
+  // ];
   // const users = [];
   // data?.userList.map((item, index) => {
   //   users.push({ value: item?.id, label: item?.title_name });
@@ -25,10 +25,14 @@ const App = ({ data, events }) => {
   const [form] = Form.useForm();
   const defaultValues = {
     status: 9,
+    branchId: 1,
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
+    image: "",
+    jobStartDate: "",
+    jobEndDate: "",
     password: "",
   };
 
@@ -51,12 +55,11 @@ const App = ({ data, events }) => {
       onFinish={onFinish}
       autoComplete="off"
     >
-      <Form.Item label="status" name="status">
-        <Select
-          // style={{ width: 120 }}
-          // onChange={handleChange}
-          options={status}
-        />
+      <Form.Item label="status" name="status" hidden>
+        <Input />
+      </Form.Item>
+      <Form.Item label="branchId" name="branchId" hidden>
+        <Input />
       </Form.Item>
       <Form.Item
         label="firstName"
@@ -68,7 +71,7 @@ const App = ({ data, events }) => {
           },
         ]}
       >
-        <TextArea />
+        <Input />
       </Form.Item>
       <Form.Item
         label="lastName"
@@ -80,7 +83,7 @@ const App = ({ data, events }) => {
           },
         ]}
       >
-        <TextArea rows={""} />
+        <Input />
       </Form.Item>
       <Form.Item
         label="email"
@@ -104,7 +107,16 @@ const App = ({ data, events }) => {
           },
         ]}
       >
-        <TextArea rows={""} />
+        <Input />
+      </Form.Item>
+      <Form.Item label="jobStartDate" name="jobStartDate">
+        <Input />
+      </Form.Item>
+      <Form.Item label="jobEndDate" name="jobEndDate">
+        <Input />
+      </Form.Item>
+      <Form.Item label="image" name="image">
+        <Input />
       </Form.Item>
       <Form.Item
         label="password"
@@ -116,7 +128,7 @@ const App = ({ data, events }) => {
           },
         ]}
       >
-        <TextArea rows={""} />
+        <Input />
       </Form.Item>
       <Form.Item
         wrapperCol={{

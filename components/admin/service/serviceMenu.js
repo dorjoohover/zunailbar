@@ -5,7 +5,7 @@ import { Table, Button } from "antd";
 export default function Agenda({ data, events }) {
   // console.log(data?.vote)
   // console.log(data?.confirm)
-  console.log("just_service_list", data);
+  // console.log("just_service_list", data);
   const columns = [
     {
       title: "№",
@@ -38,6 +38,12 @@ export default function Agenda({ data, events }) {
       title: "image",
       dataIndex: "image",
       key: "image",
+      width: 30,
+    },
+    {
+      title: "duration",
+      dataIndex: "duration",
+      key: "duration",
       width: 30,
     },
     {
@@ -79,6 +85,7 @@ export default function Agenda({ data, events }) {
       serviceName: item?.serviceName,
       price: item?.price,
       image: <img className="max-h-12" src={item?.image1} />,
+      duration: item?.duration,
       delete: (
         <Button
           onClick={() =>
@@ -111,6 +118,7 @@ export default function Agenda({ data, events }) {
                 price: item?.price,
                 id: item?.id,
                 image1: item?.image1,
+                duration: item?.duration,
               },
             })
           }
@@ -134,6 +142,7 @@ export default function Agenda({ data, events }) {
               header: "Үйлчилгээ нэмэх",
               formType: "createServiceForm",
               form: "post",
+              data: data,
               // data: [
               //   {
               //     label: "projectId",

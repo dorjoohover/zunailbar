@@ -24,6 +24,7 @@ const App = ({ data, events }) => {
     id: data?.form?.data?.id,
     status: data?.form?.data?.status,
     serviceName: data?.form?.data?.serviceName,
+    duration: data?.form?.data?.duration,
     price: data?.form?.data?.price,
     image1: data?.form?.data?.image1,
   };
@@ -32,6 +33,12 @@ const App = ({ data, events }) => {
     form.setFieldsValue(defaultValues);
   }, [form, defaultValues]);
 
+  const duration = [
+    { value: 1, label: "1 цаг" },
+    { value: 2, label: "2 цаг" },
+    { value: 3, label: "3 цаг" },
+    { value: 4, label: "4 цаг" },
+  ];
   return (
     <Form
       form={form}
@@ -50,6 +57,13 @@ const App = ({ data, events }) => {
     >
       <Form.Item hidden name="id">
         <InputNumber />
+      </Form.Item>
+      <Form.Item name="duration" label="duration">
+        <Select
+          // style={{ width: 120 }}
+          // onChange={handleChange}
+          options={duration}
+        />
       </Form.Item>
       {/* <Form.Item label="status" name="status">
         <Select
@@ -100,7 +114,7 @@ const App = ({ data, events }) => {
           span: 16,
         }}
       >
-        <Button htmlType="submit">Нэмэх</Button>
+        <Button htmlType="submit">Өөрчлөх</Button>
       </Form.Item>
     </Form>
   );

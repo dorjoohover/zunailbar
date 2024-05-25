@@ -14,10 +14,11 @@ const App = ({ data, events }) => {
     events.handleUpdateUser(values);
     events.handleCancel();
   };
-  const status = [
-    { value: 9, label: "хэрэглэгч" },
-    { value: 1, label: "ажилчин" },
+  const membership = [
+    { value: null, label: "Гишүүнчлэл байхгүй" },
+    { value: "1", label: "Гишүүнчлэл байгаа" },
   ];
+  const defaultMembership = membership[0]?.value;
 
   const [form] = Form.useForm();
   const defaultValues = {
@@ -27,6 +28,7 @@ const App = ({ data, events }) => {
     lastName: data?.form?.data?.lastName,
     email: data?.form?.data?.email,
     phone: data?.form?.data?.phone,
+    membership: defaultMembership,
     password: "",
   };
 
@@ -50,37 +52,14 @@ const App = ({ data, events }) => {
       onFinish={onFinish}
       autoComplete="off"
     >
-      <Form.Item hidden name="id">
-        <InputNumber />
+      <Form.Item label="status" name="status" hidden>
+        <Input />
       </Form.Item>
-      <Form.Item label="status" name="status">
-        <Select options={status} />
+      <Form.Item label="firstName" name="firstName">
+        <Input />
       </Form.Item>
-      <Form.Item
-        label="firstName"
-        name="firstName"
-        // defaultValue={data?.form?.data?.item_name}
-        rules={[
-          {
-            required: true,
-            message: "Та firstName аа оруулна уу.",
-          },
-        ]}
-      >
-        <TextArea rows={""} />
-      </Form.Item>
-
-      <Form.Item
-        label="lastName"
-        name="lastName"
-        rules={[
-          {
-            required: true,
-            message: "Та lastName оруулна уу !",
-          },
-        ]}
-      >
-        <TextArea rows={""} />
+      <Form.Item label="lastName" name="lastName">
+        <Input rows={""} />
       </Form.Item>
       <Form.Item
         label="email"
@@ -88,11 +67,11 @@ const App = ({ data, events }) => {
         rules={[
           {
             required: true,
-            message: "Та email оруулна уу !",
+            message: "Та email аа оруулна уу.",
           },
         ]}
       >
-        <TextArea rows={""} />
+        <Input type="email" />
       </Form.Item>
       <Form.Item
         label="phone"
@@ -104,19 +83,13 @@ const App = ({ data, events }) => {
           },
         ]}
       >
-        <TextArea rows={""} />
+        <Input rows={""} />
       </Form.Item>
-      <Form.Item
-        label="password"
-        name="password"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: "Та password оруулна уу !",
-        //   },
-        // ]}
-      >
-        <TextArea rows={""} />
+      <Form.Item label="membership" name="membership">
+        <Select options={membership} />
+      </Form.Item>
+      <Form.Item label="password" name="password">
+        <Input rows={""} />
       </Form.Item>
       <Form.Item
         wrapperCol={{

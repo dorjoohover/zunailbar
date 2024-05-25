@@ -197,7 +197,7 @@ const ArtistProvider = (props) => {
     // console.log(body)
 
     var config = {
-      url: "/employee",
+      url: "/artists",
       method: "post",
       data: {
         ...value,
@@ -249,7 +249,7 @@ const ArtistProvider = (props) => {
     // console.log(body)
 
     var config = {
-      url: `/employee/${id}`,
+      url: `/artists/${id}`,
       method: "put",
       data: {
         ...body,
@@ -290,7 +290,7 @@ const ArtistProvider = (props) => {
     });
 
     var config = {
-      url: `/employee/${value}`,
+      url: `/artists/${value}`,
       method: "delete",
       // data: {
       //   ...body,

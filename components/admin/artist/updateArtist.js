@@ -7,26 +7,30 @@ import React, { useEffect } from "react";
 
 const { TextArea } = Input;
 const App = ({ data, events }) => {
-  // console.log("data123", data);
+  // console.log("data?.form?.data?.item", data?.form?.data?.item);
 
   const onFinish = (values) => {
     // console.log("values", values);
     events.handleUpdateEmployee(values);
     events.handleCancel();
   };
-  const status = [
-    { value: 9, label: "хэрэглэгч" },
-    { value: 1, label: "ажилчин" },
-  ];
+  // const status = [
+  //   { value: 9, label: "хэрэглэгч" },
+  //   { value: 1, label: "ажилчин" },
+  // ];
 
   const [form] = Form.useForm();
   const defaultValues = {
-    id: data?.form?.data?.id,
-    status: data?.form?.data?.status,
-    firstName: data?.form?.data?.firstName,
-    lastName: data?.form?.data?.lastName,
-    email: data?.form?.data?.email,
-    phone: data?.form?.data?.phone,
+    id: data?.form?.data?.item?.id,
+    status: data?.form?.data?.item?.status,
+    branchId: data?.form?.data?.item?.branchId,
+    firstName: data?.form?.data?.item?.firstName,
+    lastName: data?.form?.data?.item?.lastName,
+    email: data?.form?.data?.item?.email,
+    phone: data?.form?.data?.item?.phone,
+    jobStartDate: data?.form?.data?.item?.jobStartDate,
+    jobEndDate: data?.form?.data?.item?.jobEndDate,
+    image: data?.form?.data?.item?.image,
     password: "",
   };
 
@@ -50,16 +54,18 @@ const App = ({ data, events }) => {
       onFinish={onFinish}
       autoComplete="off"
     >
-      <Form.Item hidden name="id">
+      <Form.Item label="id" name="id" hidden>
         <InputNumber />
       </Form.Item>
-      <Form.Item label="status" name="status">
-        <Select options={status} />
+      <Form.Item label="status" name="status" hidden>
+        <Input />
+      </Form.Item>
+      <Form.Item label="branchId" name="branchId" hidden>
+        <Input />
       </Form.Item>
       <Form.Item
         label="firstName"
         name="firstName"
-        // defaultValue={data?.form?.data?.item_name}
         rules={[
           {
             required: true,
@@ -67,20 +73,19 @@ const App = ({ data, events }) => {
           },
         ]}
       >
-        <TextArea rows={""} />
+        <Input />
       </Form.Item>
-
       <Form.Item
         label="lastName"
         name="lastName"
         rules={[
           {
             required: true,
-            message: "Та lastName оруулна уу !",
+            message: "Та lastName аа оруулна уу.",
           },
         ]}
       >
-        <TextArea rows={""} />
+        <Input />
       </Form.Item>
       <Form.Item
         label="email"
@@ -88,11 +93,11 @@ const App = ({ data, events }) => {
         rules={[
           {
             required: true,
-            message: "Та email оруулна уу !",
+            message: "Та email аа оруулна уу.",
           },
         ]}
       >
-        <TextArea rows={""} />
+        <Input type="email" />
       </Form.Item>
       <Form.Item
         label="phone"
@@ -104,7 +109,16 @@ const App = ({ data, events }) => {
           },
         ]}
       >
-        <TextArea rows={""} />
+        <Input />
+      </Form.Item>
+      <Form.Item label="jobStartDate" name="jobStartDate">
+        <Input />
+      </Form.Item>
+      <Form.Item label="jobEndDate" name="jobEndDate">
+        <Input />
+      </Form.Item>
+      <Form.Item label="image" name="image">
+        <Input />
       </Form.Item>
       <Form.Item
         label="password"
@@ -116,7 +130,7 @@ const App = ({ data, events }) => {
         //   },
         // ]}
       >
-        <TextArea rows={""} />
+        <Input />
       </Form.Item>
       <Form.Item
         wrapperCol={{

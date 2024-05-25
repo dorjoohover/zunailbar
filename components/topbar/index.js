@@ -66,11 +66,11 @@ const TopBar = () => {
           <img
             // src="https://res.cloudinary.com/dfhvxswh6/image/upload/v1691979048/326238817_843833970046776_3151643487262701768_n_wbwl14.png"
             src="http://localhost:3000/img/zunailbar_logo.jpg"
-            className=".mt-[-34px]"
-            width="40"
+            className="rounded-full .mb-2"
+            width="60"
           ></img>
         </a>
-        <div className="text-3xl flex w-[110px] justify-evenly">
+        <div className="text-3xl flex w-[110px] justify-evenly mt-3">
           <div className=" hover:text-cyan-600">
             <a
               href="https://www.facebook.com/profile.php?id=100090649232252"

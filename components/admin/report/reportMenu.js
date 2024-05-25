@@ -8,7 +8,7 @@ import EmployeeIncomeForm from "./employeeIncomeForm";
 export default function Agenda({ data, events }) {
   // console.log(data?.vote)
   // console.log(data?.confirm)
-  console.log("report", data?.reportList);
+  // console.log("report", data?.reportList);
   const columns = [
     {
       title: "№",
@@ -73,48 +73,55 @@ export default function Agenda({ data, events }) {
       niit: item?.niit?.niit,
     });
   });
-
+  console.log("data?.reportList", data?.reportList);
   return (
     <div>
       <div>
         <h3>Total Income</h3>
         <OrlogoForm data={data} events={events} />
       </div>
-      <div className="mt-2 p-1 bg-blue-200">
-        {data?.orlogo !== null &&
-          data?.orlogo.map((item, index) => (
-            <div className="" key={index}>
-              <p>Орлого: {item.orlogo}</p>
-            </div>
-          ))}
+      <div className="mt-2 p-1 .bg-blue-200">
+        {/* {data?.orlogo !== null &&
+          data?.orlogo.map((item, index) => ( */}
+        <div>
+          <p className="bg-blue-200">
+            Нйит орлого:{" "}
+            {data?.reportList.totalIncome !== null &&
+              data?.reportList.totalIncome}
+          </p>
+        </div>
+        {/* ))} */}
       </div>
       <div className="my-12">
         <h3>Income by Service</h3>
         <ServiceIncomeForm data={data} events={events} />
-        {data?.reportList?.list3 !== null &&
-          data?.reportList?.list3.map((item, index) => (
-            <div className="bg-blue-200" key={index}>
-              <p>Орлого: {item.orlogo}</p>
-            </div>
-          ))}
+        <div className="">
+          <p className="bg-blue-200">
+            Үйлчилгээний орлого:{" "}
+            {data?.reportList.serviceIncome !== null &&
+              data?.reportList.serviceIncome}
+          </p>
+        </div>
       </div>
       <div>
         <h3>Income by Employee</h3>
         <EmployeeIncomeForm data={data} events={events} />
-        {data?.reportList?.list2.map((item, index) => (
-          <div className="bg-blue-200" key={index}>
-            <p>Орлого: {item.orlogo}</p>
-          </div>
-        ))}
+        <div className="">
+          <p className="bg-blue-200">
+            Артистийн Орлого:{" "}
+            {data?.reportList.artistIncome !== null &&
+              data?.reportList.artistIncome}
+          </p>
+        </div>
       </div>
       <h3 className="text-center mt-4 text-2xl font-bold">Тайлан</h3>
-      <Table
+      {/* <Table
         bordered
         pagination={{ pageSize: 30 }}
         columns={columns}
         dataSource={data1}
         scroll={{ x: 500, y: 700 }}
-      />
+      /> */}
     </div>
   );
 }

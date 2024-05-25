@@ -63,7 +63,7 @@ const ServiceProvider = (props) => {
       var response = await axios(config);
       // console.log("response", response);
       const { data } = response.data;
-      console.log("data", data);
+      // console.log("data", data);
       setState1({
         ...state1,
         status: "success",
@@ -144,7 +144,7 @@ const ServiceProvider = (props) => {
         ...value,
       },
     };
-    LoadingFun();
+    // LoadingFun();
     try {
       var response = await axios(config);
       const { data } = response.data;
@@ -152,7 +152,7 @@ const ServiceProvider = (props) => {
         ...state,
         status: "success",
       });
-      message.success("Ажилчин амжилттай үүслээ.");
+      message.success("Үйлчилгээ амжилттай үүслээ.");
       // CompanyBydetails(companyId)
       // console.log('2222')
     } catch (err) {
@@ -173,9 +173,16 @@ const ServiceProvider = (props) => {
   //
   //
   //
-  const UpdateService = async ({ serviceName, price, status, id, image1 }) => {
+  const UpdateService = async ({
+    serviceName,
+    price,
+    status,
+    id,
+    image1,
+    duration,
+  }) => {
     // let body = { value };
-    let body = { serviceName, price, status, image1 };
+    let body = { serviceName, price, status, image1, duration };
     // console.log("body", body);
     setState({
       ...state,
@@ -199,7 +206,7 @@ const ServiceProvider = (props) => {
         ...state,
         status: "success",
       });
-      message.success("Ажилчин амжилттай шинэчлэлээ");
+      message.success("Үйлчилгээ амжилттай шинэчлэлээ");
       // CompanyBydetails(companyId)
       // console.log('2222')
     } catch (err) {
@@ -220,7 +227,7 @@ const ServiceProvider = (props) => {
   //
   //
   //
-  const DeleteService = async (value) => {
+  const DeleteService = async (id) => {
     setState({
       ...state,
       status: "loading",
@@ -228,7 +235,7 @@ const ServiceProvider = (props) => {
     });
 
     var config = {
-      url: `/services/${value}`,
+      url: `/services/${id}`,
       method: "delete",
       // data: {
       //   ...body,
@@ -242,7 +249,7 @@ const ServiceProvider = (props) => {
         ...state,
         status: "success",
       });
-      message.success("Ажилчин амжилттай устлаа");
+      message.success("Үйлчилгээ амжилттай устлаа");
       // success();
     } catch (err) {
       console.log(err);

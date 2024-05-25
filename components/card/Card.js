@@ -1,15 +1,38 @@
 import React, { useEffect, useState } from "react";
 // import moment from "moment";
-import { Card } from "antd";
+import { Card, message } from "antd";
+message.config({
+  top: 100,
+  duration: 3,
+  maxCount: 3,
+  rtl: true,
+  prefixCls: "my-message",
+  style: { fontSize: "30px" },
+});
 
 const Cards = ({ data, events }) => {
   // const { data, events } = props;
 
-  useEffect(() => {}, []);
+  // useEffect(() => {}, []);
   const service_clicked = () => {
     // console.log("service_clicked", data.id);
-    events.handleClick(data?.id, data?.serviceName, data?.price);
-    events.loadArtistByService(data?.id);
+    // const detail = localStorage.getItem("beauty_detail");
+
+    // const initialData1 = detail === "undefined" ? null : detail;
+    // var userDetail = initialData1 === null ? {} : JSON.parse(initialData1);
+    // // console.log("beauty_detail", userDetail);
+    if (!data?.userDetail?.customer) {
+      // router.push("/");
+      message.error("Та нэвтэрч орон захиалгаа өгнө үү !!!");
+    } else {
+      events.handleClick(
+        data?.id,
+        data?.serviceName,
+        data?.price,
+        data?.duration
+      );
+      events.loadArtistByService(data?.id);
+    }
   };
   return (
     <Card

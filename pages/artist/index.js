@@ -2,12 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import moment from "moment";
 
 // global state
 import useAuth from "../../hooks/useAuth";
 import useBooking from "../../hooks/useBooking";
-import useEmployee from "../../hooks/useArtist";
+import useArtist from "../../hooks/useArtist";
 import useService from "../../hooks/useService";
+import useTimeTable from "../../hooks/useTimetable";
 import useReport from "../../hooks/useReport";
 
 // design components
@@ -15,24 +17,30 @@ import MainLayout from "../../layouts/main";
 import DataDisplayer from "../../components/displayer";
 import { Table, Button, Row, Col, Modal, Tabs, message } from "antd";
 // USER
-import UserMenu from "../../components/admin/customer/customerMenu";
-import CreateUser from "../../components/admin/customer/createCustomer";
-import UpdateUser from "../../components/admin/customer/updateCustomer";
+import CustomerMenu from "../../components/admin/customer/customerMenu";
+import CreateCustomer from "../../components/admin/customer/createCustomer";
+import UpdateCustomer from "../../components/admin/customer/updateCustomer";
 // EMPLOYEE
-import EmployeeMenu from "../../components/admin/artist/artistMenu";
-import CreateEmployee from "../../components/admin/artist/createArtist";
-import UpdateEmployee from "../../components/admin/artist/updateArtist";
+import ArtistMenu from "../../components/admin/artist/artistMenu";
+import CreateArtist from "../../components/admin/artist/createArtist";
+import UpdateArtist from "../../components/admin/artist/updateArtist";
 // SERVICE
 import ServiceMenu from "../../components/admin/service/serviceMenu";
 import CreateService from "../../components/admin/service/createService";
 import UpdateService from "../../components/admin/service/updateService";
 // ORDER
-import OrderMenu from "../../components/admin/orders/orderMenu";
-import CreateOrder from "../../components/admin/orders/createOrder";
-import UpdateOrder from "../../components/admin/orders/updateOrder";
+import BookingMenu from "../../components/admin/orders/EmployeeOrdersMenu";
+import CreateBooking from "../../components/admin/orders/createEmployeeOrder";
+import UpdateBooking from "../../components/admin/orders/updateBooking";
+
+// TIMETABLE
+import TimeTableMenu from "../../components/admin/timetable/artistTimetableMenu";
+import CreateTimetable from "../../components/admin/timetable/artistCreateTimetable";
+
 // REPORT
-import AttendanceMenu from "../../components/admin/report/attendanceMenu";
+import ReportMenu from "../../components/admin/report/reportMenu";
 // import OrlogoMenu from "../../components/admin/report/orlogoMenu";
+
 const render = ({ data, events, tr }) => {
   // console.log("dataORder", data?.orderList);
   // const dataDetails = [...data?.room];
@@ -40,29 +48,35 @@ const render = ({ data, events, tr }) => {
   const Data = [
     {
       id: 1,
+      // key:1,
       title: "Үйлчлүүлэгч",
-      children: <UserMenu data={data} events={events} />,
+      children: <CustomerMenu data={data} events={events} />,
     },
-    {
-      id: 2,
-      title: "Ажилчин",
-      children: <EmployeeMenu data={data} events={events} />,
-    },
-    {
-      id: 3,
-      title: "Үйлчилгээ",
-      children: <ServiceMenu data={data} events={events} />,
-    },
+    // {
+    //   id: 2,
+    //   title: "Ажилчин",
+    //   children: <ArtistMenu data={data} events={events} />,
+    // },
+    // {
+    //   id: 3,
+    //   title: "Үйлчилгээ",
+    //   children: <ServiceMenu data={data} events={events} />,
+    // },
     {
       id: 3,
       title: "Захиалга",
-      children: <OrderMenu data={data} events={events} />,
+      children: <BookingMenu data={data} events={events} />,
     },
     {
       id: 4,
-      title: "Тайлан",
-      children: <AttendanceMenu data={data} events={events} />,
+      title: "Ажиллах хуваарь",
+      children: <TimeTableMenu data={data} events={events} />,
     },
+    // {
+    //   id: 5,
+    //   title: "Тайлан",
+    //   children: <ReportMenu data={data} events={events} />,
+    // },
     // {
     //   id: 4,
     //   title: "Орлого",
@@ -114,8 +128,9 @@ function Presentation() {
   const router = useRouter();
   const user = useAuth();
   const order = useBooking();
-  const employee = useEmployee();
+  const employee = useArtist();
   const service = useService();
+  const timetable = useTimeTable();
   const report = useReport();
 
   useEffect(() => {
@@ -123,15 +138,17 @@ function Presentation() {
       await user.getAllUsers();
       await employee.loadAllArtist();
       await service.loadAllServices();
+      await service.loadAllServicesByGroups();
       await order.getAllOrders();
-      const dateRange = {
-        startDate: "2023/01/01",
-        endDate: "2023/12/31",
-      };
-      await report.getTotalIncome(dateRange);
+      await timetable.getAllArtist_Timetable();
+      // const dateRange = {
+      //   startDate: "2023/01/01",
+      //   endDate: "2023/12/31",
+      // };
+      // await report.getTotalIncome(dateRange);
       // await report.getEmployeeIncome();
       // await report.getServiceIncome();
-      await report.getAttendance();
+      // await report.getAttendance();
     };
     // if (!localStorage.getItem("accessToken")) {
     //   router.push("/");
@@ -147,7 +164,7 @@ function Presentation() {
       userDetail?.artist?.status !== "1"
     ) {
       router.push("/");
-      message.error("Та админ эрхээр нэвтэрч орно уу!");
+      message.error("Та artist эрхээр нэвтэрч орно уу!");
     }
     // console.log("useState");
     getUserAndOrder();
@@ -155,6 +172,13 @@ function Presentation() {
       // this now gets called when the component unmounts
     };
   }, []);
+
+  if (typeof window !== "undefined") {
+    const detail = localStorage.getItem("beauty_detail");
+
+    const initialData1 = detail === "undefined" ? null : detail;
+    var userDetail = initialData1 === null ? {} : JSON.parse(initialData1);
+  }
 
   const [mainForm, setMainForm] = useState({
     formType: "",
@@ -178,11 +202,11 @@ function Presentation() {
     // console.log("data", data?.form?.data);
     // console.log(data?.form?.data?.type)
     switch (type) {
-      // USER
+      // CUSTOMER
       case "createUserForm":
-        return <CreateUser data={data} events={events} />;
+        return <CreateCustomer data={data} events={events} />;
       case "updateUserForm":
-        return <UpdateUser data={data} events={events} />;
+        return <UpdateCustomer data={data} events={events} />;
       case "deleteUserForm":
         return (
           <div>
@@ -200,11 +224,11 @@ function Presentation() {
             </div>
           </div>
         );
-      // EMPLOYEE
+      // ARTIST
       case "createEmployeeForm":
-        return <CreateEmployee data={data} events={events} />;
+        return <CreateArtist data={data} events={events} />;
       case "updateEmployeeForm":
-        return <UpdateEmployee data={data} events={events} />;
+        return <UpdateArtist data={data} events={events} />;
       case "deleteEmployeeForm":
         return (
           <div>
@@ -212,7 +236,7 @@ function Presentation() {
             <div className="my-3 flex">
               <Button
                 onClick={() => {
-                  handleDeleteUser(data?.form?.data?.id);
+                  handleDeleteEmployee(data?.form?.data?.id);
                 }}
                 type="primary"
                 danger
@@ -246,10 +270,32 @@ function Presentation() {
         );
       // ORDER
       case "createOrderForm":
-        return <CreateOrder data={data} events={events} />;
+        return <CreateBooking data={data} events={events} />;
       case "updateOrderForm":
-        return <UpdateOrder data={data} events={events} />;
+        return <UpdateBooking data={data} events={events} />;
       case "deleteOrderForm":
+        return (
+          <div>
+            {data?.form?.message}
+            <div className="my-3 flex">
+              <Button
+                onClick={() => {
+                  handleDeleteOrder(data?.form?.data?.id);
+                }}
+                type="primary"
+                danger
+              >
+                Тийм
+              </Button>
+            </div>
+          </div>
+        );
+      // TIMETABLE
+      case "createTimetableForm":
+        return <CreateTimetable data={data} events={events} />;
+      case "updateTimetableForm":
+        return <UpdateBooking data={data} events={events} />;
+      case "deleteTimetableForm":
         return (
           <div>
             {data?.form?.message}
@@ -287,6 +333,7 @@ function Presentation() {
     });
     user.getAllUsers();
   };
+
   const handleUpdateUser = async (value) => {
     await user.UpdateUser(value);
     setMainForm({
@@ -294,6 +341,7 @@ function Presentation() {
     });
     user.getAllUsers();
   };
+
   const handleDeleteUser = async (value) => {
     await user.DeleteUser(value);
     setMainForm({
@@ -305,48 +353,51 @@ function Presentation() {
   //
   // EMPLOYEE FUNCTIONS
   const handleCreateEmployee = async (value) => {
-    await employee.CreateEmployees(value);
+    await employee.CreateArtist(value);
     setMainForm({
       visible: false,
     });
-    employee.loadAllEmployees();
+    employee.loadAllArtist();
   };
   const handleUpdateEmployee = async (value) => {
-    await employee.UpdateEmployees(value);
+    await employee.UpdateArtist(value);
     setMainForm({
       visible: false,
     });
-    employee.loadAllEmployees();
+    employee.loadAllArtist();
   };
   const handleDeleteEmployee = async (value) => {
-    await employee.DeleteEmployees(value);
+    await employee.DeleteArtist(value);
     setMainForm({
       visible: false,
     });
-    employee.loadAllEmployees();
+    employee.loadAllArtist();
   };
   //
   //
   // SERVICE FUNCTIONS
-  const handleCreateOrder = async (value) => {
-    await order.createOrder(
-      value?.userId,
-      value?.serviceId,
-      value?.employeeId,
-      value?.ognoo.format("YYYY/MM/DD"),
-      value?.time.format("HH:00")
+  const handleCreateOrder = async (values) => {
+    let timeString = values?.time.format("HH:00:00");
+    let originalTime = moment(timeString, "HH:mm:ss");
+    let updatedTime = originalTime.add(1, "hours");
+    let formattedUpdatedTime = updatedTime.format("HH:mm:ss");
+    // console.log(formattedUpdatedTime);
+    await order.createBooking(
+      values?.customerId,
+      values?.serviceId,
+      values?.artistId,
+      values?.date.format("YYYY-MM-DD"),
+      values?.time.format("HH:00:00"),
+      formattedUpdatedTime
     );
+    // timetable.clearTimetable();
     setMainForm({
       visible: false,
     });
     order.getAllOrders();
   };
   const handleUpdateOrder = async (value) => {
-    await order.UpdateOrder(
-      value?.id,
-      value?.ognoo.format("YYYY/MM/DD"),
-      value?.time.format("HH:00")
-    );
+    await order.UpdateOrder(value);
     setMainForm({
       visible: false,
     });
@@ -386,12 +437,39 @@ function Presentation() {
   const getTotalIncome = async (value) => {
     await report.getTotalIncome(value);
   };
-  const getEmployeeIncome = async (value) => {
-    await report.getEmployeeIncome(value);
+  const getArtistIncome = async (value) => {
+    await report.getArtistIncome(value);
   };
   const getServiceIncome = async (value) => {
     await report.getServiceIncome(value);
   };
+  //
+  //
+  // Timetable Functions
+  const loadTimeTable = (value) => {
+    console.log("loadTimeTable", value);
+    timetable.getArtistTimetableById(value);
+  };
+  const loadArtistByService = (value) => {
+    employee.loadArtistByService(value);
+  };
+
+  const createArtistTimetable = async (values) => {
+    await timetable.createArtistTimetable(
+      values?.artistId,
+      values?.date.format("YYYY-MM-DD"),
+      values?.startTime.format("HH:00:00"),
+      values?.endTime.format("HH:00:00")
+    );
+    setMainForm({
+      visible: false,
+    });
+    await timetable.getAllArtist_Timetable();
+  };
+  // console.log(
+  //   "service?.state?.just_service_list",
+  //   service?.state?.just_service_list
+  // );
   return (
     <React.Fragment>
       <h1
@@ -401,7 +479,7 @@ function Presentation() {
           fontWeight: "500",
         }}
       >
-        Админ хэсэг
+        Артист хэсэг
       </h1>
       {user?.contextHolder}
       {employee?.contextHolder}
@@ -410,15 +488,20 @@ function Presentation() {
       {report?.contextHolder}
       <DataDisplayer
         // error={user?.state?.message}
-        status={"success"}
+        status={user?.state?.status}
         // status={user?.state?.status}
         data={{
+          artistId: userDetail?.artist?.id,
           userList: user?.state?.list,
           orderList: order?.state?.list,
           employeeList: employee?.state?.list,
+          artistsByService: employee?.state?.artistsByService,
           serviceList: service?.state?.list,
+          just_service_list: service?.state1?.just_service_list,
+          timetable_list: timetable?.state?.list,
+          All_artist_timetables: timetable?.state?.All_artist_timetables,
           reportList: report?.state,
-          orlogo: report?.state2,
+          // orlogo: report?.state2,
           form: mainForm,
         }}
         render={render}
@@ -426,11 +509,11 @@ function Presentation() {
           handleCancel: handleCancel,
           handleFormData: handleFormData,
           handleFormRender: handleFormRender,
-          // users
+          // Customer
           handleCreateUser: handleCreateUser,
           handleUpdateUser: handleUpdateUser,
           handleDeleteUser: handleDeleteUser,
-          // employee
+          // Artist
           handleCreateEmployee: handleCreateEmployee,
           handleUpdateEmployee: handleUpdateEmployee,
           handleDeleteEmployee: handleDeleteEmployee,
@@ -442,9 +525,14 @@ function Presentation() {
           handleCreateOrder: handleCreateOrder,
           handleDeleteOrder: handleDeleteOrder,
           handleUpdateOrder: handleUpdateOrder,
+          loadTimeTable: loadTimeTable,
+          loadArtistByService: loadArtistByService,
+          // report
           getTotalIncome: getTotalIncome,
-          getEmployeeIncome: getEmployeeIncome,
+          getArtistIncome: getArtistIncome,
           getServiceIncome: getServiceIncome,
+          // timetable
+          createArtistTimetable: createArtistTimetable,
         }}
       />
     </React.Fragment>

@@ -11,6 +11,7 @@ const initialState = {
   modal: false,
   detail: {},
   list: [],
+  All_artist_timetables: [],
 };
 message.config({
   top: 100,
@@ -69,7 +70,7 @@ const TimetableProvider = (props) => {
       var response = await axios(config);
       // console.log("response", response);
       const { data } = response.data;
-      console.log("data", data);
+      // console.log("data", data);
       setState({
         ...state,
         status: "success",
@@ -88,7 +89,7 @@ const TimetableProvider = (props) => {
   //
   //
   //
-  const loadAllServicesByGroups = async () => {
+  const getAllArtist_Timetable = async () => {
     setState({
       ...state,
       status: "loading",
@@ -96,7 +97,7 @@ const TimetableProvider = (props) => {
     });
 
     var config = {
-      url: "/services/servicesByGroups",
+      url: "/artist_timetables",
       method: "get",
       data: {},
     };
@@ -106,11 +107,11 @@ const TimetableProvider = (props) => {
       var response = await axios(config);
       // console.log("response", response);
       const { data } = response.data;
-      console.log("data", data);
+      // console.log("data", data);
       setState({
         ...state,
         status: "success",
-        list: data,
+        All_artist_timetables: data,
         message: "",
       });
     } catch (err) {
@@ -129,7 +130,7 @@ const TimetableProvider = (props) => {
   //
   //
   //
-  const CreateService = async (value) => {
+  const createArtistTimetable = async (artistId, date, startTime, endTime) => {
     // let body = { value };
     // console.log("body", body);
     setState({
@@ -140,10 +141,13 @@ const TimetableProvider = (props) => {
     // console.log(body)
 
     var config = {
-      url: "/services",
+      url: `/artist_timetables/${artistId}`,
       method: "post",
       data: {
-        ...value,
+        artistId: artistId,
+        date: date,
+        startTime: startTime,
+        endTime: endTime,
       },
     };
     LoadingFun();
@@ -154,7 +158,7 @@ const TimetableProvider = (props) => {
         ...state,
         status: "success",
       });
-      message.success("Ажилчин амжилттай үүслээ.");
+      message.success("Timetable амжилттай үүслээ.");
       // CompanyBydetails(companyId)
       // console.log('2222')
     } catch (err) {
@@ -270,8 +274,8 @@ const TimetableProvider = (props) => {
         state,
         contextHolder,
         getArtistTimetableById,
-        loadAllServicesByGroups,
-        CreateService,
+        getAllArtist_Timetable,
+        createArtistTimetable,
         UpdateService,
         DeleteService,
         clearTimetable,

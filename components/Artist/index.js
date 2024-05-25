@@ -36,7 +36,7 @@ export default function Artist() {
                       <div>
                         <img
                           className=".max-w-[300px]"
-                          src="https://assets-global.website-files.com/61558d52bbfeb85ec85163bd/6156d8f341101872f9fbd0e0_expert-small-image-1-p-500.jpeg"
+                          src="http://localhost:3000/img/artist_avatar.png"
                         />
                       </div>
                       <div className="mb-5 h-auto px-4 .bg-[#ebf3f5] text-left text-[18px] .font-bold">
