@@ -76,8 +76,9 @@ export default function Agenda({ data, events }) {
   console.log("data?.reportList", data?.reportList);
   return (
     <div>
+      <h2 className="text-center mt-4 text-2xl font-bold">Тайлан</h2>
       <div>
-        <h3>Total Income</h3>
+        <h3 className="font-bold">Нийт орлого</h3>
         <OrlogoForm data={data} events={events} />
       </div>
       <div className="mt-2 p-1 .bg-blue-200">
@@ -93,7 +94,7 @@ export default function Agenda({ data, events }) {
         {/* ))} */}
       </div>
       <div className="my-12">
-        <h3>Income by Service</h3>
+        <h3 className="font-bold">Үйлчилгээгээр орлого харах</h3>
         <ServiceIncomeForm data={data} events={events} />
         <div className="">
           <p className="bg-blue-200">
@@ -104,7 +105,7 @@ export default function Agenda({ data, events }) {
         </div>
       </div>
       <div>
-        <h3>Income by Employee</h3>
+        <h3 className="font-bold">Артистаар харах</h3>
         <EmployeeIncomeForm data={data} events={events} />
         <div className="">
           <p className="bg-blue-200">

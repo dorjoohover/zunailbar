@@ -64,7 +64,6 @@ const TopBar = () => {
       <div className="flex">
         <a href="/" className="pr-4">
           <img
-            // src="https://res.cloudinary.com/dfhvxswh6/image/upload/v1691979048/326238817_843833970046776_3151643487262701768_n_wbwl14.png"
             src="http://localhost:3000/img/zunailbar_logo.jpg"
             className="rounded-full .mb-2"
             width="60"
@@ -98,7 +97,7 @@ const TopBar = () => {
         <a href="/" className="mr-3 hover:text-cyan-600 mt-2">
           Нүүр{" "}
         </a>
-        <a href="/about" className="mr-3 hover:text-cyan-600  mt-2">
+        <a href="#aboutus" className="mr-3 hover:text-cyan-600  mt-2">
           Бидний тухай{" "}
         </a>{" "}
         <a href="#footer" className="mr-3 hover:text-cyan-600 mt-2">
@@ -141,26 +140,32 @@ const TopBar = () => {
           >
             <div className="pt-10 font-semibold bg-white">
               <a href="/" className="px-4 hover:text-cyan-600  ">
-                HOME{" "}
+                Нүүр хуудас{" "}
               </a>
-              <a href="/about" className="px-4 block pt-4 hover:text-cyan-600 ">
-                ABOUT{" "}
+              <a
+                href="#aboutus"
+                className="px-4 block pt-4 hover:text-cyan-600 "
+              >
+                Бидний тухай{" "}
               </a>
-              <a href="/pages" className="px-4 pt-4 block hover:text-cyan-600 ">
-                PAGES{" "}
+              <a
+                href="/services"
+                className="px-4 pt-4 block hover:text-cyan-600 "
+              >
+                Үйлчилгээнүүд{" "}
               </a>
               <a
                 href="/contactUs"
                 className="px-4 pt-4 pb-4 block hover:text-cyan-600 "
               >
-                CONTACT US{" "}
+                Холбоо барих{" "}
               </a>
               <a
                 href="/auth/sign-in"
                 className="px-4 pb-4 block hover:text-cyan-600 relative right-1 "
               >
                 <button className="border-slate-500  rounded-xl border w-[150px] h-8  hover:text-cyan-600">
-                  Захиалга хийх{" "}
+                  Нэвтрэх{" "}
                 </button>
               </a>
               {checkAuth()}

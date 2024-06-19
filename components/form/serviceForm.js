@@ -10,9 +10,8 @@ import {
   TimePicker,
   Select,
 } from "antd";
-// import dayjs from "dayjs";
-// import styles from "./CustomTimePicker.module.css";
 import moment from "moment";
+
 const serviceForm = ({
   data,
   artist_list,
@@ -37,19 +36,10 @@ const serviceForm = ({
   const initialData1 = detail === "undefined" ? null : detail;
   var initialData = initialData1 === null ? {} : JSON.parse(initialData1);
 
-  // const dateFormat = "YYYY/MM/DD";
-  // const defaultTime = moment().hour(0).minute(0);
-
-  // const artistList = [];
-  // artist_list.map((item, index) => {
-  //   artistList.push({ value: item?.id, label: item?.firstName });
-  // });
-
   const artistList2 = [];
   artistsByService.map((item, index) => {
     artistList2.push({ value: item?.id, label: item?.firstName });
   });
-  // const today = moment();
 
   const handleFormFinish = (values) => {
     // let timeString = values?.time.format("HH:00:00");
@@ -59,20 +49,19 @@ const serviceForm = ({
     // console.log(formattedUpdatedTime);
     events.handleOnFinish(values);
     setSelectedDate(null);
-    // console.log(
-    //   "values",
-    //   values?.customerId,
-    //   values?.serviceId,
-    //   values?.employeeId,
-    //   values?.ognoo.format("YYYY-MM-DD") +
-    //     " " +
-    //     values?.time.format("HH:00:00"),
-    //   values?.ognoo.format("YYYY-MM-DD") + " " + formattedUpdatedTime
-    // );
+    setselectedArtist(null);
+    setSelectedTime(null);
+    form.setFieldsValue({
+      customerId: null,
+      serviceId: null,
+      duration: data?.duration,
+      artistId: null,
+      date: null,
+      time: null,
+    });
   };
 
   const handleSelectChange = (value) => {
-    // Call loadTimeTable function with the selected value
     setselectedArtist(value);
     events.loadTimeTable(value);
   };
@@ -130,14 +119,16 @@ const serviceForm = ({
   //   }
   //   return [];
   // };
-  // console.log("timetable_list", timetable_list);
-  // console.log("artistList2", artistList2);
+
   return (
     <div>
       <div className="text-[18px] font-semibold ">
         Үйлчилгээний нэр: {data?.name}
       </div>
-      <div className="text-[18px] font-semibold">Үнэ: {data?.price}</div>
+      <div className="text-[18px] font-semibold">Үнэ: {data?.price}₮</div>{" "}
+      <div className="text-[18px] font-semibold">
+        Үргэлжлэх хугацаа: {data?.duration} цаг
+      </div>
       <Form
         layout="vertical"
         form={form}
@@ -148,7 +139,8 @@ const serviceForm = ({
         <Form.Item name="serviceId" hidden>
           <InputNumber />
         </Form.Item>
-        <Form.Item name="duration" label="Үргэлжлэх хугацаа (цагаар):">
+
+        <Form.Item hidden name="duration" label="Үргэлжлэх хугацаа (цагаар):">
           <InputNumber disabled />
         </Form.Item>
         <Form.Item name="customerId" hidden>
@@ -164,13 +156,14 @@ const serviceForm = ({
             },
           ]}
         >
-          {/* <InputNumber />
-           */}
           <Select
+            showSearch
+            filterOption={(input, option) =>
+              option.label.toLowerCase().includes(input.toLowerCase())
+            }
             onChange={handleSelectChange}
             style={{ width: 300 }}
             options={artistList2}
-            // options={artistList}
           />
         </Form.Item>
         <Form.Item
@@ -210,20 +203,6 @@ const serviceForm = ({
             format="HH"
             disabledHours={disabledHours}
             hideDisabledOptions={true}
-            // disabledHours={() => {
-            //   const selectedData = timetable_list.find(
-            //     (data) => data.date === selectedDate
-            //   );
-            //   if (selectedData) {
-            //     const availableHours = selectedData.timetable.map((time) =>
-            //       moment(time, "HH:mm:ss").hours()
-            //     );
-            //     return Array.from({ length: 24 }, (_, i) => i).filter(
-            //       (hour) => !availableHours.includes(hour)
-            //     );
-            //   }
-            //   return [];
-            // }}
           />
         </Form.Item>
         {/* submit button */}

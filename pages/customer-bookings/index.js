@@ -16,8 +16,9 @@ import useAuth from "../../hooks/useAuth";
 import MainLayout from "../../layouts/main";
 import DataDisplayer from "../../components/displayer";
 import Cards from "../../components/card/Card";
-import RatingForm from "../../components/rating/ratingForm";
-import RateButton from "../../components/rating/button";
+import RatingForm from "../../components/customer-bookings/ratingForm";
+import RateButton from "../../components/customer-bookings/button";
+import UpdateCustomerBooking from "../../components/customer-bookings/updateCustomerBooking";
 
 const render = ({ data, events }) => {
   //   console.log("data services", data);
@@ -63,6 +64,8 @@ const render = ({ data, events }) => {
               <th className="border-2">Эхлэх цаг</th>
               <th className="border-2">Дуусах цаг</th>
               <th className="border-2">Үнэлгээ</th>
+              <th className="border-2">Устгах</th>
+              {/* <th className="border-2">Өөрчлөх</th> */}
             </tr>
           </thead>
           <tbody>
@@ -74,7 +77,6 @@ const render = ({ data, events }) => {
                     key={index}
                   >
                     <td className="border-2">{index + 1}.</td>
-                    {/* <div>{item.id}</div> */}
                     <td className="border-2">{checkArtistId(item.artistId)}</td>
                     <td className="border-2">
                       {checkServiceId(item.serviceId)}
@@ -83,10 +85,66 @@ const render = ({ data, events }) => {
                     <td className="border-2">{item.startTime}</td>
                     <td className="border-2">{item.endTime}</td>
                     <td className="border-2">
-                      {/* <Button onClick={events.handleClick}>Үнэлгээ өгөх</Button>
-                       */}
-                      <RateButton events={events} data={item} />
+                      <Button
+                        onClick={() =>
+                          events.handleFormData({
+                            header: "Үнэлгээ өгөх",
+                            formType: "rateBookingForm",
+                            form: "put",
+                            data: item,
+                          })
+                        }
+                        type="primary"
+                        ghost
+                      >
+                        Үнэлгээ өгөх
+                      </Button>
                     </td>
+                    <td className="border-2">
+                      <Button
+                        onClick={() =>
+                          events.handleFormData({
+                            header: "Захиалга устгах",
+                            formType: "deleteOrderForm",
+                            message:
+                              item?.date +
+                              "огноотой " +
+                              item?.startTime +
+                              " цагтай " +
+                              " >> захиалгыг" +
+                              "-г устгах уу?",
+                            data: {
+                              id: item?.id,
+                            },
+                          })
+                        }
+                        type="primary"
+                        danger
+                      >
+                        Устгах
+                      </Button>
+                    </td>
+                    {/* <td className="border-2">
+                      <Button
+                        onClick={() =>
+                          events.handleFormData({
+                            header: "Захиалга өөрчлөх",
+                            formType: "updateOrderForm",
+                            form: "put",
+                            // data: {
+                            //   id: item?.id,
+                            //   date: item?.ognoo,
+                            //   time: item?.time,
+                            // },
+                            data: { item },
+                          })
+                        }
+                        type="primary"
+                        ghost
+                      >
+                        Өөрчлөх
+                      </Button>
+                    </td> */}
                   </tr>
                 );
               })}
@@ -94,21 +152,24 @@ const render = ({ data, events }) => {
         </table>
       </div>
       <Modal
-        title={"Үнэлгээ өгөх форм"}
+        // title={"Үнэлгээ өгөх форм"}
         centered
-        open={data?.modal?.modalState}
+        // open={data?.modal?.modalState}
+        title={data?.form?.header}
+        open={data?.form?.visible}
         onCancel={() => events.handleCloseModal()}
         width={1000}
         okButtonProps={{ style: { display: "none" } }}
         cancelButtonProps={{ style: { display: "none" } }}
       >
-        <RatingForm
+        {events.handleFormRender(data?.form?.formType, data, events)}
+        {/* <RatingForm
           data={data?.modal?.modalData}
           artist_list={data?.artist_list}
           // timetable_list={data?.timetable_list}
           just_service_list={data?.just_service_list}
           events={events}
-        />
+        /> */}
       </Modal>
     </div>
   );
@@ -127,6 +188,7 @@ function Presentation() {
     service.loadAllServices();
     artist.loadAllArtist();
     auth.loadBookingsByCustomerId(initialData?.customer?.id);
+    // auth.getRatingByCustomerId(initialData?.customer?.id);
     // console.log("presentation");
   }, []);
   if (typeof window !== "undefined") {
@@ -135,20 +197,80 @@ function Presentation() {
     var initialData = initialData1 === null ? {} : JSON.parse(initialData1);
   }
 
-  const handleOnClick = (item) => {
-    // console.log("handleOnClick", item);
-    setModal(true);
-    setModal({
-      ...modal,
-      modalState: true,
-      modalData: item,
+  const [mainForm, setMainForm] = useState({
+    formType: "",
+    data: "",
+    visible: false,
+    header: "",
+    message: "",
+  });
+  const handleFormData = (e) => {
+    setMainForm({
+      func: e.form,
+      header: e.header,
+      data: e.data,
+      visible: true,
+      formType: e.formType,
+      message: e.message,
+      // id: auth?.state?.loggedInCompany,
     });
   };
+
+  const handleFormRender = (type, data, events) => {
+    // console.log("data", data?.form?.data);
+    // console.log(data?.form?.data?.type)
+    switch (type) {
+      // ORDER
+      case "rateBookingForm":
+        return (
+          <RatingForm
+            data={data?.form?.data}
+            artist_list={data?.artist_list}
+            just_service_list={data?.just_service_list}
+            events={events}
+          />
+        );
+      case "updateOrderForm":
+        return <UpdateCustomerBooking data={data} events={events} />;
+      case "deleteOrderForm":
+        return (
+          <div>
+            {data?.form?.message}
+            <div className="my-3 flex">
+              <Button
+                onClick={() => {
+                  handleDeleteOrder(data?.form?.data?.id);
+                }}
+                type="primary"
+                danger
+              >
+                Тийм
+              </Button>
+            </div>
+          </div>
+        );
+      default:
+        return <div>hi</div>;
+    }
+  };
+
+  // const handleOnClick = (item) => {
+  //   // console.log("handleOnClick", item);
+  //   setModal(true);
+  //   setModal({
+  //     ...modal,
+  //     modalState: true,
+  //     modalData: item,
+  //   });
+  // };
   const handleCloseModal = () => {
-    setModal({
-      ...modal,
-      modalState: false,
-      modalData: "",
+    // setModal({
+    //   ...modal,
+    //   modalState: false,
+    //   modalData: "",
+    // });
+    setMainForm({
+      visible: false,
     });
   };
   const handleOnFinish = (values) => {
@@ -162,6 +284,21 @@ function Presentation() {
 
   const loadArtistByService = (value) => {
     artist.loadArtistByService(value);
+  };
+
+  const handleDeleteOrder = async (value) => {
+    await booking.DeleteOrder(value);
+    setMainForm({
+      visible: false,
+    });
+    auth.loadBookingsByCustomerId(initialData?.customer?.id);
+  };
+  const handleUpdateOrder = async (value) => {
+    await booking.UpdateOrder(value);
+    setMainForm({
+      visible: false,
+    });
+    auth.loadBookingsByCustomerId(initialData?.customer?.id);
   };
   return (
     <React.Fragment>
@@ -178,6 +315,7 @@ function Presentation() {
         error={auth?.state?.message}
         status={auth?.state?.status}
         data={{
+          form: mainForm,
           service_list: service?.state?.list,
           just_service_list: service?.state1?.just_service_list,
           modal: modal,
@@ -189,11 +327,15 @@ function Presentation() {
         render={render}
         // tr={t}
         events={{
-          handleClick: handleOnClick,
+          // handleClick: handleOnClick,
           handleCloseModal: handleCloseModal,
           handleOnFinish: handleOnFinish,
           loadTimeTable: loadTimeTable,
           loadArtistByService: loadArtistByService,
+          handleFormData: handleFormData,
+          handleFormRender: handleFormRender,
+          handleDeleteOrder: handleDeleteOrder,
+          handleUpdateOrder: handleUpdateOrder,
         }}
       />
     </React.Fragment>

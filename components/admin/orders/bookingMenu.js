@@ -1,123 +1,110 @@
-import React from "react";
-import { Table, Button } from "antd";
+import React, { useState } from "react";
+import { Table, Button, Input } from "antd";
 import Scheduler from "../../scheduler/BookingScheduler";
-// import moment from "moment";
 
 export default function Agenda({ data, events }) {
-  // console.log(data);
+  const [searchPhone, setSearchPhone] = useState("");
+
   const columns = [
     {
       title: "№",
       width: 19,
       dataIndex: "list",
       key: "list",
-      // fixed: "left",
     },
     {
-      title: "customerId",
+      title: "Үйлчлүүлэгийн дугаар",
       width: 60,
       dataIndex: "customerId",
       key: "customerId",
-      // fixed: "left",
     },
     {
-      title: "artistName",
+      title: "Артистийн нэр",
       dataIndex: "artistName",
       key: "artistName",
       width: 60,
     },
     {
-      title: "serviceId",
+      title: "Үйлчилгээний нэр",
       dataIndex: "serviceId",
       key: "serviceId",
       width: 80,
     },
     {
-      title: "date",
+      title: "Огноо",
       dataIndex: "date",
       key: "date",
       width: 40,
     },
     {
-      title: "startTime",
+      title: "Эхлэх цаг",
       dataIndex: "startTime",
       key: "startTime",
       width: 40,
     },
     {
-      title: "endTime",
+      title: "Дуусах цаг",
       key: "endTime",
-      // fixed: "right",
       width: 40,
       dataIndex: "endTime",
     },
     {
-      title: "updatedAt",
-      key: "updatedAt",
-      // fixed: "right",
-      width: 40,
-      dataIndex: "updatedAt",
-    },
-    {
-      title: "update",
+      title: "Өөрлчөх",
       key: "update",
-      // fixed: "right",
       width: 40,
       dataIndex: "update",
     },
     {
-      title: "delete",
+      title: "Устгах",
       key: "delete",
-      // fixed: "right",
       width: 40,
       dataIndex: "delete",
     },
+    {
+      title: "updatedAt",
+      key: "updatedAt",
+      width: 40,
+      dataIndex: "updatedAt",
+    },
   ];
-  // console.log(Maindata)
+
   const checkUserIdforPhone = (userId) => {
-    var one = "";
+    var phone = "";
     data?.userList.forEach((element) => {
       if (element?.id === userId) {
-        // userSet.push(userId);
-        one = element?.phone;
+        phone = element?.phone;
       }
     });
-    return one;
+    return phone;
   };
 
   const checkEmployeeId = (employeeId) => {
-    var one = "";
+    var firstName = "";
     data?.employeeList.forEach((element) => {
       if (element?.id === employeeId) {
-        // userSet.push(userId);
-        one = element?.firstName;
+        firstName = element?.firstName;
       }
     });
-    return one;
+    return firstName;
   };
 
   const checkServiceId = (serviceId) => {
-    var one = "";
+    var serviceName = "";
     data?.just_service_list.forEach((element) => {
       if (element?.id === serviceId) {
-        // userSet.push(userId);
-        one = element?.serviceName;
+        serviceName = element?.serviceName;
       }
     });
-    return one;
+    return serviceName;
   };
 
-  const data1 = [];
   let number = 0;
-  data?.orderList.map((item, index) => {
-    // menu_titleIds.push({ menu_titleId: item });
-    number = number + 1;
-    // console.log("index", index);
-    data1.push({
+  const data1 = data?.orderList.map((item) => {
+    number += 1;
+    return {
       key: number,
       list: number,
       customerId: checkUserIdforPhone(item?.customerId),
-      // customerPhone: checkUserId(item?.customerId),
       serviceId: checkServiceId(item?.serviceId),
       artistName: checkEmployeeId(item?.artistId),
       artistId: item?.artistId,
@@ -131,16 +118,8 @@ export default function Agenda({ data, events }) {
             events.handleFormData({
               header: "Захиалга устгах",
               formType: "deleteOrderForm",
-              message:
-                item?.ognoo +
-                "огноотой " +
-                item?.time +
-                " цагтай " +
-                " >> захиалгыг" +
-                "-г устгах уу?",
-              data: {
-                id: item?.id,
-              },
+              message: `${item?.date} огноотой ${item?.startTime} цагтай >> захиалгыг -г устгах уу?`,
+              data: { id: item?.id },
             })
           }
           type="primary"
@@ -156,11 +135,6 @@ export default function Agenda({ data, events }) {
               header: "Захиалга өөрчлөх",
               formType: "updateOrderForm",
               form: "put",
-              // data: {
-              //   id: item?.id,
-              //   date: item?.ognoo,
-              //   time: item?.time,
-              // },
               data: { item },
             })
           }
@@ -170,14 +144,17 @@ export default function Agenda({ data, events }) {
           Өөрчлөх
         </Button>
       ),
-    });
+    };
   });
+
+  const filteredData = data1.filter((item) =>
+    item.customerId.includes(searchPhone)
+  );
 
   return (
     <div>
       <div className="m-2">
         <Button
-          // className="bg-blue-200 hover:bg-blue-400 hover:text-white"
           className="bg-gray-300 font-semibold"
           onClick={() =>
             events.handleFormData({
@@ -185,24 +162,25 @@ export default function Agenda({ data, events }) {
               formType: "createOrderForm",
               form: "post",
               data: data,
-              // data: [
-              //   {
-              //     label: "projectId",
-              //     value: "",
-              //   },
-              //   { label: "question", value: "" },
-              // ],
             })
           }
         >
           Өөртөө шинээр захиалга нэмэх
         </Button>
       </div>
+      <div className="m-2">
+        <Input
+          placeholder="Утасны дугаараар хайх"
+          value={searchPhone}
+          onChange={(e) => setSearchPhone(e.target.value)}
+          style={{ width: 200 }}
+        />
+      </div>
       <Table
         bordered
         pagination={{ pageSize: 30 }}
         columns={columns}
-        dataSource={data1}
+        dataSource={filteredData}
         scroll={{ x: 1500, y: 700 }}
       />
       <Scheduler data={data1} />

@@ -3,7 +3,10 @@ import { Button } from "antd";
 
 export default function Aboutus() {
   return (
-    <div className="grid sm:grid-cols-2 gap-6 px-5 sm:px-[40px] py-12 bg-[#ebf3f5]">
+    <div
+      className="grid sm:grid-cols-2 gap-6 px-5 sm:px-[40px] py-12 bg-[#ebf3f5]"
+      id="aboutus"
+    >
       <div className="grid grid-flow-row auto-rows-auto">
         <h1 className="text-[15px] text-gray-500">Тав тухтай орчин</h1>
         <h1 className="text-[45px]">Гоо сайхан таны тав тухаас эхэлдэг!</h1>

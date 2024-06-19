@@ -134,10 +134,10 @@ const UpdateServiceForm = ({ data, events }) => {
         <Form.Item label="Ажилчны нэр сонгох" name="artistId">
           <Select options={artistList} />
         </Form.Item>
-        <Form.Item name="customerId" label="customerId">
+        <Form.Item name="customerId" label="Үйлчлүүлэгийн нэр">
           <Select options={customerList} />
         </Form.Item>
-        <Form.Item name="serviceId" label="serviceId">
+        <Form.Item name="serviceId" label="Үйлчилгээ">
           <Select options={serviceList} />
         </Form.Item>
         <span className=".mb-6 font-bold text-lg">Нэмэлт үйлчилгээнүүд:</span>

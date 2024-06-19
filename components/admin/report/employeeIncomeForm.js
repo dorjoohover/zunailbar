@@ -64,7 +64,7 @@ const serviceForm = ({ data, events }) => {
         </Form.Item>
         <Form.Item>
           <Button className="bg-[#0F285F]" type="primary" htmlType="submit">
-            submit
+            Харах
           </Button>
         </Form.Item>
       </Form>

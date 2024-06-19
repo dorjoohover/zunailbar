@@ -78,7 +78,7 @@ export default function DemoApp({ data }) {
 
   return (
     <div>
-      <h1>Demo App</h1>
+      <h2>Ажиллах хуваарийн календарь</h2>
       <div style={{ marginBottom: 16 }}>
         <DatePicker onChange={handleDateChange} />
         <Button

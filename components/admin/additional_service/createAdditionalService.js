@@ -11,7 +11,7 @@ const App = ({ data, events }) => {
 
   const onFinish = (values) => {
     // console.log("values", values);
-    events.handleCreateService(values);
+    events.handleCreateAdditionalService(values);
     events.handleCancel();
   };
   const duration = [
@@ -28,12 +28,9 @@ const App = ({ data, events }) => {
 
   const [form] = Form.useForm();
   const defaultValues = {
-    serviceGroupId: defaultValueforServiceGroups,
-    serviceName: "",
+    additional_serviceName: "",
+    default_price: "",
     description: "",
-    duration: 1,
-    image1: "",
-    price: "",
   };
   useEffect(() => {
     form.setFieldsValue(defaultValues);
@@ -55,40 +52,8 @@ const App = ({ data, events }) => {
       autoComplete="off"
     >
       <Form.Item
-        label="Үйлчилгээний груп"
-        name="serviceGroupId"
-        rules={[
-          {
-            required: true,
-            message: "Та serviceGroupId аа оруулна уу.",
-          },
-        ]}
-      >
-        <Select
-          // style={{ width: 120 }}
-          // onChange={handleChange}
-          options={serviceGroups}
-        />
-      </Form.Item>
-      <Form.Item
-        label="Үргэлжлэх хугацаа"
-        name="duration"
-        rules={[
-          {
-            required: true,
-            message: "Та duration аа оруулна уу.",
-          },
-        ]}
-      >
-        <Select
-          // style={{ width: 120 }}
-          // onChange={handleChange}
-          options={duration}
-        />
-      </Form.Item>
-      <Form.Item
-        label="Үйлчилгээний нэр"
-        name="serviceName"
+        label="Нэмэлт үйлчилгээний нэр"
+        name="additional_serviceName"
         rules={[
           {
             required: true,
@@ -99,19 +64,16 @@ const App = ({ data, events }) => {
         <TextArea />
       </Form.Item>
       <Form.Item
-        label="Үнэ"
-        name="price"
+        label="Үндсэн үнэ"
+        name="default_price"
         rules={[
           {
             required: true,
-            message: "Та price оруулна уу !",
+            message: "Та default_price оруулна уу !",
           },
         ]}
       >
         <InputNumber rows={""} />
-      </Form.Item>
-      <Form.Item label="Зураг" name="image1">
-        <Input rows={""} />
       </Form.Item>
       <Form.Item label="Дэлгэрэнгүй тодорхойлт" name="description">
         <TextArea />

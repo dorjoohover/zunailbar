@@ -1,68 +1,60 @@
-import React from "react";
-import { Table, Button } from "antd";
-// import moment from "moment";
+import React, { useState } from "react";
+import { Table, Button, Input } from "antd";
 
 export default function Agenda({ data, events }) {
-  // console.log(data?.vote)
-  // console.log(data?.confirm)
-  // console.log(data)
+  const [searchPhone, setSearchPhone] = useState("");
+
   const columns = [
     {
       title: "№",
       width: 19,
       dataIndex: "list",
       key: "list",
-      // fixed: "left",
     },
     {
-      title: "status",
+      title: "Төлөв",
       width: 50,
       dataIndex: "status",
       key: "status",
-      // fixed: "left",
     },
     {
-      title: "lastName",
+      title: "Овог",
       dataIndex: "lastName",
       key: "lastName",
       width: 60,
     },
     {
-      title: "firstName",
+      title: "Нэр",
       width: 60,
       dataIndex: "firstName",
       key: "firstName",
-      // fixed: "left",
     },
     {
-      title: "email",
+      title: "И-майл",
       dataIndex: "email",
       key: "email",
       width: 80,
     },
     {
-      title: "phone",
+      title: "Утас",
       dataIndex: "phone",
       key: "phone",
       width: 40,
     },
     {
-      title: "update",
+      title: "Өөрчлөх",
       key: "update",
-      // fixed: "right",
       width: 40,
       dataIndex: "update",
     },
     {
-      title: "delete",
+      title: "Устгах",
       key: "delete",
-      // fixed: "right",
       width: 40,
       dataIndex: "delete",
     },
   ];
-  // console.log(Maindata)
-  const data1 = [];
+
   const getUserStatus = (status) => {
     if (status === "9") {
       return "Хэрэглэгч";
@@ -71,16 +63,16 @@ export default function Agenda({ data, events }) {
     } else {
       return "Админ";
     }
-    // console.log("clicked");s
-    // company.SetLogo(value.logo);
-    // router.push("/auth/login");
   };
+
   let number = 0;
-  data?.userList.map((item, index) => {
-    // menu_titleIds.push({ menu_titleId: item });
+  const filteredData = data?.userList.filter((item) =>
+    item.phone.includes(searchPhone)
+  );
+
+  const dataSource = filteredData.map((item, index) => {
     number = number + 1;
-    // console.log("index", index);
-    data1.push({
+    return {
       key: number,
       list: number,
       status: getUserStatus(item?.status),
@@ -92,10 +84,13 @@ export default function Agenda({ data, events }) {
         <Button
           onClick={() =>
             events.handleFormData({
-              // header: "Хэлэлцэх асуудал",
               formType: "deleteUserForm",
               message:
-                item?.email + " >> имайлтэй хэрэглэгчийг" + "-г устгах уу?",
+                item?.email +
+                " >> " +
+                item?.phone +
+                "  >> хэрэглэгчийг" +
+                "-г устгах уу?",
               data: {
                 id: item?.id,
               },
@@ -111,7 +106,6 @@ export default function Agenda({ data, events }) {
         <Button
           onClick={() =>
             events.handleFormData({
-              // header: "Хэлэлцэх асуудал",
               formType: "updateUserForm",
               form: "put",
               data: {
@@ -130,38 +124,38 @@ export default function Agenda({ data, events }) {
           Өөрчлөх
         </Button>
       ),
-    });
+    };
   });
 
   return (
     <div>
       <div className="m-2">
         <Button
-          // className="bg-blue-200 hover:bg-blue-400 hover:text-white"
           className="bg-gray-300 font-semibold"
           onClick={() =>
             events.handleFormData({
               header: "Хэрэглэгч нэмэх",
               formType: "createUserForm",
               form: "post",
-              // data: [
-              //   {
-              //     label: "projectId",
-              //     value: "",
-              //   },
-              //   { label: "question", value: "" },
-              // ],
             })
           }
         >
           Шинээр үйлчлүүлэгч нэмэх
         </Button>
       </div>
+      <div className="mt-4 mb-2">
+        <Input
+          placeholder="Утасны дугаараар хайх"
+          value={searchPhone}
+          onChange={(e) => setSearchPhone(e.target.value)}
+          style={{ width: 200 }}
+        />
+      </div>
       <Table
         bordered
         pagination={{ pageSize: 30 }}
         columns={columns}
-        dataSource={data1}
+        dataSource={dataSource}
         scroll={{ x: 1500, y: 700 }}
       />
     </div>

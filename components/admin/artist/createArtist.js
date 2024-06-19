@@ -55,26 +55,14 @@ const App = ({ data, events }) => {
       onFinish={onFinish}
       autoComplete="off"
     >
-      <Form.Item label="status" name="status" hidden>
+      <Form.Item label="Төлөв" name="status" hidden>
         <Input />
       </Form.Item>
-      <Form.Item label="branchId" name="branchId" hidden>
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="firstName"
-        name="firstName"
-        rules={[
-          {
-            required: true,
-            message: "Та firstName аа оруулна уу.",
-          },
-        ]}
-      >
+      <Form.Item label="Салбар" name="branchId" hidden>
         <Input />
       </Form.Item>
       <Form.Item
-        label="lastName"
+        label="Овог"
         name="lastName"
         rules={[
           {
@@ -86,7 +74,19 @@ const App = ({ data, events }) => {
         <Input />
       </Form.Item>
       <Form.Item
-        label="email"
+        label="Нэр"
+        name="firstName"
+        rules={[
+          {
+            required: true,
+            message: "Та firstName аа оруулна уу.",
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label="И-майл"
         name="email"
         rules={[
           {
@@ -98,7 +98,7 @@ const App = ({ data, events }) => {
         <Input type="email" />
       </Form.Item>
       <Form.Item
-        label="phone"
+        label="Утас"
         name="phone"
         rules={[
           {
@@ -109,17 +109,17 @@ const App = ({ data, events }) => {
       >
         <Input />
       </Form.Item>
-      <Form.Item label="jobStartDate" name="jobStartDate">
+      <Form.Item label="Ажилж эхэлсэн огноо" name="jobStartDate">
         <Input />
       </Form.Item>
-      <Form.Item label="jobEndDate" name="jobEndDate">
+      <Form.Item label="Ажлаас гарсан огноо" name="jobEndDate">
         <Input />
       </Form.Item>
-      <Form.Item label="image" name="image">
+      <Form.Item label="Зураг" name="image">
         <Input />
       </Form.Item>
       <Form.Item
-        label="password"
+        label="Нууц үг"
         name="password"
         rules={[
           {

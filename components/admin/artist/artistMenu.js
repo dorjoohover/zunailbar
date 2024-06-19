@@ -15,13 +15,13 @@ export default function Agenda({ data, events }) {
       // fixed: "left",
     },
     {
-      title: "lastName",
+      title: "Овог",
       dataIndex: "lastName",
       key: "lastName",
       width: 60,
     },
     {
-      title: "firstName",
+      title: "Нэр",
       width: 60,
       dataIndex: "firstName",
       key: "firstName",
@@ -29,26 +29,26 @@ export default function Agenda({ data, events }) {
     },
 
     {
-      title: "email",
+      title: "И-майл",
       dataIndex: "email",
       key: "email",
       width: 80,
     },
     {
-      title: "phone",
+      title: "Утас",
       dataIndex: "phone",
       key: "phone",
       width: 40,
     },
     {
-      title: "update",
+      title: "Өөрчлөх",
       key: "update",
       // fixed: "right",
       width: 40,
       dataIndex: "update",
     },
     {
-      title: "delete",
+      title: "Устгах",
       key: "delete",
       // fixed: "right",
       width: 40,

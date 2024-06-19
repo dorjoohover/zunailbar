@@ -53,17 +53,17 @@ const App = ({ data, events }) => {
       onFinish={onFinish}
       autoComplete="off"
     >
-      <Form.Item label="status" name="status" hidden>
+      <Form.Item label="Төлөв" name="status" hidden>
         <Input />
       </Form.Item>
-      <Form.Item label="firstName" name="firstName">
+      <Form.Item label="Овог" name="lastName">
         <Input />
       </Form.Item>
-      <Form.Item label="lastName" name="lastName">
-        <Input rows={""} />
+      <Form.Item label="Нэр" name="firstName">
+        <Input />
       </Form.Item>
       <Form.Item
-        label="email"
+        label="И-майл"
         name="email"
         rules={[
           {
@@ -75,7 +75,7 @@ const App = ({ data, events }) => {
         <Input type="email" />
       </Form.Item>
       <Form.Item
-        label="phone"
+        label="Утас"
         name="phone"
         rules={[
           {
@@ -86,11 +86,11 @@ const App = ({ data, events }) => {
       >
         <Input rows={""} />
       </Form.Item>
-      <Form.Item label="membership" name="membership">
+      <Form.Item label="Гишүүнчлэл" name="membership">
         <Select options={membership} />
       </Form.Item>
       <Form.Item
-        label="password"
+        label="Нууц үг"
         name="password"
         rules={[
           {

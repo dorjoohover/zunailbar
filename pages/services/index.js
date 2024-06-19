@@ -1,8 +1,7 @@
-// system import
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Modal } from "antd";
+import { Modal, Input } from "antd";
 import moment from "moment";
 
 // global state
@@ -19,18 +18,38 @@ import Cards from "../../components/card/Card";
 import ServiceForm from "../../components/form/serviceForm";
 
 const render = ({ data, events }) => {
-  // console.log("data services", data);
-  // console.log("render");
-  const dataDetails = [...data?.service_list];
+  const { Search } = Input;
+  const [searchValue, setSearchValue] = useState("");
+
+  const filterNames = (service) => {
+    return service.serviceName
+      .toLowerCase()
+      .includes(searchValue.toLowerCase());
+  };
+
+  const filteredData = data?.service_list.map((item) => ({
+    ...item,
+    services: item.services.filter(filterNames),
+  }));
+
   return (
     <div className="min-h-screen min-[350px]:px-12">
       <Head>
         <title>Үйлчилгээнүүд</title>
       </Head>
       <div className="my-5 .font-bold"></div>
+      <Search
+        className="min-[1200px]:mx-12 min-w-[300px]"
+        placeholder="Хайх"
+        onChange={(e) => setSearchValue(e.target.value)}
+        value={searchValue}
+        style={{
+          width: 200,
+        }}
+      />
       <div className="grid grid-cols-1 gap-4 min-[1200px]:mx-12">
-        {dataDetails.length > 0 &&
-          dataDetails.map((item, index) => {
+        {filteredData.length > 0 &&
+          filteredData.map((item, index) => {
             return (
               <div key={item.id}>
                 <div className="font-black text-3xl text-center mb-4">
@@ -38,14 +57,11 @@ const render = ({ data, events }) => {
                     item.serviceGroupName}
                 </div>
                 <div className="grid place-items-center gap-3 font-Montserrat sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                  {/* <div className="grid grid-flow-col auto-cols-max gap-2"> */}
                   {item.services.map((service) => (
-                    <div className="w-full">
+                    <div className="w-full" key={service.id}>
                       <Cards
-                        key={index}
                         data={{
                           id: service?.id,
-                          // key: index,
                           image1: service?.image1,
                           status: service?.status,
                           serviceName: service?.serviceName,
@@ -69,7 +85,7 @@ const render = ({ data, events }) => {
         onCancel={() => events.handleCloseModal()}
         width={1000}
         okButtonProps={{ style: { display: "none" } }}
-        cancelButtonProps={{ style: { display: "none" } }}
+        cancelButtonProps={{ style: { display: { none: "none" } } }}
       >
         <ServiceForm
           data={data?.modal?.modalData}
@@ -90,23 +106,19 @@ function Presentation() {
   const booking = useBooking();
   const artist = useArtist();
   const [modal, setModal] = useState({ modalState: false, modalData: "" });
+
   useEffect(() => {
-    // service.loadAllServices();
     service.loadAllServicesByGroups();
     artist.loadAllArtist();
-    // console.log("presentation");
   }, []);
-  if (typeof window !== "undefined") {
-    // Perform localStorage action
-    // var accessToken = localStorage.getItem("accessToken");
-    const detail = localStorage.getItem("beauty_detail");
 
+  if (typeof window !== "undefined") {
+    const detail = localStorage.getItem("beauty_detail");
     const initialData1 = detail === "undefined" ? null : detail;
     var userDetail = initialData1 === null ? {} : JSON.parse(initialData1);
   }
 
   const handleOnClick = (serviceId, serviceName, price, duration) => {
-    // console.log("handleOnClick", serviceId, serviceName, price, duration);
     setModal(true);
     setModal({
       ...modal,
@@ -119,6 +131,7 @@ function Presentation() {
       },
     });
   };
+
   const handleCloseModal = () => {
     setModal({
       ...modal,
@@ -126,23 +139,14 @@ function Presentation() {
       modalData: "",
     });
   };
+
   const handleOnFinish = (values) => {
     handleCloseModal();
     let timeString = values?.time.format("HH:00:00");
     let originalTime = moment(timeString, "HH:mm:ss");
-    console.log("values?.duration", values?.duration);
     let updatedTime = originalTime.add(values?.duration, "hours");
-    // let updatedTime = originalTime.add(1, "hours");
     let formattedUpdatedTime = updatedTime.format("HH:mm:ss");
-    // console.log(formattedUpdatedTime);
-    // console.log(
-    //   values?.customerId,
-    //   values?.serviceId,
-    //   values?.artistId,
-    //   values?.date.format("YYYY-MM-DD"),
-    //   values?.time.format("HH:00:00"),
-    //   formattedUpdatedTime
-    // );
+
     booking.createBooking(
       values?.customerId,
       values?.serviceId,
@@ -151,16 +155,16 @@ function Presentation() {
       values?.time.format("HH:00:00"),
       formattedUpdatedTime
     );
-    // timetable.clearTimetable();
   };
+
   const loadTimeTable = (value) => {
-    console.log("loadTimeTable", value);
     timetable.getArtistTimetableById(value);
   };
 
   const loadArtistByService = (value) => {
     artist.loadArtistByService(value);
   };
+
   return (
     <React.Fragment>
       <h1
@@ -184,7 +188,6 @@ function Presentation() {
           userDetail: userDetail,
         }}
         render={render}
-        // tr={t}
         events={{
           handleClick: handleOnClick,
           handleCloseModal: handleCloseModal,
@@ -200,4 +203,5 @@ function Presentation() {
 Presentation.getLayout = function getLayout(page) {
   return <MainLayout>{page}</MainLayout>;
 };
+
 export default Presentation;

@@ -127,10 +127,10 @@ const serviceForm = ({
         initialValues={{}}
         onFinish={handleFormFinish}
       >
-        <Form.Item name="customerId" label="customerId">
+        <Form.Item name="customerId" label="Үйлчлүүлэгчийн нэр">
           <Select options={userList} />
         </Form.Item>
-        <Form.Item name="serviceId" label="serviceId">
+        <Form.Item name="serviceId" label="Үйлчилгээ">
           {/* <InputNumber /> */}
           <Select options={serviceList} onChange={handleChangeService} />
         </Form.Item>
@@ -153,7 +153,7 @@ const serviceForm = ({
           />
         </Form.Item>
         <Form.Item
-          label="Огноо нэр сонгох"
+          label="Огноо сонгох"
           name="date"
           rules={[
             {

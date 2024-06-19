@@ -9,6 +9,7 @@ import useAuth from "../../hooks/useAuth";
 import useBooking from "../../hooks/useBooking";
 import useArtist from "../../hooks/useArtist";
 import useService from "../../hooks/useService";
+import useAdditionalService from "../../hooks/useAdditionalService";
 import useTimeTable from "../../hooks/useTimetable";
 import useReport from "../../hooks/useReport";
 
@@ -28,6 +29,10 @@ import UpdateArtist from "../../components/admin/artist/updateArtist";
 import ServiceMenu from "../../components/admin/service/serviceMenu";
 import CreateService from "../../components/admin/service/createService";
 import UpdateService from "../../components/admin/service/updateService";
+// ADDTITIONAL_SERVICE
+import AdditionalServiceMenu from "../../components/admin/additional_service/AdditionalServiceMenu";
+import CreateAdditionalService from "../../components/admin/additional_service/createAdditionalService";
+import UpdateAdditionalService from "../../components/admin/additional_service/updateAdditionalService";
 // ORDER
 import BookingMenu from "../../components/admin/orders/bookingMenu";
 import CreateBooking from "../../components/admin/orders/createBooking";
@@ -54,7 +59,7 @@ const render = ({ data, events, tr }) => {
     },
     {
       id: 2,
-      title: "Ажилчин",
+      title: "Артист",
       children: <ArtistMenu data={data} events={events} />,
     },
     {
@@ -63,25 +68,25 @@ const render = ({ data, events, tr }) => {
       children: <ServiceMenu data={data} events={events} />,
     },
     {
-      id: 3,
+      id: 4,
+      title: "Нэмэлт Үйлчилгээ",
+      children: <AdditionalServiceMenu data={data} events={events} />,
+    },
+    {
+      id: 5,
       title: "Захиалга",
       children: <BookingMenu data={data} events={events} />,
     },
     {
-      id: 4,
+      id: 6,
       title: "Ажиллах хуваарь",
       children: <TimeTableMenu data={data} events={events} />,
     },
     {
-      id: 5,
+      id: 7,
       title: "Тайлан",
       children: <ReportMenu data={data} events={events} />,
     },
-    // {
-    //   id: 4,
-    //   title: "Орлого",
-    //   children: <OrlogoMenu data={data} events={events} />,
-    // },
   ];
   return (
     <div className="min-h-screen min-[350px]:px-6">
@@ -130,14 +135,16 @@ function Presentation() {
   const order = useBooking();
   const employee = useArtist();
   const service = useService();
+  const additionalService = useAdditionalService();
   const timetable = useTimeTable();
   const report = useReport();
 
   useEffect(() => {
-    const getUserAndOrder = async () => {
+    const loadContext = async () => {
       await user.getAllUsers();
       await employee.loadAllArtist();
       await service.loadAllServices();
+      await additionalService.loadAllAdditionalServices();
       await service.loadAllServicesByGroups();
       await order.getAllOrders();
       await timetable.getAllArtist_Timetable();
@@ -167,7 +174,7 @@ function Presentation() {
       message.error("Та админ эрхээр нэвтэрч орно уу!");
     }
     // console.log("useState");
-    getUserAndOrder();
+    loadContext();
     return () => {
       // this now gets called when the component unmounts
     };
@@ -252,6 +259,28 @@ function Presentation() {
               <Button
                 onClick={() => {
                   handleDeleteService(data?.form?.data?.id);
+                }}
+                type="primary"
+                danger
+              >
+                Тийм
+              </Button>
+            </div>
+          </div>
+        );
+      // ADDITIONAL_SERVICE
+      case "createAdditionalService":
+        return <CreateAdditionalService data={data} events={events} />;
+      case "updateAdditionalService":
+        return <UpdateAdditionalService data={data} events={events} />;
+      case "deleteAdditionalServiceForm":
+        return (
+          <div>
+            {data?.form?.message}
+            <div className="my-3 flex">
+              <Button
+                onClick={() => {
+                  handleDeleteAdditionalService(data?.form?.data?.id);
                 }}
                 type="primary"
                 danger
@@ -368,7 +397,7 @@ function Presentation() {
   };
   //
   //
-  // SERVICE FUNCTIONS
+  // ORDER FUNCTIONS
   const handleCreateOrder = async (values) => {
     let timeString = values?.time.format("HH:00:00");
     let originalTime = moment(timeString, "HH:mm:ss");
@@ -405,7 +434,7 @@ function Presentation() {
   };
   //
   //
-  // ORDER FUNCTIONS
+  // SERVICE FUNCTIONS
   const handleCreateService = async (value) => {
     await service.CreateService(value);
     setMainForm({
@@ -427,6 +456,9 @@ function Presentation() {
     });
     service.loadAllServices();
   };
+  //
+  //
+  // REPORT FUNTIONS
   const getTotalIncome = async (value) => {
     await report.getTotalIncome(value);
   };
@@ -435,6 +467,30 @@ function Presentation() {
   };
   const getServiceIncome = async (value) => {
     await report.getServiceIncome(value);
+  };
+  //
+  //
+  // ADDTIONAL_SERVICES FUNCTIONS
+  const handleCreateAdditionalService = async (value) => {
+    await additionalService.CreateAdditionalService(value);
+    setMainForm({
+      visible: false,
+    });
+    additionalService.loadAllAdditionalServices();
+  };
+  const handleUpdateAdditionalService = async (value) => {
+    await additionalService.UpdateAdditionalService(value);
+    setMainForm({
+      visible: false,
+    });
+    additionalService.loadAllAdditionalServices();
+  };
+  const handleDeleteAdditionalService = async (value) => {
+    await additionalService.DeleteAdditionalService(value);
+    setMainForm({
+      visible: false,
+    });
+    additionalService.loadAllAdditionalServices();
   };
   //
   //
@@ -474,11 +530,11 @@ function Presentation() {
       >
         Админ хэсэг
       </h1>
-      {user?.contextHolder}
+      {/* {user?.contextHolder}
       {employee?.contextHolder}
       {order?.contextHolder}
       {service?.contextHolder}
-      {report?.contextHolder}
+      {report?.contextHolder} */}
       <DataDisplayer
         // error={user?.state?.message}
         status={user?.state?.status}
@@ -490,6 +546,7 @@ function Presentation() {
           artistsByService: employee?.state?.artistsByService,
           serviceList: service?.state?.list,
           just_service_list: service?.state1?.just_service_list,
+          additional_service_list: additionalService?.state?.list,
           timetable_list: timetable?.state?.list,
           All_artist_timetables: timetable?.state?.All_artist_timetables,
           reportList: report?.state,
@@ -513,6 +570,10 @@ function Presentation() {
           handleCreateService: handleCreateService,
           handleUpdateService: handleUpdateService,
           handleDeleteService: handleDeleteService,
+          // additionalServices
+          handleCreateAdditionalService: handleCreateAdditionalService,
+          handleUpdateAdditionalService: handleUpdateAdditionalService,
+          handleDeleteAdditionalService: handleDeleteAdditionalService,
           // order
           handleCreateOrder: handleCreateOrder,
           handleDeleteOrder: handleDeleteOrder,

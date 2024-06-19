@@ -5,7 +5,7 @@ import { Table, Button } from "antd";
 export default function Agenda({ data, events }) {
   // console.log(data?.vote)
   // console.log(data?.confirm)
-  console.log("data?.serviceList", data?.serviceList);
+  // console.log("just_service_list", data);
   const columns = [
     {
       title: "№",
@@ -14,36 +14,23 @@ export default function Agenda({ data, events }) {
       key: "list",
       // fixed: "left",
     },
-    // {
-    //   title: "status",
-    //   width: 50,
-    //   dataIndex: "status",
-    //   key: "status",
-    //   // fixed: "left",
-    // },
     {
-      title: "Үйлчилгээний нэр",
+      title: "Нэмэлт үйлчилгээний нэр",
       width: 30,
-      dataIndex: "serviceName",
-      key: "serviceName",
+      dataIndex: "additional_serviceName",
+      key: "additional_serviceName",
       // fixed: "left",
     },
     {
-      title: "Үнэ",
-      dataIndex: "price",
-      key: "price",
+      title: "Үндсэн үнэ",
+      dataIndex: "default_price",
+      key: "default_price",
       width: 10,
     },
     {
-      title: "Зураг",
-      dataIndex: "image",
-      key: "image",
-      width: 30,
-    },
-    {
-      title: "Үргэлжлэх хугацаа",
-      dataIndex: "duration",
-      key: "duration",
+      title: "Тайлбар",
+      dataIndex: "description",
+      key: "description",
       width: 30,
     },
     {
@@ -61,39 +48,27 @@ export default function Agenda({ data, events }) {
   ];
   // console.log(Maindata)
   const data1 = [];
-  const getUserStatus = (status) => {
-    if (status === "9") {
-      return "Хэрэглэгч";
-    } else if (status === "1") {
-      return "Ажилчин";
-    } else {
-      return "Админ";
-    }
-    // console.log("clicked");s
-    // company.SetLogo(value.logo);
-    // router.push("/auth/login");
-  };
   let number = 0;
-  data?.just_service_list.map((item, index) => {
+  data?.additional_service_list.map((item, index) => {
     // menu_titleIds.push({ menu_titleId: item });
     number = number + 1;
     // console.log("index", index);
     data1.push({
       key: number,
       list: number,
-      status: item?.status,
-      serviceName: item?.serviceName,
-      price: item?.price,
-      image: <img className="max-h-12" src={item?.image1} />,
-      duration: item?.duration,
+      additional_serviceName: item?.additional_serviceName,
+      default_price: item?.default_price,
+      description: item?.description,
       delete: (
         <Button
           onClick={() =>
             events.handleFormData({
               // header: "",
-              formType: "deleteServiceForm",
+              formType: "deleteAdditionalServiceForm",
               message:
-                item?.serviceName + " >> нэртэй үйлчилгээг" + "-г устгах уу?",
+                item?.additional_serviceName +
+                " >> нэртэй үйлчилгээг" +
+                "-г устгах уу?",
               data: {
                 id: item?.id,
               },
@@ -110,15 +85,13 @@ export default function Agenda({ data, events }) {
           onClick={() =>
             events.handleFormData({
               header: "Үйлчилгээ өөрчлөх",
-              formType: "updateServiceForm",
+              formType: "updateAdditionalService",
               form: "put",
               data: {
-                status: item?.status,
-                serviceName: item?.serviceName,
-                price: item?.price,
                 id: item?.id,
-                image1: item?.image1,
-                duration: item?.duration,
+                additional_serviceName: item?.additional_serviceName,
+                default_price: item?.default_price,
+                description: item?.description,
               },
             })
           }
@@ -140,7 +113,7 @@ export default function Agenda({ data, events }) {
           onClick={() =>
             events.handleFormData({
               header: "Үйлчилгээ нэмэх",
-              formType: "createServiceForm",
+              formType: "createAdditionalService",
               form: "post",
               data: data,
               // data: [

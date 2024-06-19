@@ -14,13 +14,14 @@ export default function Footer() {
       className="lg:grid lg:grid-flow-row px-6 py-8 bg-[#1e2c30] text-white"
     >
       <div className="flex justify-evenly .justify-around mt-5 mb-10">
-        {" "}
-        <img
-          // src="https://res.cloudinary.com/dfhvxswh6/image/upload/v1691979048/326238817_843833970046776_3151643487262701768_n_wbwl14.png"
-          src="https://uploads-ssl.webflow.com/6135e5f06048e4e83fb2c8ab/618f63659752576ed7190b81_doctorate-footer.svg"
-          className=".mt-[-34px]"
-          width="100"
-        ></img>
+        {/* <div className="grid grid-flow-col auto-cols-max">
+          <img
+            src="http://localhost:3000/img/zunailbar_logo.jpg"
+            className="max-h-[30px] rounded full mr-2"
+            // width="20"
+          />
+          Zu Nailbar
+        </div> */}
         <div className="text-3xl flex w-[110px] justify-evenly">
           <div className=" hover:text-cyan-600">
             <a
@@ -46,7 +47,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="flex flex-wrap justify-evenly">
-        <div className="grid lg:grid-flow-col grid-flow-row auto-cols-auto gap-3 lg:gap-10">
+        <div className="grid lg:grid-flow-col grid-flow-row auto-cols-auto gap-3 lg:gap-10 mb-2">
           <a className="hover:underline" href="/">
             Нүүр
           </a>

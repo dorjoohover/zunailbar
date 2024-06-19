@@ -21,7 +21,7 @@ const App = ({ data, events }) => {
 
   const onFinish = (values) => {
     // console.log("values", values);
-    events.handleUpdateService(values);
+    events.handleUpdateAdditionalService(values);
     events.handleCancel();
   };
 
@@ -42,11 +42,9 @@ const App = ({ data, events }) => {
   const [form] = Form.useForm();
   const defaultValues = {
     id: data?.form?.data?.id,
-    status: data?.form?.data?.status,
-    serviceName: data?.form?.data?.serviceName,
-    duration: data?.form?.data?.duration,
-    price: data?.form?.data?.price,
-    image1: data?.form?.data?.image1,
+    additional_serviceName: data?.form?.data?.additional_serviceName,
+    default_price: data?.form?.data?.default_price,
+    description: data?.form?.data?.description,
   };
 
   useEffect(() => {
@@ -86,20 +84,13 @@ const App = ({ data, events }) => {
       <Form.Item hidden name="id">
         <InputNumber />
       </Form.Item>
-      <Form.Item label="Үргэлжлэх хугацаа" name="duration">
-        <Select
-          // style={{ width: 120 }}
-          // onChange={handleChange}
-          options={duration}
-        />
-      </Form.Item>
       <Form.Item
         label="Үйлчилгээний нэр"
-        name="serviceName"
+        name="additional_serviceName"
         rules={[
           {
             required: true,
-            message: "Та serviceName аа оруулна уу.",
+            message: "Та additional_serviceName аа оруулна уу.",
           },
         ]}
       >
@@ -107,7 +98,7 @@ const App = ({ data, events }) => {
       </Form.Item>
       <Form.Item
         label="Үнэ"
-        name="price"
+        name="default_price"
         rules={[
           {
             required: true,
@@ -118,44 +109,17 @@ const App = ({ data, events }) => {
         <InputNumber rows={""} />
       </Form.Item>
       <Form.Item
-        label="Зураг"
-        name="image1"
+        label="Тайлбар"
+        name="description"
         rules={[
           {
             required: true,
-            message: "Та зураг оруулна уу !",
+            message: "Та description аа оруулна уу.",
           },
         ]}
       >
-        <Uploader
-          name="image1"
-          handleFinish={handleImageUpload}
-          status={restate}
-        />
-        {/* <Upload
-          name="image"
-          listType="picture"
-          beforeUpload={(file) => {
-            setUploadedImage(file);
-            return false; // Prevent default upload behavior
-          }}
-          fileList={uploadedImage ? [uploadedImage] : []}
-        >
-          <Button icon={<UploadOutlined />}>Зураг оруулах</Button>
-        </Upload> */}
+        <TextArea />
       </Form.Item>
-      {/* <Form.Item
-        label="Зураг"
-        name="image1"
-        rules={[
-          {
-            required: true,
-            message: "Та price оруулна уу !",
-          },
-        ]}
-      >
-        <Input rows={""} />
-      </Form.Item> */}
       <Form.Item
         wrapperCol={{
           offset: 8,

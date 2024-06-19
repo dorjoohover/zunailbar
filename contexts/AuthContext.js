@@ -17,6 +17,7 @@ var initialData = {
   profileDetail: {},
   list: [],
   bookingsListByCustomerId: [],
+  ratingByCustomerId: [],
   isInitialized: false,
   isAuthenticated: false,
 };
@@ -690,6 +691,44 @@ const AuthProvider = (props) => {
       message.error(<div className="text-[20px]">{err?.message}</div>);
     }
   };
+
+  const getRatingByCustomerId = async (customerId) => {
+    // console.log("token", token);
+    // let body = {
+    //   values,
+    // };
+    setState({
+      ...state,
+      // status: "loading",
+      message: "loading",
+    });
+
+    var config = {
+      url: `/customers/${customerId}/rating`,
+      method: "get",
+      // data: {
+      //   ...body,
+      // },
+    };
+    LoadingFun();
+    try {
+      const response = await axios(config);
+      // const { data } = response;
+      const { data } = response?.data;
+      // console.log(data.shareholder.userId, 'хэрэглэгчийн ID')
+      setState({
+        ...state,
+        ratingByCustomerId: data,
+        status: "success",
+      });
+      DeleteMess();
+      message.success(<div className="text-[20px]">"rated succesfully"</div>);
+      // router.push("/");
+    } catch (err) {
+      DeleteMess();
+      message.error(<div className="text-[20px]">{err?.message}</div>);
+    }
+  };
   return (
     <AuthContext.Provider
       value={{
@@ -709,6 +748,7 @@ const AuthProvider = (props) => {
         handleGetConfirm,
         confirm,
         loadBookingsByCustomerId,
+        getRatingByCustomerId,
         rateArtist,
       }}
     >

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import moment from "moment";
 import { Card, message } from "antd";
+import { Icon } from "@iconify/react";
 message.config({
   top: 100,
   duration: 3,
@@ -37,7 +38,7 @@ const Cards = ({ data, events }) => {
   return (
     <Card
       onClick={service_clicked}
-      key={data.index}
+      // key={data.index}
       hoverable
       className="w-full border border-[#0F285F] border-opacity-30 "
       size="small"
@@ -52,22 +53,55 @@ const Cards = ({ data, events }) => {
             backgroundRepeat: "no-repeat",
             backgroundSize: "320px",
           }}
-        />
+        >
+          {/* <div className="text-white">
+            <div className="mb-3 h-[50px] text-left text-[18px] font-bold">
+              {data?.serviceName}
+            </div>
+            <div className="m-1 flex justify-start text-[12px] xl:text-[16px] ">
+              <Icon
+                className="mr-2"
+                icon="fluent:money-16-filled"
+                width="30px"
+                height="30px"
+              />{" "}
+              {data?.price}₮
+            </div>
+            <div className="m-1 flex justify-start text-[12px] xl:text-[16px] ">
+              <Icon
+                className="mr-2"
+                icon="carbon:time"
+                width="30px"
+                height="30px"
+              />{" "}
+              {data?.duration} цаг
+            </div>
+          </div> */}
+        </div>
       }
     >
-      <div>
-        <div className="mb-5 h-[50px] text-left text-[18px] font-bold">
+      <div className="font-bold">
+        <div className="mb-3 h-[50px] text-left text-[18px]">
           {data?.serviceName}
         </div>
-        <div className="m-1 flex justify-between text-[12px] xl:text-[16px] ">
-          Үнэ: {data?.price}₮
+        <div className="m-1 flex justify-start text-[12px] xl:text-[16px]">
+          <Icon
+            className="mr-2"
+            icon="fluent:money-16-filled"
+            width="30px"
+            height="30px"
+          />{" "}
+          {data?.price}₮
         </div>
-        {/* <div className="m-1 flex justify-between text-[12px] xl:text-[16px]">
-          {tr("main_date_meeting")}
-          <div className="] font-bold">
-            {data?.date2 && moment(data.date2).format("YYYY-MM-DD")}
-          </div>
-        </div> */}
+        <div className="m-1 flex justify-start text-[12px] xl:text-[16px] ">
+          <Icon
+            className="mr-2"
+            icon="vaadin:time-forward"
+            width="30px"
+            height="30px"
+          />{" "}
+          {data?.duration} цаг
+        </div>
       </div>
     </Card>
   );

@@ -10,6 +10,7 @@ import { TimetableProvider } from "../contexts/TimetableContext";
 import { BookingProvider } from "../contexts/BookingContext";
 import { ArtistProvider } from "../contexts/ArtistContext";
 import { ReportProvider } from "../contexts/ReportContext";
+import { AdditionalServiceProvider } from "../contexts/AdditionalServiceContext";
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -20,17 +21,19 @@ export default function App({ Component, pageProps }) {
         <AuthProvider>
           <ManagerProvider>
             <ServiceProvider>
-              <TimetableProvider>
-                <BookingProvider>
-                  <ArtistProvider>
-                    <ReportProvider>
-                      <TopBar />
-                      {getLayout(<Component {...pageProps} />)}
-                      <Footer />
-                    </ReportProvider>
-                  </ArtistProvider>
-                </BookingProvider>
-              </TimetableProvider>
+              <AdditionalServiceProvider>
+                <TimetableProvider>
+                  <BookingProvider>
+                    <ArtistProvider>
+                      <ReportProvider>
+                        <TopBar />
+                        {getLayout(<Component {...pageProps} />)}
+                        <Footer />
+                      </ReportProvider>
+                    </ArtistProvider>
+                  </BookingProvider>
+                </TimetableProvider>
+              </AdditionalServiceProvider>
             </ServiceProvider>
           </ManagerProvider>
         </AuthProvider>

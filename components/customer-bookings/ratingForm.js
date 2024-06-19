@@ -113,7 +113,7 @@ const serviceForm = ({ data, artist_list, just_service_list, events }) => {
           />
         </Form.Item>
         <Form.Item
-          label="ratingPoint"
+          label="Үнэлгээ"
           name="ratingPoint"
           rules={[
             {
@@ -129,7 +129,7 @@ const serviceForm = ({ data, artist_list, just_service_list, events }) => {
             options={ratingPoints}
           />
         </Form.Item>
-        <Form.Item name="ratingComment" label="ratingComment">
+        <Form.Item name="ratingComment" label="Коммент">
           <TextArea />
         </Form.Item>
         <Form.Item>
