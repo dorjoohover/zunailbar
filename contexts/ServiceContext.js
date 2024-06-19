@@ -267,6 +267,141 @@ const ServiceProvider = (props) => {
     }
   };
   //
+  // Service_Groups
+  //
+  const CreateServiceGroup = async (value) => {
+    // let body = { value };
+    // console.log("body", body);
+    setState({
+      ...state,
+      status: "loading",
+      message: "",
+    });
+    // console.log(body)
+
+    var config = {
+      url: "/service_groups",
+      method: "post",
+      data: {
+        ...value,
+      },
+    };
+    // LoadingFun();
+    try {
+      var response = await axios(config);
+      const { data } = response.data;
+      setState({
+        ...state,
+        status: "success",
+      });
+      message.success("Үйлчилгээний бүлэг амжилттай үүслээ.");
+      // CompanyBydetails(companyId)
+      // console.log('2222')
+    } catch (err) {
+      console.log(err);
+      setState({
+        ...state,
+        status: "error",
+        message: err.message || "Something went wrong!",
+      });
+      if (
+        err?.message == "Your [1] permission has been denied to do this action"
+      ) {
+        message.error("Энэ үйлдлийг хийхэд таны эрх хүрэхгүй байна.", 2);
+      } else message.error(err?.message);
+      DeleteMess();
+    }
+  };
+  //
+  //
+  //
+  const UpdateServiceGroup = async ({ id, serviceGroupName }) => {
+    // let body = { value };
+    let body = { id, serviceGroupName };
+    // console.log("body", body);
+    setState({
+      ...state,
+      status: "loading",
+      message: "",
+    });
+    // console.log(body)
+
+    var config = {
+      url: `/service_groups/${id}`,
+      method: "put",
+      data: {
+        ...body,
+      },
+    };
+    LoadingFun();
+    try {
+      var response = await axios(config);
+      const { data } = response.data;
+      setState({
+        ...state,
+        status: "success",
+      });
+      message.success("Үйлчилгээний бүлэг амжилттай шинэчлэлээ");
+      // CompanyBydetails(companyId)
+      // console.log('2222')
+    } catch (err) {
+      console.log(err);
+      setState({
+        ...state,
+        status: "error",
+        message: err.message || "Something went wrong!",
+      });
+      if (
+        err?.message == "Your [1] permission has been denied to do this action"
+      ) {
+        message.error("Энэ үйлдлийг хийхэд таны эрх хүрэхгүй байна.", 2);
+      } else message.error(err?.message);
+      DeleteMess();
+    }
+  };
+  //
+  //
+  //
+  const DeleteServiceGroup = async (id) => {
+    setState({
+      ...state,
+      status: "loading",
+      message: "",
+    });
+
+    var config = {
+      url: `/service_groups/${id}`,
+      method: "delete",
+      // data: {
+      //   ...body,
+      // },
+    };
+    LoadingFun();
+    try {
+      var response = await axios(config);
+      const { data } = response.data;
+      setState({
+        ...state,
+        status: "success",
+      });
+      message.success("Үйлчилгээний бүлэг амжилттай устлаа");
+      // success();
+    } catch (err) {
+      console.log(err);
+      setState({
+        ...state,
+        status: "error",
+        message: err.message || "Something went wrong!",
+      });
+      if (
+        err?.message == "Your [1] permission has been denied to do this action"
+      ) {
+        message.error("Энэ үйлдлийг хийхэд таны эрх хүрэхгүй байна.", 2);
+      } else message.error(err?.message);
+      DeleteMess();
+    }
+  };
+  //
   //
   //
   return (
@@ -280,6 +415,10 @@ const ServiceProvider = (props) => {
         CreateService,
         UpdateService,
         DeleteService,
+        // service_Group
+        CreateServiceGroup,
+        UpdateServiceGroup,
+        DeleteServiceGroup,
       }}
     >
       {props.children}

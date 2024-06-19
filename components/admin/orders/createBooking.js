@@ -128,11 +128,24 @@ const serviceForm = ({
         onFinish={handleFormFinish}
       >
         <Form.Item name="customerId" label="Үйлчлүүлэгчийн нэр">
-          <Select options={userList} />
+          <Select
+            options={userList}
+            showSearch
+            filterOption={(input, option) =>
+              option.label.toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
         <Form.Item name="serviceId" label="Үйлчилгээ">
           {/* <InputNumber /> */}
-          <Select options={serviceList} onChange={handleChangeService} />
+          <Select
+            options={serviceList}
+            onChange={handleChangeService}
+            showSearch
+            filterOption={(input, option) =>
+              option.label.toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
         <Form.Item
           label="Ажилчны нэр сонгох"
@@ -149,7 +162,10 @@ const serviceForm = ({
             onChange={handleSelectChange}
             style={{ width: 300 }}
             options={artistList}
-            // options={artistList}
+            showSearch
+            filterOption={(input, option) =>
+              option.label.toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
         <Form.Item

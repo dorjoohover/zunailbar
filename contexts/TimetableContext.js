@@ -179,7 +179,7 @@ const TimetableProvider = (props) => {
   //
   //
   //
-  const UpdateService = async ({ serviceName, price, status, id }) => {
+  const UpdateArtistTimetable = async ({ serviceName, price, status, id }) => {
     // let body = { value };
     let body = { serviceName, price, status };
     // console.log("body", body);
@@ -191,7 +191,7 @@ const TimetableProvider = (props) => {
     // console.log(body)
 
     var config = {
-      url: `/services/${id}`,
+      url: `/artist_timetables/${id}`,
       method: "put",
       data: {
         ...body,
@@ -226,7 +226,7 @@ const TimetableProvider = (props) => {
   //
   //
   //
-  const DeleteService = async (value) => {
+  const DeleteArtistTimetable = async (value) => {
     setState({
       ...state,
       status: "loading",
@@ -234,7 +234,7 @@ const TimetableProvider = (props) => {
     });
 
     var config = {
-      url: `/services/${value}`,
+      url: `/artist_timetables/${value}`,
       method: "delete",
       // data: {
       //   ...body,
@@ -268,6 +268,64 @@ const TimetableProvider = (props) => {
   //
   //
   //
+  const BulkCreateArtistTimetable = async (
+    artistId,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    days
+  ) => {
+    // const BulkCreateArtistTimetable = async (values) => {
+    // let body = { values };
+    // console.log("body", body);
+    setState({
+      ...state,
+      status: "loading",
+      message: "",
+    });
+    // console.log(body)
+
+    var config = {
+      url: `/artist_timetables/BulkCreateArtistTimetable`,
+      method: "post",
+      data: {
+        artistId: artistId,
+        startDate: startDate,
+        endDate: endDate,
+        startTime: startTime,
+        endTime: endTime,
+        days: days,
+      },
+    };
+    LoadingFun();
+    try {
+      var response = await axios(config);
+      const { data } = response.data;
+      setState({
+        ...state,
+        status: "success",
+      });
+      message.success("Timetable амжилттай үүслээ.");
+      // CompanyBydetails(companyId)
+      // console.log('2222')
+    } catch (err) {
+      console.log(err);
+      setState({
+        ...state,
+        status: "error",
+        message: err.message || "Something went wrong!",
+      });
+      if (
+        err?.message == "Your [1] permission has been denied to do this action"
+      ) {
+        message.error("Энэ үйлдлийг хийхэд таны эрх хүрэхгүй байна.", 2);
+      } else message.error(err?.message);
+      DeleteMess();
+    }
+  };
+  //
+  //
   return (
     <TimetableContext.Provider
       value={{
@@ -276,8 +334,9 @@ const TimetableProvider = (props) => {
         getArtistTimetableById,
         getAllArtist_Timetable,
         createArtistTimetable,
-        UpdateService,
-        DeleteService,
+        UpdateArtistTimetable,
+        DeleteArtistTimetable,
+        BulkCreateArtistTimetable,
         clearTimetable,
       }}
     >

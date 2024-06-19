@@ -1,32 +1,27 @@
 import React from "react";
 import { Table, Button } from "antd";
-// import moment from "moment";
 
 export default function Agenda({ data, events }) {
-  // console.log(data?.vote)
-  // console.log(data?.confirm)
   console.log("data?.serviceList", data?.serviceList);
+
   const columns = [
     {
       title: "№",
-      width: 5,
+      width: 8,
       dataIndex: "list",
       key: "list",
-      // fixed: "left",
     },
-    // {
-    //   title: "status",
-    //   width: 50,
-    //   dataIndex: "status",
-    //   key: "status",
-    //   // fixed: "left",
-    // },
+    {
+      title: "Үйлчилгээний бүлгийн нэр",
+      width: 30,
+      dataIndex: "serviceGroupName",
+      key: "serviceGroupName",
+    },
     {
       title: "Үйлчилгээний нэр",
       width: 30,
       dataIndex: "serviceName",
       key: "serviceName",
-      // fixed: "left",
     },
     {
       title: "Үнэ",
@@ -59,43 +54,115 @@ export default function Agenda({ data, events }) {
       width: 30,
     },
   ];
-  // console.log(Maindata)
-  const data1 = [];
-  const getUserStatus = (status) => {
-    if (status === "9") {
-      return "Хэрэглэгч";
-    } else if (status === "1") {
-      return "Ажилчин";
-    } else {
-      return "Админ";
-    }
-    // console.log("clicked");s
-    // company.SetLogo(value.logo);
-    // router.push("/auth/login");
-  };
+
+  const columnServiceGroup = [
+    {
+      title: "№",
+      width: 8,
+      dataIndex: "list",
+      key: "list",
+    },
+    {
+      title: "Үйлчилгээний бүлгийн нэр",
+      width: 30,
+      dataIndex: "serviceGroupName",
+      key: "serviceGroupName",
+    },
+    {
+      title: "Өөрчлөх",
+      dataIndex: "update",
+      key: "update",
+      width: 30,
+    },
+    {
+      title: "Устгах",
+      dataIndex: "delete",
+      key: "delete",
+      width: 30,
+    },
+  ];
+
+  const dataServices = [];
   let number = 0;
-  data?.just_service_list.map((item, index) => {
-    // menu_titleIds.push({ menu_titleId: item });
-    number = number + 1;
-    // console.log("index", index);
-    data1.push({
+
+  data?.serviceList.forEach((group) => {
+    group.services.forEach((service) => {
+      number += 1;
+      dataServices.push({
+        key: number,
+        list: number,
+        serviceGroupName: group?.serviceGroupName,
+        serviceName: service?.serviceName,
+        price: service?.price,
+        image: (
+          <img
+            className="max-h-12"
+            src={service?.image1}
+            alt={service?.serviceName}
+          />
+        ),
+        duration: service?.duration,
+        delete: (
+          <Button
+            onClick={() =>
+              events.handleFormData({
+                formType: "deleteServiceForm",
+                message: `${service?.serviceName} нэртэй үйлчилгээг устгах уу?`,
+                data: {
+                  id: service?.id,
+                },
+              })
+            }
+            type="primary"
+            danger
+          >
+            Устгах
+          </Button>
+        ),
+        update: (
+          <Button
+            onClick={() =>
+              events.handleFormData({
+                header: "Үйлчилгээ өөрчлөх",
+                formType: "updateServiceForm",
+                form: "put",
+                data: {
+                  id: service?.id,
+                  status: service?.status,
+                  serviceName: service?.serviceName,
+                  price: service?.price,
+                  image1: service?.image1,
+                  duration: service?.duration,
+                },
+              })
+            }
+            type="primary"
+            ghost
+          >
+            Өөрчлөх
+          </Button>
+        ),
+      });
+    });
+  });
+
+  const dataServiceGroups = [];
+  let number2 = 0;
+
+  data?.serviceList.forEach((group) => {
+    number2 += 1;
+    dataServiceGroups.push({
       key: number,
       list: number,
-      status: item?.status,
-      serviceName: item?.serviceName,
-      price: item?.price,
-      image: <img className="max-h-12" src={item?.image1} />,
-      duration: item?.duration,
+      serviceGroupName: group?.serviceGroupName,
       delete: (
         <Button
           onClick={() =>
             events.handleFormData({
-              // header: "",
-              formType: "deleteServiceForm",
-              message:
-                item?.serviceName + " >> нэртэй үйлчилгээг" + "-г устгах уу?",
+              formType: "deleteServiceGroupForm",
+              message: `${group?.serviceGroupName} нэртэй үйлчилгээг устгах уу?`,
               data: {
-                id: item?.id,
+                id: group?.id,
               },
             })
           }
@@ -110,15 +177,11 @@ export default function Agenda({ data, events }) {
           onClick={() =>
             events.handleFormData({
               header: "Үйлчилгээ өөрчлөх",
-              formType: "updateServiceForm",
+              formType: "updateServiceGroupForm",
               form: "put",
               data: {
-                status: item?.status,
-                serviceName: item?.serviceName,
-                price: item?.price,
-                id: item?.id,
-                image1: item?.image1,
-                duration: item?.duration,
+                id: group?.id,
+                serviceGroupName: group?.serviceGroupName,
               },
             })
           }
@@ -135,7 +198,6 @@ export default function Agenda({ data, events }) {
     <div>
       <div className="m-2">
         <Button
-          // className="bg-blue-200 hover:bg-blue-400 hover:text-white"
           className="bg-gray-300 font-semibold"
           onClick={() =>
             events.handleFormData({
@@ -143,13 +205,6 @@ export default function Agenda({ data, events }) {
               formType: "createServiceForm",
               form: "post",
               data: data,
-              // data: [
-              //   {
-              //     label: "projectId",
-              //     value: "",
-              //   },
-              //   { label: "question", value: "" },
-              // ],
             })
           }
         >
@@ -160,7 +215,29 @@ export default function Agenda({ data, events }) {
         bordered
         pagination={{ pageSize: 30 }}
         columns={columns}
-        dataSource={data1}
+        dataSource={dataServices}
+        scroll={{ x: 1000, y: 700 }}
+      />
+      <div className="m-2">
+        <Button
+          className="bg-gray-300 font-semibold"
+          onClick={() =>
+            events.handleFormData({
+              header: "Үйлчилгээ нэмэх",
+              formType: "createServiceGroupForm",
+              form: "post",
+              data: data,
+            })
+          }
+        >
+          Шинээр Үйлчилгээ нэмэх
+        </Button>
+      </div>
+      <Table
+        bordered
+        pagination={{ pageSize: 30 }}
+        columns={columnServiceGroup}
+        dataSource={dataServiceGroups}
         scroll={{ x: 1000, y: 700 }}
       />
     </div>

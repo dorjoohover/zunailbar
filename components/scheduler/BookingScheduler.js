@@ -104,6 +104,18 @@ export default function DemoApp({ data }) {
         eventDisplay="block"
         events={events}
         eventContent={renderEventContent}
+        slotLabelFormat={{
+          hour: "2-digit",
+          minute: "2-digit",
+          omitZeroMinute: false,
+          hour12: false,
+        }}
+        eventTimeFormat={{
+          hour: "2-digit",
+          minute: "2-digit",
+          omitZeroMinute: false,
+          hour12: false,
+        }}
         slotMinTime="08:00:00"
         slotMaxTime="21:00:00"
         views={{

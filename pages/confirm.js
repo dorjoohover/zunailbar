@@ -13,11 +13,6 @@ import AuthLayout from "../layouts/Auth";
 import { Alert, Button, Form, Input, Image } from "antd";
 
 const render = ({ data, events, tr }) => {
-  useEffect(() => {
-    if (data?.token !== null) {
-      events.confirm(data?.token);
-    }
-  }, [data?.token]);
   return (
     <div className="bg-white .dark:bg-slate-800 mt-32">
       <Helmet title="Данс нээх" />
@@ -27,7 +22,7 @@ const render = ({ data, events, tr }) => {
       <h1 className="text-black font-black text-2xl mt-8 mb-4 text-center">
         Баталгаажуулалт амжилттай
       </h1>
-      <a href="/sign-in">Нэвтэр хэсэг</a>
+      <a href="/auth/sign-in">Нэвтэр хэсэг рүү очих</a>
       {/* <SignUp data={data} events={events} tr={tr} /> */}
     </div>
   );
@@ -43,6 +38,11 @@ function Presentation() {
   //   useEffect(() => {
   //     auth.confirm(router?.query?.token);
   //   }, []);
+  useEffect(() => {
+    if (router?.query?.token !== null) {
+      auth.confirm(router?.query?.token);
+    }
+  }, [router?.query?.token]);
 
   const confirm = (values) => {
     // console.log(values);

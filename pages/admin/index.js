@@ -29,6 +29,9 @@ import UpdateArtist from "../../components/admin/artist/updateArtist";
 import ServiceMenu from "../../components/admin/service/serviceMenu";
 import CreateService from "../../components/admin/service/createService";
 import UpdateService from "../../components/admin/service/updateService";
+// SERVICE_GROUP
+import CreateServiceGroup from "../../components/admin/service_group/createServiceGroup";
+import UpdateServiceGroup from "../../components/admin/service_group/updateServiceGroup";
 // ADDTITIONAL_SERVICE
 import AdditionalServiceMenu from "../../components/admin/additional_service/AdditionalServiceMenu";
 import CreateAdditionalService from "../../components/admin/additional_service/createAdditionalService";
@@ -37,10 +40,10 @@ import UpdateAdditionalService from "../../components/admin/additional_service/u
 import BookingMenu from "../../components/admin/orders/bookingMenu";
 import CreateBooking from "../../components/admin/orders/createBooking";
 import UpdateBooking from "../../components/admin/orders/updateBooking";
-
 // TIMETABLE
 import TimeTableMenu from "../../components/admin/timetable/timeTableMenu";
 import CreateTimetable from "../../components/admin/timetable/createTimetable";
+import CreateBulkTimetable from "../../components/admin/timetable/createBulkTimetable";
 
 // REPORT
 import ReportMenu from "../../components/admin/report/reportMenu";
@@ -268,6 +271,28 @@ function Presentation() {
             </div>
           </div>
         );
+      // SERVICE_GROUP
+      case "createServiceGroupForm":
+        return <CreateServiceGroup data={data} events={events} />;
+      case "updateServiceGroupForm":
+        return <UpdateServiceGroup data={data} events={events} />;
+      case "deleteServiceGroupForm":
+        return (
+          <div>
+            {data?.form?.message}
+            <div className="my-3 flex">
+              <Button
+                onClick={() => {
+                  handleDeleteServiceGroup(data?.form?.data?.id);
+                }}
+                type="primary"
+                danger
+              >
+                Тийм
+              </Button>
+            </div>
+          </div>
+        );
       // ADDITIONAL_SERVICE
       case "createAdditionalService":
         return <CreateAdditionalService data={data} events={events} />;
@@ -315,6 +340,8 @@ function Presentation() {
       // TIMETABLE
       case "createTimetableForm":
         return <CreateTimetable data={data} events={events} />;
+      case "createBulkTimetableForm":
+        return <CreateBulkTimetable data={data} events={events} />;
       case "updateTimetableForm":
         return <UpdateBooking data={data} events={events} />;
       case "deleteTimetableForm":
@@ -441,6 +468,7 @@ function Presentation() {
       visible: false,
     });
     service.loadAllServices();
+    service.loadAllServicesByGroups();
   };
   const handleUpdateService = async (value) => {
     await service.UpdateService(value);
@@ -448,6 +476,7 @@ function Presentation() {
       visible: false,
     });
     service.loadAllServices();
+    service.loadAllServicesByGroups();
   };
   const handleDeleteService = async (value) => {
     await service.DeleteService(value);
@@ -455,6 +484,31 @@ function Presentation() {
       visible: false,
     });
     service.loadAllServices();
+    service.loadAllServicesByGroups();
+  };
+  //
+  //
+  // SERVICE GROUP FUNCTIONS
+  const handleCreateServiceGroup = async (value) => {
+    await service.CreateServiceGroup(value);
+    setMainForm({
+      visible: false,
+    });
+    service.loadAllServicesByGroups();
+  };
+  const handleUpdateServiceGroup = async (value) => {
+    await service.UpdateServiceGroup(value);
+    setMainForm({
+      visible: false,
+    });
+    service.loadAllServicesByGroups();
+  };
+  const handleDeleteServiceGroup = async (value) => {
+    await service.DeleteServiceGroup(value);
+    setMainForm({
+      visible: false,
+    });
+    service.loadAllServicesByGroups();
   };
   //
   //
@@ -509,6 +563,21 @@ function Presentation() {
       values?.date.format("YYYY-MM-DD"),
       values?.startTime.format("HH:00:00"),
       values?.endTime.format("HH:00:00")
+    );
+    setMainForm({
+      visible: false,
+    });
+    await timetable.getAllArtist_Timetable();
+  };
+
+  const createArtistBulkTimetable = async (values) => {
+    await timetable.BulkCreateArtistTimetable(
+      values?.artistId,
+      values?.startDate.format("YYYY-MM-DD"),
+      values?.endDate.format("YYYY-MM-DD"),
+      values?.startTime.format("HH:00:00"),
+      values?.endTime.format("HH:00:00"),
+      values?.days
     );
     setMainForm({
       visible: false,
@@ -570,6 +639,10 @@ function Presentation() {
           handleCreateService: handleCreateService,
           handleUpdateService: handleUpdateService,
           handleDeleteService: handleDeleteService,
+          // service_group
+          handleCreateServiceGroup: handleCreateServiceGroup,
+          handleUpdateServiceGroup: handleUpdateServiceGroup,
+          handleDeleteServiceGroup: handleDeleteServiceGroup,
           // additionalServices
           handleCreateAdditionalService: handleCreateAdditionalService,
           handleUpdateAdditionalService: handleUpdateAdditionalService,
@@ -586,6 +659,7 @@ function Presentation() {
           getServiceIncome: getServiceIncome,
           // timetable
           createArtistTimetable: createArtistTimetable,
+          createArtistBulkTimetable: createArtistBulkTimetable,
         }}
       />
     </React.Fragment>

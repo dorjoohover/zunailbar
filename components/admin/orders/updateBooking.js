@@ -132,13 +132,31 @@ const UpdateServiceForm = ({ data, events }) => {
           <TimePicker format="HH" />
         </Form.Item>
         <Form.Item label="Ажилчны нэр сонгох" name="artistId">
-          <Select options={artistList} />
+          <Select
+            options={artistList}
+            showSearch
+            filterOption={(input, option) =>
+              option.label.toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
         <Form.Item name="customerId" label="Үйлчлүүлэгийн нэр">
-          <Select options={customerList} />
+          <Select
+            options={customerList}
+            showSearch
+            filterOption={(input, option) =>
+              option.label.toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
         <Form.Item name="serviceId" label="Үйлчилгээ">
-          <Select options={serviceList} />
+          <Select
+            options={serviceList}
+            showSearch
+            filterOption={(input, option) =>
+              option.label.toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
         <span className=".mb-6 font-bold text-lg">Нэмэлт үйлчилгээнүүд:</span>
         <Additional_service

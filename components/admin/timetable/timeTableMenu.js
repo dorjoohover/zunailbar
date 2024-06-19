@@ -90,6 +90,20 @@ export default function Agenda({ data, events }) {
         </Button>
       </div>
       <div className="m-2">
+        <Button
+          className="bg-gray-300 font-semibold"
+          onClick={() =>
+            events.handleFormData({
+              header: "Захиалга нэмэх",
+              formType: "createBulkTimetableForm",
+              form: "post",
+            })
+          }
+        >
+          Олноор хуваарь нэмэх
+        </Button>
+      </div>
+      <div className="m-2">
         <Input
           placeholder="Артистийн нэрээр хайх"
           value={searchArtist}

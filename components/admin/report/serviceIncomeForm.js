@@ -37,7 +37,14 @@ const serviceForm = ({ data, events }) => {
             },
           ]}
         >
-          <Select style={{ width: 300 }} options={serviceList} />
+          <Select
+            style={{ width: 300 }}
+            options={serviceList}
+            showSearch
+            filterOption={(input, option) =>
+              option.label.toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
         <Form.Item
           label="Эхлэх огноо сонгох"
