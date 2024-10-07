@@ -36,12 +36,12 @@ const serviceForm = ({
 
   const userList = [];
   data?.userList.map((item, index) => {
-    userList.push({ value: item?.id, label: item?.firstName });
+    userList.push({ value: item?.id, label: item?.phone });
   });
 
   const artistList = [];
   data?.artistsByService.map((item, index) => {
-    artistList.push({ value: item?.id, label: item?.firstName });
+    artistList.push({ value: item?.id, label: item?.phone });
   });
   // data?.employeeList.map((item, index) => {
   //   artistList.push({ value: item?.id, label: item?.firstName });
@@ -167,12 +167,12 @@ const serviceForm = ({
           <DatePicker
             onChange={handleDateChangeArtist}
             disabled={!data?.artistId}
-            disabledDate={(currentDate) => {
+           // disabledDate={(currentDate) => {
               // Disable dates that are not in the availableData array
-              return !data?.timetable_list.some(
-                (data) => data.date === currentDate.format("YYYY-MM-DD")
-              );
-            }}
+            //  return !data?.timetable_list.some(
+            //    (data) => data.date === currentDate.format("YYYY-MM-DD")
+            //  );
+           // }}
           />
         </Form.Item>
         <Form.Item

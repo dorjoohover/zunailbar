@@ -382,14 +382,15 @@ function Presentation() {
     let updatedTime = originalTime.add(1, "hours");
     let formattedUpdatedTime = updatedTime.format("HH:mm:ss");
     // console.log(formattedUpdatedTime);
-    await order.createBooking(
-      values?.customerId,
-      values?.serviceId,
-      values?.artistId,
-      values?.date.format("YYYY-MM-DD"),
-      values?.time.format("HH:00:00"),
-      formattedUpdatedTime
-    );
+    console.log(values);
+    // await order.createBooking(
+    //   values?.customerId,
+    //   values?.serviceId,
+    //   values?.artistId,
+    //   values?.date.format("YYYY-MM-DD"),
+    //   values?.time.format("HH:00:00"),
+    //   formattedUpdatedTime
+    // );
     // timetable.clearTimetable();
     setMainForm({
       visible: false,

@@ -13,6 +13,7 @@ import {
 // import dayjs from "dayjs";
 // import styles from "./CustomTimePicker.module.css";
 import moment from "moment";
+import { globals } from "../../../utils/functions";
 const serviceForm = ({
   data,
   artist_list,
@@ -35,20 +36,27 @@ const serviceForm = ({
 
   const userList = [];
   data?.userList.map((item, index) => {
-    userList.push({ value: item?.id, label: item?.firstName });
+    userList.push({
+      value: item?.id,
+      label: `${item?.firstName} (${item?.phone})`,
+    });
   });
 
   const artistList = [];
-  data?.artistsByService.map((item, index) => {
-    artistList.push({ value: item?.id, label: item?.firstName });
+  data?.employeeList.map((item, index) => {
+    artistList.push({
+      value: item?.id,
+      label: `${item?.firstName} (${item?.phone})`,
+    });
   });
   // data?.employeeList.map((item, index) => {
   //   artistList.push({ value: item?.id, label: item?.firstName });
-  // });
-
   const serviceList = [];
   data?.just_service_list.map((item, index) => {
-    serviceList.push({ value: item?.id, label: item?.serviceName });
+    serviceList.push({
+      value: item?.id,
+      label: `${item?.serviceName} (${item?.price}₮)`,
+    });
   });
 
   const artistList2 = [];
@@ -60,7 +68,7 @@ const serviceForm = ({
     events.handleCreateOrder(values);
     form.setFieldsValue({
       customerId: null,
-      serviceId: null,
+      serviceId: [],
       artistId: null,
       date: null,
       time: null,
@@ -110,9 +118,10 @@ const serviceForm = ({
     );
   };
 
-  const [selectedService, setSelectedService] = useState(null);
+  const [selectedService, setSelectedService] = useState([]);
   const handleChangeService = (value) => {
     setSelectedService(value);
+
     events.loadArtistByService(value);
   };
   return (
@@ -142,6 +151,30 @@ const serviceForm = ({
             options={serviceList}
             onChange={handleChangeService}
             showSearch
+            mode="multiple"
+            filterOption={(input, option) => {
+              return option.label.toLowerCase().includes(input.toLowerCase());
+            }}
+            tokenSeparators={[","]}
+          />
+        </Form.Item>
+        <Form.Item
+          name="prepayment"
+          label="Урьдчилгаа"
+          rules={[
+            {
+              pattern: new RegExp(/^[0-9]*$/),
+            },
+          ]}
+        >
+          <Input className={"max-w-[300px]"} />
+        </Form.Item>
+        <Form.Item name="paymentMethod" label="Төлбөрийн хэлбэр">
+          <Select
+            style={{ width: 300 }}
+            options={Object.values(globals.PaymentMethodTypes).map((m) => {
+              return { value: m, label: globals.PaymentMethodTypesDict[m] };
+            })}
             filterOption={(input, option) =>
               option.label.toLowerCase().includes(input.toLowerCase())
             }
@@ -181,12 +214,13 @@ const serviceForm = ({
           <DatePicker
             onChange={handleDateChangeArtist}
             disabled={!selectedArtist}
-            disabledDate={(currentDate) => {
-              // Disable dates that are not in the availableData array
-              return !data?.timetable_list.some(
-                (data) => data.date === currentDate.format("YYYY-MM-DD")
-              );
-            }}
+            // disabledDate={(currentDate) => {
+            // Disable dates that are not in the availableData array
+            //return !data?.timetable_list.some(
+            //  (data) => data.date === currentDate.format("YYYY-MM-DD")
+            // );
+            //}
+            //  }
           />
         </Form.Item>
         <Form.Item
@@ -201,7 +235,7 @@ const serviceForm = ({
         >
           <TimePicker
             onChange={handleTimeChange}
-            disabled={!selectedDate}
+            // disabled={!selectedDate}
             format="HH"
             disabledHours={disabledHours}
             hideDisabledOptions={true}

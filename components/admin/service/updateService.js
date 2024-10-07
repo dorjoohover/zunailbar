@@ -52,11 +52,14 @@ const App = ({ data, events }) => {
   useEffect(() => {
     form.setFieldsValue(defaultValues);
   }, [form, defaultValues]);
-
   const duration = [
+    { value: 0.5, label: "30 мин" },
     { value: 1, label: "1 цаг" },
+    { value: 1.5, label: "1 цаг 30 мин" },
     { value: 2, label: "2 цаг" },
+    { value: 2.5, label: "2 цаг 30 мин" },
     { value: 3, label: "3 цаг" },
+    { value: 3.5, label: "3 цаг 30 мин" },
     { value: 4, label: "4 цаг" },
   ];
 

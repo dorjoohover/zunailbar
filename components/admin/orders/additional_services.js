@@ -1,6 +1,6 @@
 import React from "react";
 import FormItem from "./FormItem";
-import { Form, Input } from "antd";
+import { Checkbox, Form, Input } from "antd";
 
 const Additional_service = ({
   data,
@@ -10,7 +10,7 @@ const Additional_service = ({
   additional_services_list,
 }) => {
   const discussions = additional_services_list || [];
-  console.log("discussions", discussions);
+
   //   const value = data?.auth?.detail?.shareholder?.amount;
   const value = 1;
 
@@ -50,55 +50,66 @@ const Additional_service = ({
   //       return true;
   //     }
   //   };
-  return discussions.map((item, index) => (
-    <div key={index} className="my-4">
-      <FormItem
-        // tr={tr}
-        main={{
-          data: item,
-          type: "radiogroup",
-          name: `additional_service_${item.id}`,
-          label: "question",
-          required: false,
-        }}
-        added={{
-          value: value,
-          child: questions,
-        }}
-        // onChange={(value) => handleDiscussionSelection(item.id, value)}
-        form={form}
-      ></FormItem>
-      <Form.Item noStyle shouldUpdate>
-        {({ getFieldValue }) =>
-          Array.isArray(getFieldValue(`additional_service_${item.id}`)) &&
-          getFieldValue(`additional_service_${item.id}`).includes("checked") ===
-            true ? (
-            <div>
-              <div className="text-gray-500">Үнийн дүн</div>
-              <FormItem
-                // tr={tr}
-                // form={form}
-                // onChange={(value) => handleDiscussionSelection(item.id, value)}
-                main={{
-                  data: item,
-                  type: "number",
-                  name: `additional_service-${item.id}`,
-                  label: "main_vote_declined_comment",
-                  required: true,
-                }}
-                added={{
-                  value: item?.default_price,
-                  child: questions,
-                }}
-              >
-                {/* <Input /> */}
-              </FormItem>
-            </div>
-          ) : null
-        }
-      </Form.Item>
-    </div>
-  ));
+
+  return (
+    <Form.Item className="my-4" name={'additional_services'}>
+      <Checkbox.Group
+        options={discussions.map((d) => {
+          return {
+            value: d.id,
+            label: `${d.additional_serviceName} (${d.default_price}₮)`,
+          };
+        })}
+      />
+    </Form.Item>
+  );
+  // return discussions.map((item, index) => {
+  //   // console.log(getFieldValue("additional_services"));
+  //   return (
+  //     <div key={index} className="my-4">
+  //       <Form.Item  name={`additional_services`}>
+  //         <Checkbox.Group >
+  //           <Checkbox className="" key={index} value={item?.id}>
+  //             {item?.additional_serviceName} ({item?.default_price}₮)
+  //           </Checkbox>
+  //         </Checkbox.Group>
+  //       </Form.Item>
+  //       <Form.Item name={'additional_services'}>
+  //     <Checkbox.Group options={}/>
+  //       </Form.Item>
+  //       <Form.Item noStyle shouldUpdate>
+  //         {({ getFieldValue }) =>
+  //           Array.isArray(getFieldValue(`additional_service_${item.id}`)) &&
+  //           getFieldValue(`additional_service_${item.id}`).includes(
+  //             "checked"
+  //           ) === true ? (
+  //             <div>
+  //               <div className="text-gray-500">Үнийн дүн</div>
+  //               <FormItem
+  //                 // tr={tr}
+  //                 // form={form}
+  //                 // onChange={(value) => handleDiscussionSelection(item.id, value)}
+  //                 main={{
+  //                   data: item,
+  //                   type: "number",
+  //                   name: `additional_service-${item.id}`,
+  //                   label: "main_vote_declined_comment",
+  //                   required: true,
+  //                 }}
+  //                 added={{
+  //                   value: item?.default_price,
+  //                   child: questions,
+  //                 }}
+  //               >
+  //                 {/* <Input /> */}
+  //               </FormItem>
+  //             </div>
+  //           ) : null
+  //         }
+  //       </Form.Item>
+  //     </div>
+  //   );
+  // });
 };
 
 export default Additional_service;

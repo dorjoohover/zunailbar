@@ -291,7 +291,7 @@ function Presentation() {
     setMainForm({
       visible: false,
     });
-    auth.loadBookingsByCustomerId(initialData?.customer?.id);
+    auth.loadBookingsByCustomerId(ю?.customer?.id);
   };
   const handleUpdateOrder = async (value) => {
     await booking.UpdateOrder(value);

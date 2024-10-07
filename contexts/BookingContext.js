@@ -40,6 +40,8 @@ const BookingProvider = (props) => {
     customerId,
     serviceId,
     artistId,
+    prepayment,
+    paymentMethod,
     date,
     startTime,
     endTime
@@ -57,6 +59,8 @@ const BookingProvider = (props) => {
         customerId: customerId,
         serviceId: serviceId,
         artistId: artistId,
+        prepayment: prepayment,
+        paymentMethod: paymentMethod,
         date: date,
         startTime: startTime,
         endTime: endTime,

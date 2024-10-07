@@ -430,16 +430,21 @@ function Presentation() {
     let originalTime = moment(timeString, "HH:mm:ss");
     let updatedTime = originalTime.add(1, "hours");
     let formattedUpdatedTime = updatedTime.format("HH:mm:ss");
-    // console.log(formattedUpdatedTime);
+    let services = values.serviceId;
+    if (services[0] == undefined) {
+      services.shift();
+    }
     await order.createBooking(
       values?.customerId,
-      values?.serviceId,
+      services.join(","),
       values?.artistId,
+      values?.prepayment ?? null,
+      values?.paymentMethod ?? null,
       values?.date.format("YYYY-MM-DD"),
       values?.time.format("HH:00:00"),
       formattedUpdatedTime
     );
-    // timetable.clearTimetable();
+    timetable.clearTimetable();
     setMainForm({
       visible: false,
     });

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Table, Button, Input } from "antd";
 import Scheduler from "../../scheduler/BookingScheduler";
+import { globals } from "../../../utils/functions";
 
 export default function Agenda({ data, events }) {
   const [searchPhone, setSearchPhone] = useState("");
@@ -14,7 +15,7 @@ export default function Agenda({ data, events }) {
     },
     {
       title: "Үйлчлүүлэгийн дугаар",
-      width: 60,
+      width: 35,
       dataIndex: "customerId",
       key: "customerId",
     },
@@ -22,13 +23,31 @@ export default function Agenda({ data, events }) {
       title: "Артистийн нэр",
       dataIndex: "artistName",
       key: "artistName",
-      width: 60,
+      width: 30,
     },
     {
       title: "Үйлчилгээний нэр",
       dataIndex: "serviceId",
       key: "serviceId",
-      width: 80,
+      width: 60,
+    },
+    {
+      title: "Нэмэлт үйлчилгээ",
+      dataIndex: "additionalServiceId",
+      key: "additionalServiceId",
+      width: 50,
+    },
+    {
+      title: "Урьдчилгаа",
+      dataIndex: "prepayment",
+      key: "prepayment",
+      width: 40,
+    },
+    {
+      title: "Төлбөрийн хэлбэр",
+      dataIndex: "paymentMethod",
+      key: "paymentMethod",
+      width: 40,
     },
     {
       title: "Огноо",
@@ -89,25 +108,43 @@ export default function Agenda({ data, events }) {
   };
 
   const checkServiceId = (serviceId) => {
-    var serviceName = "";
+    var serviceName = [];
+    // console.log(data.just_service_list)
+    const services = serviceId.split(",").map((s) => parseInt(s));
     data?.just_service_list.forEach((element) => {
-      if (element?.id === serviceId) {
-        serviceName = element?.serviceName;
+      if (services.includes(element?.id)) {
+        serviceName.push(element?.serviceName);
       }
     });
-    return serviceName;
+    return serviceName.join(" , ");
+  };
+  const checkAdditionalServiceId = (serviceId) => {
+    var serviceName = [];
+    const services = serviceId?.split(",").map((s) => parseInt(s));
+    if (!services) return "";
+    data?.additional_service_list.forEach((element) => {
+      if (services.includes(element?.id)) {
+        serviceName.push(element?.additional_serviceName);
+      }
+    });
+
+    return serviceName.join(" , ");
   };
 
-  let number = 0;
-  const data1 = data?.orderList.map((item) => {
-    number += 1;
+  const data1 = data?.orderList.map((item, i) => {
     return {
-      key: number,
-      list: number,
+      key: i,
+      list: i + 1,
       customerId: checkUserIdforPhone(item?.customerId),
       serviceId: checkServiceId(item?.serviceId),
+      additionalServiceId: checkAdditionalServiceId(item?.additionalServiceId),
       artistName: checkEmployeeId(item?.artistId),
+      prepayment: parseFloat(item?.prepayment ?? 0),
       artistId: item?.artistId,
+      paymentMethod:
+        item.paymentMethod != null
+          ? globals.PaymentMethodTypesDict[item.paymentMethod]
+          : "",
       date: item?.date,
       startTime: item?.startTime,
       endTime: item?.endTime,

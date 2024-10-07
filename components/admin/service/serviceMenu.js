@@ -3,11 +3,20 @@ import { Table, Button } from "antd";
 
 export default function Agenda({ data, events }) {
   console.log("data?.serviceList", data?.serviceList);
-
+  const duration = [
+    { value: 0.5, label: "30 мин" },
+    { value: 1, label: "1 цаг" },
+    { value: 1.5, label: "1 цаг 30 мин" },
+    { value: 2, label: "2 цаг" },
+    { value: 2.5, label: "2 цаг 30 мин" },
+    { value: 3, label: "3 цаг" },
+    { value: 3.5, label: "3 цаг 30 мин" },
+    { value: 4, label: "4 цаг" },
+  ];
   const columns = [
     {
       title: "№",
-      width: 8,
+      width: 10,
       dataIndex: "list",
       key: "list",
     },
@@ -27,7 +36,7 @@ export default function Agenda({ data, events }) {
       title: "Үнэ",
       dataIndex: "price",
       key: "price",
-      width: 10,
+      width: 30,
     },
     {
       title: "Зураг",
@@ -101,7 +110,9 @@ export default function Agenda({ data, events }) {
             alt={service?.serviceName}
           />
         ),
-        duration: service?.duration,
+        duration: `${
+          duration.filter((d) => d.value == service?.duration)[0].label
+        }`,
         delete: (
           <Button
             onClick={() =>

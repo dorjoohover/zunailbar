@@ -11,6 +11,7 @@ import {
 } from "antd";
 import moment from "moment";
 import Additional_service from "./additional_services";
+import { globals } from "../../../utils/functions";
 
 const UpdateServiceForm = ({ data, events }) => {
   // console.log("data?.serviceList", data?.serviceList);
@@ -34,10 +35,15 @@ const UpdateServiceForm = ({ data, events }) => {
 
   const onFinish = (values) => {
     console.log("onFinish", values);
+    values.serviceId =
+      values.serviceId[0]?.value != undefined
+        ? values.serviceId.map((service) => service.value).join(",")
+        : values.serviceId.join(",");
     values.date = values.date.format("YYYY-MM-DD");
     values.startTime = values.startTime.format("HH:00:00");
     values.endTime = values.endTime.format("HH:00:00");
-
+    // values.serviceId = values.serviceId.join(",");
+    values.additional_services = values.additional_services?.join(",");
     events.handleUpdateOrder(values);
     events.handleCancel();
   };
@@ -56,12 +62,28 @@ const UpdateServiceForm = ({ data, events }) => {
     });
     form.setFieldsValue(updatedFields);
     var formData = data?.form?.data?.item;
+    console.log(formData)
     console.log(data.serviceList);
     form.setFieldsValue({
       id: formData?.id,
       artistId: formData?.artistId,
       customerId: formData?.customerId,
-      serviceId: formData?.serviceId,
+      additional_services: formData?.additionalServiceId,
+      prepayment: formData?.prepayment,
+      paymentMethod: globals.PaymentMethodTypesDict[formData?.paymentMethod],
+      serviceId: data?.just_service_list
+        .map((item, index) => {
+          const services = formData?.serviceId
+            .split(",")
+            .map((s) => parseInt(s));
+          if (services.includes(item.id)) {
+            return {
+              value: item.id,
+              label: `${item?.serviceName} (${item?.price})`,
+            };
+          }
+        })
+        .filter((s) => s != undefined),
       date: formData?.date ? moment(formData?.date, "YYYY-MM-DD") : null,
       startTime: formData?.startTime
         ? moment(formData?.startTime, "HH:mm")
@@ -82,7 +104,10 @@ const UpdateServiceForm = ({ data, events }) => {
 
   const serviceList = [];
   data?.just_service_list.map((item, index) => {
-    serviceList.push({ value: item?.id, label: item?.serviceName });
+    serviceList.push({
+      value: item?.id,
+      label: `${item?.serviceName} (${item?.price})`,
+    });
   });
   return (
     <div>
@@ -94,6 +119,28 @@ const UpdateServiceForm = ({ data, events }) => {
       >
         <Form.Item label="bookingId" name="id">
           <InputNumber disabled />
+        </Form.Item>
+        <Form.Item
+          name="prepayment"
+          label="Урьдчилгаа"
+          rules={[
+            {
+              pattern: new RegExp(/^[0-9]*$/),
+            },
+          ]}
+        >
+          <Input className={"max-w-[300px]"} />
+        </Form.Item>
+        <Form.Item name="paymentMethod" label="Төлбөрийн хэлбэр">
+          <Select
+            style={{ width: 300 }}
+            options={Object.values(globals.PaymentMethodTypes).map((m) => {
+              return { value: m, label: globals.PaymentMethodTypesDict[m] };
+            })}
+            filterOption={(input, option) =>
+              option.label.toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
         <Form.Item
           label="Огноо нэр сонгох"
@@ -151,6 +198,8 @@ const UpdateServiceForm = ({ data, events }) => {
         </Form.Item>
         <Form.Item name="serviceId" label="Үйлчилгээ">
           <Select
+            mode="multiple"
+            tokenSeparators={[","]}
             options={serviceList}
             showSearch
             filterOption={(input, option) =>
